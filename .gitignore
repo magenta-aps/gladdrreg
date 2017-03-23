@@ -1,4 +1,5 @@
 /pyenv-*
+__pycache__/
 *.py[co]
 /db.sqlite3
 /out
