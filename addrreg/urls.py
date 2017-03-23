@@ -16,11 +16,15 @@ Including another URLconf
 
 from __future__ import absolute_import, unicode_literals, print_function
 
-from django.conf import urls
+from django.views.generic import RedirectView
+
+from django.conf.urls import url, include
 from django.contrib import admin
 
-urlpatterns = [
-    urls.url(r'^admin/', admin.site.urls),
-    urls.url(r'^', urls.include('addrreg.urls')),
+from . import views
 
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls), name='admin'),
+    url(r'^$', RedirectView.as_view(url='/admin/'), name='redirect_admin'),
+    # url(r'^$', views.root, name='redirect_admin'),
 ]
