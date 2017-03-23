@@ -5,7 +5,7 @@ set -e
 dir=$(cd $(dirname $0); pwd)
 
 os=$(uname -s | tr A-Z a-z)
-env=$dir/pyenv-$os
+env=/tmp/pyenv-$(basename $dir)-$os
 
 if ! test -d $env
 then
