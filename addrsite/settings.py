@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 from __future__ import absolute_import, unicode_literals, print_function
 
+import platform
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,7 +29,7 @@ SECRET_KEY = '6c6cwt!igu4$^*xlo)u$g!nd-@pm6kzw_=+)1%o0=1^9wu5h@+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -79,8 +81,10 @@ WSGI_APPLICATION = 'addrsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'gladdrreg',
     }
 }
 
@@ -123,3 +127,8 @@ LOCALE_PATHS = ['i18n']
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+if platform.python_implementation() == 'PyPy':
+    from psycopg2cffi import compat
+    compat.register()

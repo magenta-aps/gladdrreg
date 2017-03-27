@@ -17,10 +17,8 @@ Including another URLconf
 from __future__ import absolute_import, unicode_literals, print_function
 
 from django.conf import urls
-from django.contrib import admin
 
 urlpatterns = [
-    urls.url(r'^admin/', admin.site.urls),
     urls.url(r'^', urls.include('addrreg.urls')),
 
 ]

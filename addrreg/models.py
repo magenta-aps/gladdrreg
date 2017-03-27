@@ -4,13 +4,15 @@ from __future__ import absolute_import, unicode_literals, print_function
 
 import uuid
 
+import openpyxl
+import six
+
 from django.contrib import admin
-from django.core import serializers
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.template import engines
 
 admin.site.disable_action('delete_selected')
+
 
 class BaseModel(models.Model):
     '''
@@ -29,86 +31,139 @@ class BaseModel(models.Model):
     def __repr__(self):
         return '<{} {}>'.format(type(self), self.objectID)
 
-    # def to_json
-    #
-    # def checksum(self):
-
 
 class AdminBase(admin.ModelAdmin):
-    readonly_fields = ('objectID',)
+    readonly_fields = 'objectID',
 
 
+@six.python_2_unicode_compatible
 class Locality(BaseModel):
+
     class Meta(object):
         verbose_name = _('Locality')
         verbose_name_plural = _('Localities')
 
+        ordering = ('name',)
+
     # aka lokalitetskode
-    code = models.IntegerField(_('Code'))
+    code = models.IntegerField(_('Code'), db_index=True, unique=True)
     # aka lokalitetsnavn
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), db_index=True, max_length=255)
     # aka lokalitetstype
-    type = models.CharField(_('Type'), max_length=255)
+    type = models.CharField(_('Type'), db_index=True, max_length=255)
 
     def __str__(self):
-        # i18n: Human-readable description of a Locality
-        return _('{0.name} ({0.code})').format(self)
+        return '{0.name} ({0.type})'.format(self)
+
+    @classmethod
+    def from_dict(cls, vals):
+        code = vals['LOKALITETSNR']
+        if not code or not code.strip():
+            return None
+
+        obj, created = cls.objects.get_or_create(
+            code=code,
+            defaults={
+                'name': vals['LOKALITETSNAVN'].rstrip(),
+                'type': vals['LOKALITETS_TYPE_NAVN'].rstrip(),
+            }
+        )
+
+        return obj
 
 
 @admin.register(Locality)
 class LocalityAdmin(AdminBase):
-    list_display = ('code', 'name', 'type')
+    list_display = ('name', 'type', 'code',)
 
 
+@six.python_2_unicode_compatible
 class Municipality(BaseModel):
+
     class Meta(object):
         verbose_name = _('Municipality')
         verbose_name_plural = _('Municipalities')
 
+        ordering = ('name',)
+
     # aka kommunekode
-    code = models.PositiveSmallIntegerField(_('Code'))
+    code = models.PositiveSmallIntegerField(_('Code'),
+                                            db_index=True, unique=True)
     # aka kommunenavn
     name = models.CharField(_('Name'), max_length=255)
 
     def __str__(self):
-        # i18n: Human-readable description of a Municipality
-        return _('{0.name}').format(self)
+        if self.name.strip() == 'uk':
+            return '{} {}'.format(self.name, self.code)
+        else:
+            return self.name
+
+    @classmethod
+    def from_dict(cls, vals):
+        obj, created = cls.objects.get_or_create(
+            code=vals['KOMMUNEKODE'],
+            defaults={
+                'name': vals['KOMNAVN'].rstrip(),
+            }
+        )
+
+        return obj
 
 
 @admin.register(Municipality)
 class MunicipalityAdmin(AdminBase):
-    list_display = ('name', 'code')
+    list_display = ('name', 'code',)
 
 
+@six.python_2_unicode_compatible
 class PostalCode(BaseModel):
+
     class Meta(object):
         verbose_name = _('Postal Code')
         verbose_name_plural = _('Postal Codes')
 
+        ordering = ('code',)
+
     # aka postnummer
-    code = models.PositiveSmallIntegerField(_('Number'))
+    code = models.PositiveSmallIntegerField(_('Number'),
+                                            db_index=True, unique=True)
     # aka by
-    name = models.CharField(_('City'), max_length=255)
+    name = models.CharField(_('City'), db_index=True, max_length=255)
 
     def __str__(self):
-        # i18n: Human-readable description of a PostalCode
+        # Translators: Human-readable description of a PostalCode
         return _('{0.code} {0.name}').format(self)
+
+    @classmethod
+    def from_dict(cls, vals):
+        obj, created = cls.objects.get_or_create(
+            code=int(vals['POSTNR']),
+            defaults={
+                'name': vals['POSTDISTRIKT'].rstrip(),
+            }
+        )
+
+        return obj
 
 
 @admin.register(PostalCode)
 class PostalCodeAdmin(AdminBase):
-    list_display = ('code', 'name')
+    list_display = ('name', 'code',)
 
 
+@six.python_2_unicode_compatible
 class Road(BaseModel):
+
     class Meta(object):
         verbose_name = _('Road')
         verbose_name_plural = _('Roads')
 
+        ordering = ('name',)
+
     # aka vejkode
-    code = models.PositiveIntegerField(_('Code'))
+    code = models.PositiveIntegerField(_('Code'), db_index=True, unique=True)
     # aka vejnavn
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), db_index=True, max_length=255)
 
     # aka forkortetnavn_20_tegn
     shortname = models.CharField(_('Abbreviated Name'), max_length=20)
@@ -121,22 +176,38 @@ class Road(BaseModel):
     cprName = models.CharField(_('CPR Name'), max_length=255)
 
     def __str__(self):
-        # i18n: Human-readable description of a Road
-        return _('{0.name} ({0.code})').format(self)
+        return self.name
+
+    @classmethod
+    def from_dict(cls, vals):
+        obj, created = cls.objects.get_or_create(
+            code=vals['VEJKODE'],
+            defaults={
+                'name': vals['VEJNAVN'].rstrip(),
+            }
+        )
+
+        return obj
 
 
 @admin.register(Road)
 class RoadAdmin(AdminBase):
-    list_display = ('code', 'name', )
+    list_display = ('name', 'code')
+    search_fields = ('name',)
 
 
+@six.python_2_unicode_compatible
 class BNumber(BaseModel):
+
     class Meta(object):
         verbose_name = _('B-Number')
         verbose_name_plural = _('B-Numbers')
 
+        ordering = ('number',)
+
     # aka nummer
-    number = models.CharField(_('Number'), max_length=255)
+    number = models.CharField(_('Number'), db_index=True,
+                              max_length=255)
     # aka kaldenavn
     name = models.CharField(_('Nickname'), max_length=255)
     # aka blokbetegnelse
@@ -144,22 +215,42 @@ class BNumber(BaseModel):
 
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'),
-                                     null=False, blank=True)
+                                     null=False, blank=True, db_index=True)
 
     def __str__(self):
-        # i18n: Human-readable description of a BNumber
-        return _('{0.name} {0.block} ({0.number})').format(self)
+        parts = [self.number]
+        if self.block:
+            parts += [' - ']
+        if self.name:
+            parts += [' (', self.name, ')']
+
+        return ''.join(parts)
+
+    @classmethod
+    def from_dict(cls, vals):
+        obj, created = cls.objects.get_or_create(
+            number=vals['BNR'],
+            municipality=Municipality.from_dict(vals),
+        )
+
+        return obj
 
 
 @admin.register(BNumber)
 class BNumberAdmin(AdminBase):
-    list_display = ('number', 'name', 'block', 'municipality')
+    list_display = ('number', 'name', 'block', 'municipality',)
+    list_filter = ('municipality',)
+    search_fields = ('=number', '=name', '=block')
 
 
+@six.python_2_unicode_compatible
 class Address(BaseModel):
+
     class Meta(object):
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
+
+        ordering = 'road',
 
     # aka husnummer
     houseNumber = models.CharField(_('House Number'), max_length=255,
@@ -186,8 +277,44 @@ class Address(BaseModel):
         # i18n: Human-readable description of an Address
         return _('{0.houseNumber} {0.road}').format(self)
 
+    @classmethod
+    def from_dict(cls, vals):
+        return cls.objects.create(
+            houseNumber=vals['HUSNR'] or '',
+            floor=vals['ETAGE'] or '',
+            door=vals['SIDE'] or '',
+            locality=Locality.from_dict(vals),
+            bNumber=BNumber.from_dict(vals),
+            road=Road.from_dict(vals),
+            postalCode=PostalCode.from_dict(vals)
+        )
+
 
 @admin.register(Address)
 class AddressAdmin(AdminBase):
     list_display = ('road', 'houseNumber', 'floor', 'door', 'postalCode',
-                    'bNumber')
+                    'bNumber',)
+    list_filter = ('locality', 'postalCode')
+    search_fields = ('road__name', 'postalCode__name', 'locality__name')
+
+
+def read_spreadsheet(fp):
+    wb = openpyxl.load_workbook(fp, read_only=True, data_only=True)
+    rows = wb.active.rows
+
+    column_names = {
+        cellidx: cell.value for cellidx, cell in
+        enumerate(next(rows))
+    }
+
+    for row in rows:
+        r = {
+            column_names[cellidx]: cell.value for cellidx, cell in enumerate(row)
+        }
+        if any(r.values()):
+            yield r
+
+
+def import_spreadsheet(fp):
+    for row in read_spreadsheet(fp):
+        Address.from_dict(row)

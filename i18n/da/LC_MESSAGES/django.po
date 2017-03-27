@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 11:18+0100\n"
+"POT-Creation-Date: 2017-03-27 11:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: Danish\n"
@@ -14,139 +14,145 @@ msgstr ""
 msgid "Address Register of Greenland"
 msgstr "Grønlands Adresseopslagsregister"
 
-#: addrreg/models.py:27
+#: addrreg/bitemporal/models.py:54
+msgid "Validity start"
+msgstr ""
+
+#: addrreg/bitemporal/models.py:58
+msgid "Validity end"
+msgstr ""
+
+#: addrreg/bitemporal/models.py:62
+msgid "Registered"
+msgstr ""
+
+#: addrreg/bitemporal/models.py:66
+msgid "Replaced"
+msgstr ""
+
+#: addrreg/models.py:30
 msgid "Object ID"
 msgstr "Objekt-ID"
 
-#: addrreg/models.py:43 addrreg/models.py:173
+#: addrreg/models.py:42 addrreg/models.py:258
 msgid "Locality"
 msgstr "Lokalitet"
 
-#: addrreg/models.py:44
+#: addrreg/models.py:43
 msgid "Localities"
 msgstr "Lokaliteter"
 
-#: addrreg/models.py:47 addrreg/models.py:69 addrreg/models.py:109
+#: addrreg/models.py:48 addrreg/models.py:88 addrreg/models.py:160
 msgid "Code"
 msgstr "Kode"
 
-#: addrreg/models.py:49 addrreg/models.py:71 addrreg/models.py:111
+#: addrreg/models.py:50 addrreg/models.py:91 addrreg/models.py:162
 msgid "Name"
 msgstr "Navn"
 
-#: addrreg/models.py:51
+#: addrreg/models.py:52
 msgid "Type"
 msgstr "Type"
 
-#: addrreg/models.py:55 addrreg/models.py:125
-#, python-brace-format
-msgid "{0.name} ({0.code})"
-msgstr ""
-
-#: addrreg/models.py:65 addrreg/models.py:146
+#: addrreg/models.py:82 addrreg/models.py:212
 msgid "Municipality"
 msgstr "Kommune"
 
-#: addrreg/models.py:66
+#: addrreg/models.py:83
 msgid "Municipalities"
 msgstr "Kommuner"
 
-#: addrreg/models.py:75
-#, python-brace-format
-msgid "{0.name}"
-msgstr ""
-
-#: addrreg/models.py:85 addrreg/models.py:182
+#: addrreg/models.py:119 addrreg/models.py:267
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: addrreg/models.py:86
+#: addrreg/models.py:120
 msgid "Postal Codes"
 msgstr "Postnummre"
 
-#: addrreg/models.py:89 addrreg/models.py:139
+#: addrreg/models.py:125 addrreg/models.py:204
 msgid "Number"
 msgstr "Nummer"
 
-#: addrreg/models.py:91
+#: addrreg/models.py:128
 msgid "City"
 msgstr "By"
 
-#: addrreg/models.py:95
+#. Translators: Human-readable description of a PostalCode
+#: addrreg/models.py:132
 #, python-brace-format
 msgid "{0.code} {0.name}"
-msgstr ""
+msgstr "{0.code} {0.name}"
 
-#: addrreg/models.py:105 addrreg/models.py:179
+#: addrreg/models.py:154 addrreg/models.py:264
 msgid "Road"
 msgstr "Vej"
 
-#: addrreg/models.py:106
+#: addrreg/models.py:155
 msgid "Roads"
 msgstr "Veje"
 
-#: addrreg/models.py:114
+#: addrreg/models.py:165
 msgid "Abbreviated Name"
 msgstr "Forkortet navn"
 
-#: addrreg/models.py:117
+#: addrreg/models.py:168
 msgid "Danish Name"
 msgstr "Dansk navn"
 
-#: addrreg/models.py:119
+#: addrreg/models.py:170
 msgid "Greenlandic Name"
 msgstr "Grønlandsk navn"
 
-#: addrreg/models.py:121
+#: addrreg/models.py:172
 msgid "CPR Name"
 msgstr "CPR-navn"
 
-#: addrreg/models.py:135 addrreg/models.py:176
+#: addrreg/models.py:198 addrreg/models.py:261
 msgid "B-Number"
 msgstr "B-nummer"
 
-#: addrreg/models.py:136
+#: addrreg/models.py:199
 msgid "B-Numbers"
 msgstr "B-numre"
 
-#: addrreg/models.py:141
+#: addrreg/models.py:207
 msgid "Nickname"
 msgstr "Kaldenavn"
 
-#: addrreg/models.py:143
+#: addrreg/models.py:209
 msgid "Block Designation"
 msgstr "Blokbetegnelse"
 
-#: addrreg/models.py:151
-#, python-brace-format
-msgid "{0.name} {0.block} ({0.number})"
-msgstr ""
-
-#: addrreg/models.py:161
+#: addrreg/models.py:244
 msgid "Address"
 msgstr "Adresse"
 
-#: addrreg/models.py:162
+#: addrreg/models.py:245
 msgid "Addresses"
 msgstr "Adresser"
 
-#: addrreg/models.py:165
+#: addrreg/models.py:250
 msgid "House Number"
 msgstr "Husnummer"
 
-#: addrreg/models.py:168
+#: addrreg/models.py:253
 msgid "Floor"
 msgstr "Etage"
 
-#: addrreg/models.py:170
+#: addrreg/models.py:255
 msgid "Door"
 msgstr "Sidedør"
 
-#: addrreg/models.py:187
+#: addrreg/models.py:272
 #, python-brace-format
 msgid "{0.houseNumber} {0.road}"
 msgstr ""
 
-#: addrreg/views.py:12
-msgid "Move along, nothing to see here."
-msgstr "Intet nyt at berette."
+#: addrreg/templates/upload.html:17
+msgid "Please select an Excel spreadsheet to import"
+msgstr "Vælg venligst det excelregneark der skal importeres"
+
+#: addrreg/views.py:17
+msgid "Spreadsheet successfully imported!"
+msgstr "Import af regnearket lykkedes!"

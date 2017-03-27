@@ -1,12 +1,24 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
-from django import views
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.utils.translation import to_locale, get_language
+
+from . import forms, models
 
 
-def placeholder(request):
-    return HttpResponse(_("Move along, nothing to see here."))
+@login_required(login_url='/admin/login')
+def upload_file(request):
+    if request.method == 'POST':
+        form = forms.FileForm(request.POST, request.FILES)
+        if form.is_valid():
+            models.import_spreadsheet(request.FILES['file'])
+            return HttpResponse(_('Spreadsheet successfully imported!'),
+                                content_type='text/plain')
+        else:
+            return HttpResponseBadRequest("Missing file! " +
+                                          ', '.join(request.FILES))
+
+    return render(request, 'upload.html')

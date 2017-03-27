@@ -4,3 +4,4 @@ psycopg2>=2.7; sys_platform != 'win32' and platform_python_implementation != 'Py
 psycopg2cffi>=2.7; platform_python_implementation == 'PyPy'
 six>=1.10
 pytz>=2016.10
+openpyxl>=2.4
