@@ -3,14 +3,47 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import datetime
-
 import os
+import pycodestyle
 import pytz
 import six
+
 from django import test
 
 # Create your tests here.
 from . import models
+
+
+class CodeStyleTest(test.TestCase):
+    skip_dirs = (
+        'migrations',
+    )
+
+    @property
+    def rootdir(self):
+        return os.path.dirname(os.path.dirname(__file__))
+
+    @property
+    def source_files(self):
+        """Generator that yields Python sources to test"""
+
+        for dirpath, dirs, fns in os.walk(self.rootdir):
+            dirs[:] = [dn for dn in dirs if dn not in self.skip_dirs]
+
+            for fn in fns:
+                if fn.endswith('.py'):
+                    yield os.path.join(dirpath, fn)
+
+    def test_pep8(self):
+        pep8style = pycodestyle.StyleGuide(quiet=True)
+        # pep8style.init_report(pep8.StandardReport)
+        # pep8style.input_dir(self.rootdir)
+        for fn in self.source_files:
+            r = pep8style.check_files([fn])
+
+            self.assertEqual(r.messages, {},
+                             "Found code style errors (and warnings) in %s."
+                             % fn)
 
 
 class CreationTests(test.TestCase):

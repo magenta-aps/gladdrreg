@@ -286,7 +286,8 @@ def read_spreadsheet(fp):
 
     for row in rows:
         r = {
-            column_names[cellidx]: cell.value for cellidx, cell in enumerate(row)
+            column_names[cellidx]: cell.value
+            for cellidx, cell in enumerate(row)
         }
         if any(r.values()):
             yield r
