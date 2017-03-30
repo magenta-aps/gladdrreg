@@ -14,26 +14,6 @@ msgstr ""
 msgid "Address Register of Greenland"
 msgstr "Grønlands Adresseopslagsregister"
 
-#: addrreg/bitemporal/models.py:54
-msgid "Validity start"
-msgstr ""
-
-#: addrreg/bitemporal/models.py:58
-msgid "Validity end"
-msgstr ""
-
-#: addrreg/bitemporal/models.py:62
-msgid "Registered"
-msgstr ""
-
-#: addrreg/bitemporal/models.py:66
-msgid "Replaced"
-msgstr ""
-
-#: addrreg/models.py:30
-msgid "Object ID"
-msgstr "Objekt-ID"
-
 #: addrreg/models.py:42 addrreg/models.py:258
 msgid "Locality"
 msgstr "Lokalitet"
