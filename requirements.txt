@@ -5,3 +5,4 @@ psycopg2cffi>=2.7; sys_platform != 'win32' and platform_python_implementation ==
 pytz>=2016.10
 openpyxl>=2.4
 pycodestyle>=1.7
+freezegun>=0.3.8

@@ -3,11 +3,13 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import datetime
+import unittest
+
+import freezegun
 import os
 import pycodestyle
 import pytz
-
-from django import test
+from django import db, test
 from django.utils import six
 
 # Create your tests here.
@@ -45,18 +47,16 @@ class CodeStyleTest(test.SimpleTestCase):
                              % fn)
 
 
-class CreationTests(test.TestCase):
+class CreationTests(test.TransactionTestCase):
+    reset_sequences = True
 
-    def setUp(self):
-        now = datetime.datetime.now(pytz.UTC)
-
+    def test_creation(self):
         mun = models.Municipality.objects.create(
             name='Aarhus',
             code=20,
-            # valid_datetime_start=now,
         )
 
-        road = models.Road.objects.create(
+        road = models.Road(
             code=1337,
             name='Hans Hartvig Seedorffs Stræde',
             shortname='H H Seedorffs Stræde',
@@ -64,24 +64,24 @@ class CreationTests(test.TestCase):
             # this translation is quite likely horribly wrong
             glName='Hans Hartvig Seedorffs aqqusineq amitsoq',
             cprName='Hans Hartvig Seedorff\'s Street',
-            # valid_datetime_start=now,
         )
+        road.save()
 
-        pc = models.PostalCode.objects.create(
+        pc = models.PostalCode(
             code=8000,
             name='Aarhus C',
-            # valid_datetime_start=now,
         )
+        pc.save()
 
-        b = models.BNumber.objects.create(
-            number=42,
+        b = models.BNumber(
+            number='42',
             name='The Block',
             block='BS221B',
             municipality=mun,
-            # valid_datetime_start=now,
         )
+        b.save()
 
-        self.addr = models.Address.objects.create(
+        self.addr = models.Address(
             houseNumber='42Z',
             floor='Mezzanine',
             door='Up',
@@ -89,18 +89,192 @@ class CreationTests(test.TestCase):
             bNumber=b,
             road=road,
             postalCode=pc,
-            # valid_datetime_start=now,
         )
+        self.addr.save()
 
-    def test_addr(self):
         self.assertEquals(self.addr.bNumber.municipality.name, 'Aarhus')
         self.assertEquals(self.addr.bNumber.municipality.name, 'Aarhus')
         self.assertEquals(six.text_type(self.addr),
                           '42Z Hans Hartvig Seedorffs Stræde')
 
+    def test_create_duplicate_municipality_fails(self):
+        """Test that creating two municipalities with the same code fails."""
+        mun = models.Municipality.objects.create(
+            name='Aarhus',
+            code=20,
+        )
 
+        self.assertRaises(
+            db.IntegrityError,
+            models.Municipality.objects.create,
+            name='Aarhus',
+            code=20,
+        )
+
+
+class TemporalTests(test.TransactionTestCase):
+    reset_sequences = True
+
+    @staticmethod
+    def _getregistrations():
+        regs = models.Municipality.Registrations.objects.all()
+        return sorted(regs.values('id', 'object', 'objectID',
+                                  'registration_from', 'registration_to'),
+                      key=lambda d: d.pop('id'))
+
+    def test_create_and_delete(self):
+        with freezegun.freeze_time('2001-01-01'):
+            mun = models.Municipality.objects.create(
+                name='Aarhus',
+                code=20,
+            )
+        munid = mun.objectID
+        self.assertEquals(mun.id, 1)
+
+        self.assertEquals(
+            self._getregistrations(),
+            [
+                {
+                    'object': mun.id,
+                    'objectID': munid,
+                    'registration_from': datetime.datetime(2001, 1, 1, 0, 0,
+                                                           tzinfo=pytz.UTC),
+                    'registration_to': None,
+                },
+            ]
+        )
+
+        with freezegun.freeze_time('2001-01-02'):
+            mun.note = 'Dette er en note.'
+            mun.save()
+
+        self.assertEquals(
+            self._getregistrations(),
+            [
+                {
+                    'object': mun.id,
+                    'objectID': munid,
+                    'registration_from': datetime.datetime(2001, 1, 1, 0, 0,
+                                                           tzinfo=pytz.UTC),
+                    'registration_to': datetime.datetime(2001, 1, 2, 0, 0,
+                                                         tzinfo=pytz.UTC),
+                },
+                {
+                    'object': mun.id,
+                    'objectID': munid,
+                    'registration_from': datetime.datetime(2001, 1, 2, 0, 0,
+                                                           tzinfo=pytz.UTC),
+                    'registration_to': None,
+                },
+            ]
+        )
+
+        with freezegun.freeze_time('2001-01-03'):
+            mun.delete()
+
+        self.assertEquals(
+            self._getregistrations(),
+            [
+                {
+                    'object': None,
+                    'objectID': munid,
+                    'registration_from': datetime.datetime(2001, 1, 1, 0, 0,
+                                                           tzinfo=pytz.UTC),
+                    'registration_to': datetime.datetime(2001, 1, 2, 0, 0,
+                                                         tzinfo=pytz.UTC),
+                },
+                {
+                    'object': None,
+                    'objectID': munid,
+                    'registration_from': datetime.datetime(2001, 1, 2, 0, 0,
+                                                           tzinfo=pytz.UTC),
+                    'registration_to': datetime.datetime(2001, 1, 3, 0, 0,
+                                                         tzinfo=pytz.UTC),
+                },
+            ]
+        )
+
+        self.assertEquals(models.Municipality.Registrations.objects.count(), 2)
+        self.assertEquals(models.Municipality.objects.count(), 0)
+
+    def test_fail_delete(self):
+        class MyException(Exception):
+            pass
+
+        def fail(self):
+            raise MyException
+
+        with freezegun.freeze_time('2001-01-01'):
+            mun = models.Municipality.objects.create(
+                name='Aarhus',
+                code=20,
+            )
+            munid = mun.objectID
+
+        orig = models.base.BaseModel._maybe_intercept
+        models.base.BaseModel._maybe_intercept = fail
+
+        try:
+            self.assertRaises(MyException, mun.delete)
+        finally:
+            models.base.BaseModel._maybe_intercept = orig
+
+        self.assertEquals(self._getregistrations(), [{
+            'object': mun.id,
+            'objectID': mun.objectID,
+            'registration_from':
+                datetime.datetime(2001, 1, 1, 0, 0, tzinfo=pytz.UTC),
+            'registration_to': None,
+        }])
+
+    def test_fail_create(self):
+        class MyException(Exception):
+            pass
+
+        def fail(*args, **kwargs):
+            raise MyException
+
+        orig = models.base.BaseModel._maybe_intercept
+        models.base.BaseModel._maybe_intercept = fail
+
+        try:
+            self.assertRaises(AssertionError,
+                              models.Municipality.objects.create,
+                              name='Aarhus', code=20)
+        finally:
+            models.base.BaseModel._maybe_intercept = orig
+
+        self.assertFalse(models.Municipality.objects.count(),
+                         "failing transactions shouldn't create anything")
+        self.assertFalse(models.Municipality.objects.Registrations.count(),
+                         "failing transactions shouldn't create any "
+                         "registrations")
+
+    def test_fail_create(self):
+        class MyException(Exception):
+            pass
+
+        def fail(*args, **kwargs):
+            raise MyException
+
+        orig = models.base.BaseModel._maybe_intercept
+        models.base.BaseModel._maybe_intercept = fail
+
+        try:
+            self.assertRaises(MyException, models.Municipality.objects.create,
+                              name='Aarhus', code=20)
+        finally:
+            models.base.BaseModel._maybe_intercept = orig
+
+        self.assertFalse(models.Municipality.objects.count(),
+                         "failing transactions shouldn't create anything")
+        self.assertFalse(models.Municipality.Registrations.objects.count(),
+                         "failing transactions shouldn't create any "
+                         "registrations")
+
+
+@unittest.skipIf(os.getenv('SLOW_TESTS', '0') != '1', '$SLOW_TESTS not set')
 class ImportTests(test.TestCase):
-
     def setUp(self):
         self.fixture_path = os.path.join(
             os.path.dirname(__file__),
@@ -164,7 +338,7 @@ class ImportTests(test.TestCase):
     def test_import_postal_code(self):
         for val in models.read_spreadsheet(self.fp):
             obj = models.PostalCode.from_dict(val)
-            self.assertEquals(obj.code, val['POSTNR'].rstrip())
+            self.assertEquals(obj.code, int(val['POSTNR'].rstrip()))
             self.assertEquals(obj.name, val['POSTDISTRIKT'].rstrip())
 
     def test_import_b_number(self):

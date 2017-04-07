@@ -8,14 +8,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import six
 
-from .base import BaseModel, AdminBase
+from .base import BaseModel, AdminBase, TemporalModelBase
 
 admin.site.disable_action('delete_selected')
 
 
 @six.python_2_unicode_compatible
-class Locality(BaseModel):
-
+class Locality(six.with_metaclass(TemporalModelBase, BaseModel)):
     class Meta(object):
         verbose_name = _('Locality')
         verbose_name_plural = _('Localities')
@@ -55,7 +54,7 @@ class LocalityAdmin(AdminBase):
 
 
 @six.python_2_unicode_compatible
-class Municipality(BaseModel):
+class Municipality(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     class Meta(object):
         verbose_name = _('Municipality')
@@ -93,7 +92,7 @@ class MunicipalityAdmin(AdminBase):
 
 
 @six.python_2_unicode_compatible
-class PostalCode(BaseModel):
+class PostalCode(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     class Meta(object):
         verbose_name = _('Postal Code')
@@ -129,7 +128,7 @@ class PostalCodeAdmin(AdminBase):
 
 
 @six.python_2_unicode_compatible
-class Road(BaseModel):
+class Road(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     class Meta(object):
         verbose_name = _('Road')
@@ -174,7 +173,7 @@ class RoadAdmin(AdminBase):
 
 
 @six.python_2_unicode_compatible
-class BNumber(BaseModel):
+class BNumber(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     class Meta(object):
         verbose_name = _('B-Number')
@@ -190,7 +189,7 @@ class BNumber(BaseModel):
     # aka blokbetegnelse
     block = models.CharField(_('Block Designation'), max_length=255)
 
-    municipality = models.ForeignKey(Municipality,
+    municipality = models.ForeignKey(Municipality, models.PROTECT,
                                      verbose_name=_('Municipality'),
                                      null=False, blank=True, db_index=True)
 
@@ -221,7 +220,7 @@ class BNumberAdmin(AdminBase):
 
 
 @six.python_2_unicode_compatible
-class Address(BaseModel):
+class Address(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     class Meta(object):
         verbose_name = _('Address')
@@ -237,16 +236,16 @@ class Address(BaseModel):
     # aka sidedør
     door = models.CharField(_('Door'), max_length=255, blank=True)
 
-    locality = models.ForeignKey(Locality,
+    locality = models.ForeignKey(Locality, models.CASCADE,
                                  verbose_name=_('Locality'),
                                  null=True, blank=True)
-    bNumber = models.ForeignKey(BNumber,
+    bNumber = models.ForeignKey(BNumber, models.SET_NULL,
                                 verbose_name=_('B-Number'),
                                 null=True, blank=True)
-    road = models.ForeignKey(Road,
+    road = models.ForeignKey(Road, models.CASCADE,
                              verbose_name=_('Road'),
                              null=True, blank=True)
-    postalCode = models.ForeignKey(PostalCode,
+    postalCode = models.ForeignKey(PostalCode, models.PROTECT,
                                    verbose_name=_('Postal Code'),
                                    null=True, blank=True)
 
