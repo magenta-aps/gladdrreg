@@ -3,10 +3,10 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import openpyxl
-import six
 from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils import six
 
 from .base import BaseModel, AdminBase
 

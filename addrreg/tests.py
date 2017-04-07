@@ -6,9 +6,9 @@ import datetime
 import os
 import pycodestyle
 import pytz
-import six
 
 from django import test
+from django.utils import six
 
 # Create your tests here.
 from . import models
