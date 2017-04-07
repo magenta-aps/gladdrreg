@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 import uuid
 
 from django.contrib import admin
+from django.core import exceptions
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -71,7 +72,7 @@ class BaseModel(models.Model):
                                 verbose_name=_('Object ID'))
     notes = models.CharField(_('Notes'), blank=True, max_length=255)
 
-    registration_from = models.DateTimeField(editable=False, null=True)
+    registration_from = models.DateTimeField(editable=False)
 
     def __repr__(self):
         return '<{} {}>'.format(type(self), self.objectID)
@@ -107,11 +108,33 @@ class BaseModel(models.Model):
 
     @transaction.atomic(savepoint=False)
     def save(self, *args, **kwargs):
+        now = timezone.now()
+
         if not getattr(self, 'Registrations', None):
+            if self.registration_from > now:
+                raise exceptions.ValidationError(
+                    'registration begins in the future!'
+                )
+
+            elif self.registration_to:
+                if self.registration_to > now:
+                    raise exceptions.ValidationError(
+                        'registration ends in the future!'
+                    )
+
+                elif self.registration_from <= self.registration_to:
+                    raise exceptions.ValidationError(
+                        'registration ends before it starts!'
+                    )
+
             super(BaseModel, self).save(*args, **kwargs)
             return
 
-        now = self.registration_from = timezone.now()
+        if self.registration_from and self.registration_from >= now:
+            raise exceptions.ValidationError('registration ends before it '
+                                             'starts!')
+
+        self.registration_from = now
 
         super(BaseModel, self).save(*args, **kwargs)
 

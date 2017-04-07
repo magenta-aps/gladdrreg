@@ -10,6 +10,7 @@ import os
 import pycodestyle
 import pytz
 from django import db, test
+from django.core import exceptions
 from django.utils import six
 
 # Create your tests here.
@@ -271,6 +272,75 @@ class TemporalTests(test.TransactionTestCase):
         self.assertFalse(models.Municipality.Registrations.objects.count(),
                          "failing transactions shouldn't create any "
                          "registrations")
+
+    def test_evil_time(self):
+        with freezegun.freeze_time('2001-01-02'):
+            mun = models.Municipality.objects.create(
+                name='Aarhus',
+                code=20,
+            )
+        munid = mun.objectID
+
+        with freezegun.freeze_time('2001-01-01'):
+            mun.note = 'flaf'
+            self.assertRaises(exceptions.ValidationError, mun.save)
+
+        with freezegun.freeze_time('2001-01-02'):
+            mun.note = 'flaf'
+            mun.save()
+
+            self.assertRaises(exceptions.ValidationError, mun.save)
+
+    def test_recreate(self):
+        """
+        Test that recreating an item?
+        """
+        with freezegun.freeze_time('2001-01-01'):
+            mun = models.Municipality.objects.create(
+                name='Aarhus',
+                code=20,
+            )
+        munid = mun.objectID
+
+        with freezegun.freeze_time('2001-01-02'):
+            mun.delete()
+
+        self.assertEquals(self._getregistrations(), [
+            {
+                'object': None,
+                'objectID': munid,
+                'registration_from': datetime.datetime(2001, 1, 1, 0, 0,
+                                                       tzinfo=pytz.UTC),
+                'registration_to': datetime.datetime(2001, 1, 2, 0, 0,
+                                                     tzinfo=pytz.UTC),
+            },
+        ])
+
+        with freezegun.freeze_time('2001-01-03'):
+            mun = models.Municipality.objects.create(
+                name='Aarhus',
+                code=20,
+                objectID=munid,
+            )
+
+        self.assertEquals(self._getregistrations(), [
+            {
+                # TODO: associate the registration with this object?
+                'object': None,
+                'objectID': munid,
+                'registration_from': datetime.datetime(2001, 1, 1, 0, 0,
+                                                       tzinfo=pytz.UTC),
+                'registration_to': datetime.datetime(2001, 1, 2, 0, 0,
+                                                     tzinfo=pytz.UTC),
+            },
+            {
+                'object': mun.id,
+                'objectID': munid,
+                'registration_from': datetime.datetime(2001, 1, 3, 0, 0,
+                                                       tzinfo=pytz.UTC),
+                'registration_to': None
+            },
+        ])
 
 
 @unittest.skipIf(os.getenv('SLOW_TESTS', '0') != '1', '$SLOW_TESTS not set')
