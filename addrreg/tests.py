@@ -14,11 +14,7 @@ from django import test
 from . import models
 
 
-class CodeStyleTest(test.TestCase):
-    skip_dirs = (
-        'migrations',
-    )
-
+class CodeStyleTest(test.SimpleTestCase):
     @property
     def rootdir(self):
         return os.path.dirname(os.path.dirname(__file__))
@@ -28,7 +24,10 @@ class CodeStyleTest(test.TestCase):
         """Generator that yields Python sources to test"""
 
         for dirpath, dirs, fns in os.walk(self.rootdir):
-            dirs[:] = [dn for dn in dirs if dn not in self.skip_dirs]
+            dirs[:] = [
+                dn for dn in dirs
+                if dn == 'migrations' or dn.startswith('pyenv-')
+            ]
 
             for fn in fns:
                 if fn.endswith('.py'):

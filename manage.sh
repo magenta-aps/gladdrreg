@@ -2,16 +2,19 @@
 
 set -e
 
+unset PYTHONPATH
+
 if test -z "$PYTHON"
 then
    PYTHON=python3.6
 fi
 
 dir=$(cd $(dirname $0); pwd)
-pyvers=$($PYTHON <<EOF
+env=$($PYTHON <<EOF
 import sys, platform
-sys.stdout.write(("%s-%s.%s" % (
-    (platform.python_implementation(),) +
+sys.stdout.write(("$dir/pyenv-%s-%s-%s.%s" % (
+    (platform.system(),
+     platform.python_implementation()) +
      platform.python_version_tuple()[:2]
 )).lower())
 EOF
@@ -26,12 +29,9 @@ sys.stdout.write(
 EOF
 )
 
-os=$(uname -s | tr A-Z a-z)
-env=/tmp/pyenv-$(basename $dir)-$os-$pyvers
-
 if ! test -d "$env"
 then
-   $PYTHON -m $virtualenv_module $env
+    $PYTHON -m $virtualenv_module $env
 fi
 
 . $env/bin/activate
