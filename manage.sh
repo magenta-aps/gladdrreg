@@ -29,6 +29,18 @@ sys.stdout.write(
 EOF
 )
 
+if test "$1" = 'gunicorn'
+then
+    exec $env/bin/gunicorn \
+         --daemon \
+         --bind unix:/var/run/gladdrreg/gladdrreg.sock \
+         --pid /var/run/gladdrreg/gladdrreg.pid \
+         --name gladdrreg \
+         --worker-class eventlet \
+         --workers 4 \
+         addrsite.wsgi
+fi
+
 if ! test -d "$env"
 then
     $PYTHON -m $virtualenv_module $env
