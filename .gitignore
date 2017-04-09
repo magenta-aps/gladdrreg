@@ -1,4 +1,5 @@
 /pyenv-*
+/.secret-key
 __pycache__/
 *.py[co]
 /db.sqlite3

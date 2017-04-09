@@ -38,4 +38,10 @@ fi
 
 pip install -qr $dir/requirements.txt
 
+if ! test -f $(dirname $0)/.secret-key
+then
+    LANG=C tr -dc 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)' \
+        < /dev/urandom | head -c 50 > $(dirname $0)/.secret-key
+fi
+
 exec $dir/manage.py "$@"
