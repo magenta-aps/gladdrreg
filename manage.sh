@@ -6,7 +6,7 @@ unset PYTHONPATH
 
 if test -z "$PYTHON"
 then
-   PYTHON=python3.6
+   PYTHON=python3.5
 fi
 
 dir=$(cd $(dirname $0); pwd)
