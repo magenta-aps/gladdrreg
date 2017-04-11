@@ -8,7 +8,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import six
 
-from .base import BaseModel, AdminBase, TemporalModelBase
+from .base import BaseModel, AdminBase
+from .temporal import TemporalModelBase
 
 admin.site.disable_action('delete_selected')
 
@@ -250,7 +251,6 @@ class Address(six.with_metaclass(TemporalModelBase, BaseModel)):
                                    null=True, blank=True)
 
     def __str__(self):
-        # i18n: Human-readable description of an Address
         return _('{0.houseNumber} {0.road}').format(self)
 
     @classmethod

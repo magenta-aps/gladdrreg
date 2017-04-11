@@ -100,7 +100,7 @@ class CreationTests(test.TransactionTestCase):
 
     def test_create_duplicate_municipality_fails(self):
         """Test that creating two municipalities with the same code fails."""
-        mun = models.Municipality.objects.create(
+        models.Municipality.objects.create(
             name='Aarhus',
             code=20,
         )
@@ -210,15 +210,13 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
             )
-            munid = mun.objectID
 
-        orig = models.base.BaseModel._maybe_intercept
-        models.base.BaseModel._maybe_intercept = fail
+        models.Municipality._maybe_intercept = fail
 
         try:
             self.assertRaises(MyException, mun.delete)
         finally:
-            models.base.BaseModel._maybe_intercept = orig
+            del models.Municipality._maybe_intercept
 
         self.assertEquals(self._getregistrations(), [{
             'object': mun.id,
@@ -235,37 +233,13 @@ class TemporalTests(test.TransactionTestCase):
         def fail(*args, **kwargs):
             raise MyException
 
-        orig = models.base.BaseModel._maybe_intercept
-        models.base.BaseModel._maybe_intercept = fail
-
-        try:
-            self.assertRaises(AssertionError,
-                              models.Municipality.objects.create,
-                              name='Aarhus', code=20)
-        finally:
-            models.base.BaseModel._maybe_intercept = orig
-
-        self.assertFalse(models.Municipality.objects.count(),
-                         "failing transactions shouldn't create anything")
-        self.assertFalse(models.Municipality.objects.Registrations.count(),
-                         "failing transactions shouldn't create any "
-                         "registrations")
-
-    def test_fail_create(self):
-        class MyException(Exception):
-            pass
-
-        def fail(*args, **kwargs):
-            raise MyException
-
-        orig = models.base.BaseModel._maybe_intercept
-        models.base.BaseModel._maybe_intercept = fail
+        models.Municipality._maybe_intercept = fail
 
         try:
             self.assertRaises(MyException, models.Municipality.objects.create,
                               name='Aarhus', code=20)
         finally:
-            models.base.BaseModel._maybe_intercept = orig
+            del models.Municipality._maybe_intercept
 
         self.assertFalse(models.Municipality.objects.count(),
                          "failing transactions shouldn't create anything")
@@ -279,17 +253,14 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
             )
-        munid = mun.objectID
 
         with freezegun.freeze_time('2001-01-01'):
             mun.note = 'flaf'
             self.assertRaises(exceptions.ValidationError, mun.save)
 
-        with freezegun.freeze_time('2001-01-02'):
+        with freezegun.freeze_time('2001-01-03'):
             mun.note = 'flaf'
             mun.save()
-
-            self.assertRaises(exceptions.ValidationError, mun.save)
 
     def test_recreate(self):
         """
