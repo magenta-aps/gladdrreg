@@ -5,8 +5,8 @@ from __future__ import absolute_import, unicode_literals, print_function
 import openpyxl
 from django.contrib import admin
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils import six
+from django.utils.translation import ugettext_lazy as _
 
 from .base import BaseModel, AdminBase
 from .temporal import TemporalModelBase
@@ -56,7 +56,6 @@ class LocalityAdmin(AdminBase):
 
 @six.python_2_unicode_compatible
 class Municipality(six.with_metaclass(TemporalModelBase, BaseModel)):
-
     class Meta(object):
         verbose_name = _('Municipality')
         verbose_name_plural = _('Municipalities')
@@ -94,7 +93,6 @@ class MunicipalityAdmin(AdminBase):
 
 @six.python_2_unicode_compatible
 class PostalCode(six.with_metaclass(TemporalModelBase, BaseModel)):
-
     class Meta(object):
         verbose_name = _('Postal Code')
         verbose_name_plural = _('Postal Codes')
@@ -130,7 +128,6 @@ class PostalCodeAdmin(AdminBase):
 
 @six.python_2_unicode_compatible
 class Road(six.with_metaclass(TemporalModelBase, BaseModel)):
-
     class Meta(object):
         verbose_name = _('Road')
         verbose_name_plural = _('Roads')
@@ -175,7 +172,6 @@ class RoadAdmin(AdminBase):
 
 @six.python_2_unicode_compatible
 class BNumber(six.with_metaclass(TemporalModelBase, BaseModel)):
-
     class Meta(object):
         verbose_name = _('B-Number')
         verbose_name_plural = _('B-Numbers')
@@ -222,7 +218,6 @@ class BNumberAdmin(AdminBase):
 
 @six.python_2_unicode_compatible
 class Address(six.with_metaclass(TemporalModelBase, BaseModel)):
-
     class Meta(object):
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
@@ -251,6 +246,7 @@ class Address(six.with_metaclass(TemporalModelBase, BaseModel)):
                                    null=True, blank=True)
 
     def __str__(self):
+        # Translators: Human-readable description of an Address
         return _('{0.houseNumber} {0.road}').format(self)
 
     @classmethod
