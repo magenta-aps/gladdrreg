@@ -50,7 +50,7 @@ msgstr "Postnummer"
 
 #: addrreg/models/__init__.py:99
 msgid "Postal Codes"
-msgstr "Postnummre"
+msgstr "Postnumre"
 
 #: addrreg/models/__init__.py:104 addrreg/models/__init__.py:185
 msgid "Number"
