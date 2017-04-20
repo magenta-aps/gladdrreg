@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import, unicode_literals, print_function
 
+import enumfields.admin
 import openpyxl
 from django.contrib import admin
 from django.db import models
@@ -12,6 +13,21 @@ from .base import BaseModel, AdminBase
 from .temporal import TemporalModelBase
 
 admin.site.disable_action('delete_selected')
+
+
+class LocalityType(enumfields.IntEnum):
+    UNKNOWN = 0
+    TOWN = 1
+    VILLAGE = 2
+    STATION = 3
+    AIRPORT = 4
+
+    class Labels:
+        UNKNOWN = _('Unknown')
+        TOWN = _('Town')
+        VILLAGE = _('Village')
+        STATION = _('Station')
+        AIRPORT = _('Airport')
 
 
 @six.python_2_unicode_compatible
@@ -27,7 +43,9 @@ class Locality(six.with_metaclass(TemporalModelBase, BaseModel)):
     # aka lokalitetsnavn
     name = models.CharField(_('Name'), db_index=True, max_length=255)
     # aka lokalitetstype
-    type = models.CharField(_('Type'), db_index=True, max_length=255)
+    type = enumfields.EnumIntegerField(LocalityType, verbose_name=_('Type'),
+                                       db_index=True,
+                                       default=LocalityType.UNKNOWN)
 
     def __str__(self):
         return '{0.name} ({0.type})'.format(self)
@@ -42,7 +60,13 @@ class Locality(six.with_metaclass(TemporalModelBase, BaseModel)):
             code=code,
             defaults={
                 'name': vals['LOKALITETSNAVN'].rstrip(),
-                'type': vals['LOKALITETS_TYPE_NAVN'].rstrip(),
+                'type': {
+                    'By': LocalityType.TOWN,
+                    'Bygd': LocalityType.VILLAGE,
+                    'Station': LocalityType.STATION,
+                    'Lufthavn': LocalityType.AIRPORT,
+                    'Ukendt': LocalityType.UNKNOWN,
+                }[vals['LOKALITETS_TYPE_NAVN'].rstrip()],
             }
         )
 
@@ -52,6 +76,7 @@ class Locality(six.with_metaclass(TemporalModelBase, BaseModel)):
 @admin.register(Locality)
 class LocalityAdmin(AdminBase):
     list_display = ('name', 'type', 'code',)
+    list_filter = (('type', enumfields.admin.EnumFieldListFilter),)
 
 
 @six.python_2_unicode_compatible

@@ -374,7 +374,8 @@ class ImportTests(test.TestCase):
                 continue
 
             self.assertEquals(obj.name, val['LOKALITETSNAVN'].rstrip())
-            self.assertEquals(obj.type, val['LOKALITETS_TYPE_NAVN'].rstrip())
+            self.assertEquals(obj.type.label,
+                              val['LOKALITETS_TYPE_NAVN'].rstrip())
 
     def test_import_postal_code(self):
         for val in models.read_spreadsheet(self.fp):
