@@ -133,7 +133,7 @@ LOCALE_PATHS = ['i18n']
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 if platform.python_implementation() == 'PyPy':
     from psycopg2cffi import compat

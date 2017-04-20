@@ -39,6 +39,12 @@ then
          --worker-class eventlet \
          --workers 4 \
          addrsite.wsgi
+elif test "$1" = 'babelcompilemessages'
+then
+    exec $env/bin/pybabel compile "$@"
+elif test "$1" = env
+then
+    exec echo "$env"
 fi
 
 if ! test -d "$env"

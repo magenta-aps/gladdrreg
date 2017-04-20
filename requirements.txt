@@ -6,3 +6,6 @@ pytz>=2016.10
 openpyxl>=2.4
 pycodestyle>=1.7
 freezegun>=0.3.8
+gunicorn>=19.7
+eventlet>=0.21
+babel>=2.4.0
