@@ -2,7 +2,9 @@
 
 from __future__ import absolute_import, unicode_literals, print_function
 
+import contextlib
 import datetime
+import io
 import unittest
 
 import freezegun
@@ -17,7 +19,7 @@ from django.utils import six
 from . import models, utils
 
 
-class CodeStyleTest(test.SimpleTestCase):
+class CodeStyleTests(test.SimpleTestCase):
     @property
     def rootdir(self):
         return os.path.dirname(os.path.dirname(__file__))
@@ -29,23 +31,30 @@ class CodeStyleTest(test.SimpleTestCase):
         for dirpath, dirs, fns in os.walk(self.rootdir):
             dirs[:] = [
                 dn for dn in dirs
-                if dn == 'migrations' or dn.startswith('pyenv-')
+                if dn != 'migrations' and not dn.startswith('pyenv-')
             ]
 
             for fn in fns:
-                if fn.endswith('.py'):
+                if fn[0] != '.' and fn.endswith('.py'):
                     yield os.path.join(dirpath, fn)
 
     def test_pep8(self):
-        pep8style = pycodestyle.StyleGuide(quiet=True)
-        # pep8style.init_report(pep8.StandardReport)
-        # pep8style.input_dir(self.rootdir)
-        for fn in self.source_files:
-            r = pep8style.check_files([fn])
+        pep8style = pycodestyle.StyleGuide()
+        pep8style.init_report(pycodestyle.StandardReport)
 
-            self.assertEqual(r.messages, {},
-                             "Found code style errors (and warnings) in %s."
-                             % fn)
+        buf = io.StringIO()
+
+        with contextlib.redirect_stdout(buf):
+            for fn in self.source_files:
+                pep8style.check_files([fn])
+
+        assert not buf.getvalue(), \
+            "Found code style errors and/or warnings:\n\n" + buf.getvalue()
+
+    def test_source_files(self):
+        sources = list(self.source_files)
+        self.assert_(sources)
+        self.assertGreater(len(sources), 1, sources)
 
 
 class CreationTests(test.TransactionTestCase):
