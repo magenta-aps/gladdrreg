@@ -3,7 +3,6 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import enumfields.admin
-import openpyxl
 from django.contrib import admin
 from django.db import models
 from django.utils import six
@@ -50,28 +49,6 @@ class Locality(six.with_metaclass(TemporalModelBase, BaseModel)):
     def __str__(self):
         return '{0.name} ({0.type})'.format(self)
 
-    @classmethod
-    def from_dict(cls, vals):
-        code = vals['LOKALITETSNR']
-        if not code or not code.strip():
-            return None
-
-        obj, created = cls.objects.get_or_create(
-            code=code,
-            defaults={
-                'name': vals['LOKALITETSNAVN'].rstrip(),
-                'type': {
-                    'By': LocalityType.TOWN,
-                    'Bygd': LocalityType.VILLAGE,
-                    'Station': LocalityType.STATION,
-                    'Lufthavn': LocalityType.AIRPORT,
-                    'Ukendt': LocalityType.UNKNOWN,
-                }[vals['LOKALITETS_TYPE_NAVN'].rstrip()],
-            }
-        )
-
-        return obj
-
 
 @admin.register(Locality)
 class LocalityAdmin(AdminBase):
@@ -99,17 +76,6 @@ class Municipality(six.with_metaclass(TemporalModelBase, BaseModel)):
         else:
             return self.name
 
-    @classmethod
-    def from_dict(cls, vals):
-        obj, created = cls.objects.get_or_create(
-            code=vals['KOMMUNEKODE'],
-            defaults={
-                'name': vals['KOMNAVN'].rstrip(),
-            }
-        )
-
-        return obj
-
 
 @admin.register(Municipality)
 class MunicipalityAdmin(AdminBase):
@@ -133,17 +99,6 @@ class PostalCode(six.with_metaclass(TemporalModelBase, BaseModel)):
     def __str__(self):
         # Translators: Human-readable description of a PostalCode
         return _('{0.code} {0.name}').format(self)
-
-    @classmethod
-    def from_dict(cls, vals):
-        obj, created = cls.objects.get_or_create(
-            code=int(vals['POSTNR']),
-            defaults={
-                'name': vals['POSTDISTRIKT'].rstrip(),
-            }
-        )
-
-        return obj
 
 
 @admin.register(PostalCode)
@@ -176,17 +131,6 @@ class Road(six.with_metaclass(TemporalModelBase, BaseModel)):
 
     def __str__(self):
         return self.name
-
-    @classmethod
-    def from_dict(cls, vals):
-        obj, created = cls.objects.get_or_create(
-            code=vals['VEJKODE'],
-            defaults={
-                'name': vals['VEJNAVN'].rstrip(),
-            }
-        )
-
-        return obj
 
 
 @admin.register(Road)
@@ -223,15 +167,6 @@ class BNumber(six.with_metaclass(TemporalModelBase, BaseModel)):
             parts += [' (', self.name, ')']
 
         return ''.join(parts)
-
-    @classmethod
-    def from_dict(cls, vals):
-        obj, created = cls.objects.get_or_create(
-            number=vals['BNR'],
-            municipality=Municipality.from_dict(vals),
-        )
-
-        return obj
 
 
 @admin.register(BNumber)
@@ -274,18 +209,6 @@ class Address(six.with_metaclass(TemporalModelBase, BaseModel)):
         # Translators: Human-readable description of an Address
         return _('{0.houseNumber} {0.road}').format(self)
 
-    @classmethod
-    def from_dict(cls, vals):
-        return cls.objects.create(
-            houseNumber=vals['HUSNR'] or '',
-            floor=vals['ETAGE'] or '',
-            door=vals['SIDE'] or '',
-            locality=Locality.from_dict(vals),
-            bNumber=BNumber.from_dict(vals),
-            road=Road.from_dict(vals),
-            postalCode=PostalCode.from_dict(vals)
-        )
-
 
 @admin.register(Address)
 class AddressAdmin(AdminBase):
@@ -293,26 +216,3 @@ class AddressAdmin(AdminBase):
                     'bNumber',)
     list_filter = ('locality', 'postalCode')
     search_fields = ('road__name', 'postalCode__name', 'locality__name')
-
-
-def read_spreadsheet(fp):
-    wb = openpyxl.load_workbook(fp, read_only=True, data_only=True)
-    rows = wb.active.rows
-
-    column_names = {
-        cellidx: cell.value for cellidx, cell in
-        enumerate(next(rows))
-    }
-
-    for row in rows:
-        r = {
-            column_names[cellidx]: cell.value
-            for cellidx, cell in enumerate(row)
-        }
-        if any(r.values()):
-            yield r
-
-
-def import_spreadsheet(fp):
-    for row in read_spreadsheet(fp):
-        Address.from_dict(row)

@@ -14,7 +14,7 @@ from django.core import exceptions
 from django.utils import six
 
 # Create your tests here.
-from . import models
+from . import models, utils
 
 
 class CodeStyleTest(test.SimpleTestCase):
@@ -260,7 +260,6 @@ class TemporalTests(test.TransactionTestCase):
 
         with freezegun.freeze_time('2001-01-03'):
             mun.note = 'flaf'
-            mun.save()
 
     def test_recreate(self):
         """
@@ -327,7 +326,7 @@ class ImportTests(test.TestCase):
         self.fp.close()
 
     def test_read(self):
-        x = list(models.read_spreadsheet(self.fp))
+        x = list(utils._read_spreadsheet(self.fp))
 
         self.assertEquals(
             sorted(x[0]),
@@ -362,13 +361,13 @@ class ImportTests(test.TestCase):
         self.assertEquals(len(x), 22913)
 
     def test_import_municipalities(self):
-        for val in models.read_spreadsheet(self.fp):
-            obj = models.Municipality.from_dict(val)
+        for val in utils._read_spreadsheet(self.fp):
+            obj = utils._get_municipality(val)
             self.assertEquals(obj.name, val['KOMNAVN'].rstrip())
 
     def test_import_locality(self):
-        for val in models.read_spreadsheet(self.fp):
-            obj = models.Locality.from_dict(val)
+        for val in utils._read_spreadsheet(self.fp):
+            obj = utils._get_locality(val)
 
             if not obj:
                 continue
@@ -378,16 +377,16 @@ class ImportTests(test.TestCase):
                               val['LOKALITETS_TYPE_NAVN'].rstrip())
 
     def test_import_postal_code(self):
-        for val in models.read_spreadsheet(self.fp):
-            obj = models.PostalCode.from_dict(val)
+        for val in utils._read_spreadsheet(self.fp):
+            obj = utils._get_postalcode(val)
             self.assertEquals(obj.code, int(val['POSTNR'].rstrip()))
             self.assertEquals(obj.name, val['POSTDISTRIKT'].rstrip())
 
     def test_import_b_number(self):
-        for val in models.read_spreadsheet(self.fp):
-            obj = models.BNumber.from_dict(val)
+        for val in utils._read_spreadsheet(self.fp):
+            obj = utils._get_bnumber(val)
             self.assertEquals(obj.municipality.name, val['KOMNAVN'].rstrip())
 
     def test_import(self):
-        models.import_spreadsheet(self.fp)
+        utils.import_spreadsheet(self.fp)
         self.assertEquals(len(models.Address.objects.all()), 22913)
