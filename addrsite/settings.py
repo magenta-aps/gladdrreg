@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, '.secret-key')) as fp:
-    SECRET_KEY = fp.read().strip()
+# Ensure that we keep the secret key used in production secret!
+try:
+    with open(os.path.join(BASE_DIR, '.secret-key')) as fp:
+        SECRET_KEY = fp.read().strip()
+except IOError as exp:
+    pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,10 +85,8 @@ WSGI_APPLICATION = 'addrsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gladdrreg',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -138,3 +139,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 if platform.python_implementation() == 'PyPy':
     from psycopg2cffi import compat
     compat.register()
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
