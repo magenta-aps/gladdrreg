@@ -91,8 +91,11 @@ def _get_bnumber(vals):
     return obj
 
 
-def import_spreadsheet(fp):
-    for vals in _read_spreadsheet(fp):
+def import_spreadsheet(fp, verbose=False):
+    for i, vals in enumerate(_read_spreadsheet(fp), 1):
+        if verbose and i % 100 == 0:
+            print(i)
+
         models.Address.objects.create(
             houseNumber=vals['HUSNR'] or '',
             floor=vals['ETAGE'] or '',
