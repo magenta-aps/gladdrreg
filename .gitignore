@@ -1,4 +1,4 @@
-/pyenv-*
+/pyenv*
 /.secret-key
 __pycache__/
 *.py[co]
