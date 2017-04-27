@@ -132,7 +132,6 @@ LOCALE_PATHS = ['i18n']
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATICFILES_DIRS = [
-    ("gladdrreg/css", 'css'),
 ]
 
 STATIC_URL = '/static/'
