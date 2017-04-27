@@ -5,18 +5,20 @@ from __future__ import absolute_import, unicode_literals, print_function
 import contextlib
 import datetime
 import io
-import unittest
 
 import freezegun
+import openpyxl
 import os
 import pycodestyle
 import pytz
 from django import db, test
+from django.conf import settings
 from django.core import exceptions
-from django.utils import six
+from django.utils import six, translation
 
 # Create your tests here.
-from . import models, utils
+from . import models
+from .management.commands import import_
 
 
 class CodeStyleTests(test.SimpleTestCase):
@@ -322,80 +324,45 @@ class TemporalTests(test.TransactionTestCase):
         ])
 
 
-@unittest.skipIf(os.getenv('SLOW_TESTS', '0') != '1', '$SLOW_TESTS not set')
-class ImportTests(test.TestCase):
-    def setUp(self):
-        self.fixture_path = os.path.join(
-            os.path.dirname(__file__),
-            '..', 'fixtures', 'adresse-register.xlsx'
-        )
-        self.fp = open(self.fixture_path, 'rb')
+class VerifyImport(test.SimpleTestCase):
+    fixture = os.path.join(settings.BASE_DIR, 'fixtures',
+                           'Adropslagdata_20170423_datatotal.xlsx')
 
-    def tearDown(self):
-        self.fp.close()
+    @classmethod
+    def setUpClass(cls):
+        cls.wb = openpyxl.load_workbook(cls.fixture, read_only=True,
+                                        data_only=True)
 
-    def test_read(self):
-        x = list(utils._read_spreadsheet(self.fp))
+    @classmethod
+    def tearDownClass(cls):
+        cls.wb.close()
 
-        self.assertEquals(
-            sorted(x[0]),
-            [
-                'BEMÆRKNING',
-                'BLOKKE',
-                'BNR',
-                'BNR-HUSNR',
-                'BNR_TAL',
-                'ENS_LOKATION',
-                'ETAGE',
-                'HUSNR',
-                'KOMMUNEKODE',
-                'KOMNAVN',
-                'LOKALITETSNAVN',
-                'LOKALITETSNR',
-                'LOKALITETSSTATUS',
-                'LOKALITETS_STATUS_NAVN',
-                'LOKALITETS_TYPE',
-                'LOKALITETS_TYPE_NAVN',
-                'Nyk',
-                'POSTDISTRIKT',
-                'POSTNR',
-                'Renset husnummer',
-                'SIDE',
-                'TYPE',
-                'VEJKODE',
-                'VEJNAVN',
-            ],
-        )
+    def _get_sheet(self, name):
+        sheet = self.wb[name]
 
-        self.assertEquals(len(x), 22913)
+        rows = sheet.rows
+        header_row = next(rows)
 
-    def test_import_municipalities(self):
-        for val in utils._read_spreadsheet(self.fp):
-            obj = utils._get_municipality(val)
-            self.assertEquals(obj.name, val['KOMNAVN'].rstrip())
+        return [
+            {
+                header_row[i].value: cell.value
+                for i, cell in enumerate(row)
+            }
+            for row in rows
+        ]
 
-    def test_import_locality(self):
-        for val in utils._read_spreadsheet(self.fp):
-            obj = utils._get_locality(val)
+    @translation.override('da')
+    def test_locality_type(self):
+        for t in self._get_sheet('localitytype'):
+            e = import_.VALUE_MAPS['type'][t['UID']]
 
-            if not obj:
-                continue
+            self.assertEquals(t['type'], str(e.label))
+            self.assertEquals(t['code'], e.value)
 
-            self.assertEquals(obj.name, val['LOKALITETSNAVN'].rstrip())
-            self.assertEquals(obj.type.label,
-                              val['LOKALITETS_TYPE_NAVN'].rstrip())
+    @translation.override('da')
+    def test_locality_state(self):
+        for t in self._get_sheet('localitystate'):
+            e = import_.VALUE_MAPS['locality_state'][t['UID']]
 
-    def test_import_postal_code(self):
-        for val in utils._read_spreadsheet(self.fp):
-            obj = utils._get_postalcode(val)
-            self.assertEquals(obj.code, int(val['POSTNR'].rstrip()))
-            self.assertEquals(obj.name, val['POSTDISTRIKT'].rstrip())
-
-    def test_import_b_number(self):
-        for val in utils._read_spreadsheet(self.fp):
-            obj = utils._get_bnumber(val)
-            self.assertEquals(obj.municipality.name, val['KOMNAVN'].rstrip())
-
-    def test_import(self):
-        utils.import_spreadsheet(self.fp)
-        self.assertEquals(len(models.Address.objects.all()), 22913)
+            self.assertEquals(t['stateda'], str(e.label))
+            self.assertEquals(t['code'], e.value)

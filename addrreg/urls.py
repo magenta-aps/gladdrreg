@@ -26,5 +26,4 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls), name='admin'),
     url(r'^$', RedirectView.as_view(url='/admin/'), name='redirect_admin'),
-    url(r'^upload', views.upload_file, name='upload'),
 ]

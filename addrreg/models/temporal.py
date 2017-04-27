@@ -2,9 +2,12 @@
 
 from __future__ import absolute_import, unicode_literals, print_function
 
+import uuid
+
 from django.core import exceptions
 from django.db import models, transaction
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 
 class TemporalModelBase(models.base.ModelBase):
@@ -18,6 +21,13 @@ class TemporalModelBase(models.base.ModelBase):
         class TemporalModel(*bases):
             class Meta(object):
                 abstract = True
+
+            objectID = models.UUIDField(unique=True, db_index=True,
+                                        default=uuid.uuid4,
+                                        editable=False,
+                                        verbose_name=_('Object ID'))
+            valid_from = models.DateTimeField(null=True, editable=False)
+            valid_to = models.DateTimeField(null=True, editable=False)
 
             registration_from = models.DateTimeField(db_index=True,
                                                      editable=False)
@@ -82,6 +92,7 @@ class TemporalModelBase(models.base.ModelBase):
 
         regattrs = attrs.copy()
         modelcls = super_new(cls, name, (TemporalModel,), attrs)
+        unique_togethers = set(modelcls._meta.unique_together)
 
         # the registration table contains duplicates of each main table
         # entry, so we have to drop all unique constraints
@@ -96,12 +107,21 @@ class TemporalModelBase(models.base.ModelBase):
             field_kwargs['unique'] = False
             regattrs[field.name] = type(field)(*fieldargs, **field_kwargs)
 
+            if field.name != 'objectID':
+                unique_togethers.add((field.name,))
+
         class RegistrationModel(*bases):
             class Meta(object):
                 abstract = True
 
             object = models.ForeignKey(modelcls, models.SET_NULL, null=True,
                                        related_name='registrations')
+            objectID = models.UUIDField(unique=True, db_index=True,
+                                        editable=False,
+                                        verbose_name=_('Object ID'))
+
+            valid_from = models.DateTimeField(null=True, editable=False)
+            valid_to = models.DateTimeField(null=True, editable=False)
 
             registration_from = models.DateTimeField(db_index=True,
                                                      editable=False)
@@ -136,10 +156,13 @@ class TemporalModelBase(models.base.ModelBase):
 
                 super(RegistrationModel, self).save(*args, **kwargs)
 
-        class Meta(regattrs['Meta']):
+        class Meta(regattrs.get('Meta', object)):
             index_together = [
                 ["object", "registration_from", "registration_to", ],
                 ["objectID", "registration_from", "registration_to", ],
+            ]
+            unique_together = [
+                constraint + ('objectID',) for constraint in unique_togethers
             ]
 
             db_table = modelcls._meta.db_table + str('_registrations')
@@ -147,7 +170,7 @@ class TemporalModelBase(models.base.ModelBase):
         regattrs['__qualname__'] += 'Registrations'
         regattrs['Meta'] = Meta
         regcls = super_new(cls, name + 'Registrations',
-                           (RegistrationModel,), regattrs)
+                               (RegistrationModel,), regattrs)
         modelcls.Registrations = regcls
 
         return modelcls

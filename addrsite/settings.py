@@ -24,17 +24,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # Ensure that we keep the secret key used in production secret!
-try:
-    with open(os.path.join(BASE_DIR, '.secret-key')) as fp:
+_SECRET_KEY_FILE = os.path.join(BASE_DIR, '.secret-key')
+if os.path.exists(_SECRET_KEY_FILE):
+    with open(_SECRET_KEY_FILE) as fp:
         SECRET_KEY = fp.read().strip()
-except IOError as exp:
-    pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -132,6 +130,10 @@ LOCALE_PATHS = ['i18n']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+STATICFILES_DIRS = [
+    ("gladdrreg/css", 'css'),
+]
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

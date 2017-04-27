@@ -1,8 +1,7 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-20 14:48+0200\n"
+"POT-Creation-Date: 2017-04-27 15:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: da\n"
@@ -14,156 +13,236 @@ msgstr ""
 msgid "Address Register of Greenland"
 msgstr "Grønlands Adresseopslagsregister"
 
-#: addrreg/models/__init__.py:25
-msgid "Unknown"
-msgstr "Ukendt"
+#: addrreg/models/__init__.py:19 addrreg/models/base.py:19
+msgid "State"
+msgstr "Tilstand"
 
-#: addrreg/models/__init__.py:26
-msgid "Town"
-msgstr "By"
+#: addrreg/models/__init__.py:20
+msgid "States"
+msgstr "Tilstande"
 
-#: addrreg/models/__init__.py:27
-msgid "Village"
-msgstr "Bygd"
-
-#: addrreg/models/__init__.py:28
-msgid "Station"
-msgstr "Station"
-
-#: addrreg/models/__init__.py:29
-msgid "Airport"
-msgstr "Lufthavn"
-
-#: addrreg/models/__init__.py:34 addrreg/models/__init__.py:259
-msgid "Locality"
-msgstr "Lokalitet"
-
-#: addrreg/models/__init__.py:35
-msgid "Localities"
-msgstr "Lokaliteter"
-
-#: addrreg/models/__init__.py:40 addrreg/models/__init__.py:89
-#: addrreg/models/__init__.py:161
+#: addrreg/models/__init__.py:24 addrreg/models/__init__.py:83
+#: addrreg/models/__init__.py:105 addrreg/models/__init__.py:151
+#: addrreg/models/__init__.py:200 addrreg/models/__init__.py:241
 msgid "Code"
 msgstr "Kode"
 
-#: addrreg/models/__init__.py:42 addrreg/models/__init__.py:92
-#: addrreg/models/__init__.py:163
+#: addrreg/models/__init__.py:26 addrreg/models/__init__.py:86
+#: addrreg/models/__init__.py:108 addrreg/models/__init__.py:155
+#: addrreg/models/__init__.py:203 addrreg/models/__init__.py:242
 msgid "Name"
 msgstr "Navn"
 
-#: addrreg/models/__init__.py:44
-msgid "Type"
-msgstr "Type"
+#: addrreg/models/__init__.py:27
+msgid "Description"
+msgstr "Beskrivelse"
 
-#: addrreg/models/__init__.py:83 addrreg/models/__init__.py:213
+#: addrreg/models/__init__.py:52
+msgid "Unknown"
+msgstr "Ukendt"
+
+#: addrreg/models/__init__.py:53
+msgid "Town"
+msgstr "By"
+
+#: addrreg/models/__init__.py:54
+msgid "Village"
+msgstr "Bygd"
+
+#: addrreg/models/__init__.py:55
+msgid "Mining post"
+msgstr "Minestation"
+
+#: addrreg/models/__init__.py:56
+msgid "Outpost"
+msgstr "Station"
+
+#: addrreg/models/__init__.py:57
+msgid "Airport"
+msgstr "Lufthavn"
+
+#: addrreg/models/__init__.py:58
+msgid "Farm"
+msgstr "Fårehold"
+
+#: addrreg/models/__init__.py:59
+msgid "Urban development"
+msgstr "Byudvikling"
+
+#: addrreg/models/__init__.py:70
+msgid "Establishing"
+msgstr "Under etablering"
+
+#: addrreg/models/__init__.py:71 addrreg/models/base.py:21
+msgid "Active"
+msgstr "Aktiv"
+
+#: addrreg/models/__init__.py:72
+msgid "Closed down"
+msgstr "Nedlagt"
+
+#: addrreg/models/__init__.py:78 addrreg/models/__init__.py:167
+#: addrreg/models/__init__.py:211 addrreg/models/__init__.py:256
+#: addrreg/models/__init__.py:291
 msgid "Municipality"
 msgstr "Kommune"
 
-#: addrreg/models/__init__.py:84
+#: addrreg/models/__init__.py:79
 msgid "Municipalities"
 msgstr "Kommuner"
 
-#: addrreg/models/__init__.py:120 addrreg/models/__init__.py:268
+#: addrreg/models/__init__.py:85 addrreg/models/__init__.py:107
+#: addrreg/models/__init__.py:153
+msgid "Abbreviation"
+msgstr "Forkortelse"
+
+#: addrreg/models/__init__.py:100 addrreg/models/__init__.py:170
+msgid "District"
+msgstr "Distrikt"
+
+#: addrreg/models/__init__.py:101
+msgid "Districts"
+msgstr "Distrikter"
+
+#: addrreg/models/__init__.py:122 addrreg/models/__init__.py:173
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: addrreg/models/__init__.py:121
+#: addrreg/models/__init__.py:123
 msgid "Postal Codes"
 msgstr "Postnumre"
 
-#: addrreg/models/__init__.py:126 addrreg/models/__init__.py:205
+#: addrreg/models/__init__.py:128
 msgid "Number"
 msgstr "Nummer"
 
-#: addrreg/models/__init__.py:129
+#: addrreg/models/__init__.py:131
 msgid "City"
 msgstr "By"
 
 #. Translators: Human-readable description of a PostalCode
-#: addrreg/models/__init__.py:133
+#: addrreg/models/__init__.py:135
 #, python-brace-format
 msgid "{0.code} {0.name}"
 msgstr "{0.code} {0.name}"
 
-#: addrreg/models/__init__.py:155 addrreg/models/__init__.py:265
-msgid "Road"
-msgstr "Vej"
+#: addrreg/models/__init__.py:146 addrreg/models/__init__.py:208
+#: addrreg/models/__init__.py:253
+msgid "Locality"
+msgstr "Lokalitet"
 
-#: addrreg/models/__init__.py:156
-msgid "Roads"
-msgstr "Veje"
+#: addrreg/models/__init__.py:147
+msgid "Localities"
+msgstr "Lokaliteter"
 
-#: addrreg/models/__init__.py:166
-msgid "Abbreviated Name"
-msgstr "Forkortet navn"
+#: addrreg/models/__init__.py:158
+msgid "Type"
+msgstr "Type"
 
-#: addrreg/models/__init__.py:169
-msgid "Danish Name"
-msgstr "Dansk navn"
+#: addrreg/models/__init__.py:163
+msgid "Locality State"
+msgstr "Lokalitetstilstand"
 
-#: addrreg/models/__init__.py:171
-msgid "Greenlandic Name"
-msgstr "Grønlandsk navn"
+#. Translators: Human-readable description of a Locality
+#: addrreg/models/__init__.py:178
+#, python-brace-format
+msgid "{0.name} ({0.type.label})"
+msgstr "{0.name} ({0.type.label})"
 
-#: addrreg/models/__init__.py:173
-msgid "CPR Name"
-msgstr "CPR-navn"
-
-#: addrreg/models/__init__.py:199 addrreg/models/__init__.py:262
+#: addrreg/models/__init__.py:197 addrreg/models/__init__.py:285
 msgid "B-Number"
 msgstr "B-nummer"
 
-#: addrreg/models/__init__.py:200
+#: addrreg/models/__init__.py:198
 msgid "B-Numbers"
 msgstr "B-numre"
 
-#: addrreg/models/__init__.py:208
+#: addrreg/models/__init__.py:205
 msgid "Nickname"
 msgstr "Kaldenavn"
 
-#: addrreg/models/__init__.py:210
-msgid "Block Designation"
-msgstr "Blokbetegnelse"
+#: addrreg/models/__init__.py:236 addrreg/models/__init__.py:288
+msgid "Road"
+msgstr "Vej"
 
-#: addrreg/models/__init__.py:245
+#: addrreg/models/__init__.py:237
+msgid "Roads"
+msgstr "Veje"
+
+#: addrreg/models/__init__.py:244
+msgid "Abbreviated Name"
+msgstr "Forkortet navn"
+
+#: addrreg/models/__init__.py:247
+msgid "Danish Name"
+msgstr "Dansk navn"
+
+#: addrreg/models/__init__.py:248
+msgid "Greenlandic Name"
+msgstr "Grønlandsk navn"
+
+#: addrreg/models/__init__.py:250
+msgid "CPR Name"
+msgstr "CPR-navn"
+
+#: addrreg/models/__init__.py:272
 msgid "Address"
 msgstr "Adresse"
 
-#: addrreg/models/__init__.py:246
+#: addrreg/models/__init__.py:273
 msgid "Addresses"
 msgstr "Adresser"
 
-#: addrreg/models/__init__.py:251
+#: addrreg/models/__init__.py:278
 msgid "House Number"
 msgstr "Husnummer"
 
-#: addrreg/models/__init__.py:254
+#: addrreg/models/__init__.py:280
 msgid "Floor"
 msgstr "Etage"
 
-#: addrreg/models/__init__.py:256
-msgid "Door"
-msgstr "Sidedør"
+#: addrreg/models/__init__.py:282
+msgid "Room"
+msgstr "Dør"
 
 #. Translators: Human-readable description of an Address
-#: addrreg/models/__init__.py:273
+#: addrreg/models/__init__.py:296
 #, python-brace-format
-msgid "{0.houseNumber} {0.road}"
-msgstr "{0.houseNumber} {0.road}"
+msgid "{0.house_number} {0.road}"
+msgstr "{0.house_number} {0.road}"
 
-#: addrreg/models/base.py:77
-msgid "Object ID"
-msgstr "Objekt-ID"
-
-#: addrreg/models/base.py:78
+#: addrreg/models/base.py:22
 msgid "Notes"
 msgstr "Noter"
 
-#: addrreg/templates/upload.html:17
-msgid "Please select an Excel spreadsheet to import"
-msgstr "Vælg venligst det excelregneark der skal importeres"
+#: addrreg/models/base.py:29
+msgid "Sumiffiik"
+msgstr "Sumiffiik"
 
-#: addrreg/views.py:18
-msgid "Spreadsheet successfully imported!"
-msgstr "Import af regnearket lykkedes!"
+#: addrreg/models/temporal.py:28 addrreg/models/temporal.py:121
+msgid "Object ID"
+msgstr "Objekt-ID"
+
+#~ msgid "Locality Type"
+#~ msgstr "Lokalitetstype"
+
+#~ msgid "Locality Types"
+#~ msgstr "Lokalitetstyper"
+
+#~ msgid "Locality States"
+#~ msgstr "Lokalitetstilstande"
+
+#~ msgid "English Name"
+#~ msgstr "Engelsk navn"
+
+#~ msgid "Please select an Excel spreadsheet to import"
+#~ msgstr "Vælg venligst det excelregneark der skal importeres"
+
+#~ msgid "Block Designation"
+#~ msgstr "Blokbetegnelse"
+
+#~ msgid "Door"
+#~ msgstr "Sidedør"
+
+#~ msgid "Spreadsheet successfully imported!"
+#~ msgstr "Import af regnearket lykkedes!"
