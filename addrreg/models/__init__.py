@@ -41,35 +41,35 @@ class LocalityType(enumfields.IntEnum):
     '''http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf'''
     UNKNOWN = 0
     TOWN = 1
-    VILLAGE = 2
-    MINING_POST = 3
-    OUTPOST = 5
+    SETTLEMENT = 2
+    MINE = 3
+    STATION = 5
     AIRPORT = 6
     FARM = 7
-    URBAN_DEVELOPMENT = 8
+    DEVELOPMENT = 8
 
     class Labels:
         UNKNOWN = _('Unknown')
         TOWN = _('Town')
-        VILLAGE = _('Village')
-        MINING_POST = _('Mining post')
-        OUTPOST = _('Outpost')
+        SETTLEMENT = _('Settlement')
+        MINE = _('Mine')
+        STATION = _('Station')
         AIRPORT = _('Airport')
         FARM = _('Farm')
-        URBAN_DEVELOPMENT = _('Urban development')
+        DEVELOPMENT = _('Development')
 
 
 @enum.unique
 class LocalityState(enumfields.IntEnum):
     '''http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf'''
-    UPCOMING = 10
+    PROJECTED = 10
     ACTIVE = 15
-    CLOSED = 20
+    ABANDONED = 20
 
     class Labels:
-        UPCOMING = _('Establishing')
+        PROJECTED = _('Projected')
         ACTIVE = _('Active')
-        CLOSED = _('Closed down')
+        ABANDONED = _('Abandoned')
 
 
 class Municipality(base.AbstractSumiffiikModel,
@@ -161,7 +161,7 @@ class Locality(base.AbstractSumiffiikModel,
     locality_state = enumfields.EnumIntegerField(LocalityState,
                                                  verbose_name=_(
                                                      'Locality State'),
-                                                 default=LocalityState.UPCOMING,
+                                                 default=LocalityState.PROJECTED,
                                                  db_index=True)
     municipality = models.ForeignKey(Municipality, models.PROTECT,
                                      verbose_name=_('Municipality'),
