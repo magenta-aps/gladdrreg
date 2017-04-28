@@ -186,9 +186,7 @@ class LocalityAdmin(base.AdminBase):
         'district',
         'type',
         'locality_state',
-        'state',
-
-    )
+    ) + base.AdminBase.list_filter
 
 
 class BNumber(base.AbstractSumiffiikModel,
@@ -227,7 +225,7 @@ class BNumberAdmin(base.AdminBase):
     list_filter = (
         'location',
         'municipality',
-    )
+    ) + base.AdminBase.list_filter
 
 
 class Road(base.AbstractSumiffiikModel,
@@ -264,6 +262,10 @@ class Road(base.AbstractSumiffiikModel,
 class RoadAdmin(base.AdminBase):
     list_display = ('name', 'code')
     search_fields = ('name',)
+    list_filter = (
+        'location',
+        'municipality',
+    ) + base.AdminBase.list_filter
 
 
 class Address(base.AbstractSumiffiikModel,
@@ -307,7 +309,7 @@ class AddressAdmin(base.AdminBase):
     )
     list_filter = (
         'municipality',
-    )
+    ) + base.AdminBase.list_filter
     search_fields = (
         'road__name',
         'municipality__name',
