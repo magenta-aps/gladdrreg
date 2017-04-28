@@ -26,7 +26,7 @@ class AbstractSumiffiikModel(AbstractModel):
     class Meta(object):
         abstract = True
 
-    sumiffiik = models.CharField(_('Sumiffiik'), max_length=38, unique=True,
+    sumiffiik = models.CharField(_('Sumiffiik'), max_length=38,
                                  null=True, db_index=True)
 
 
