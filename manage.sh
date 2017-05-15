@@ -13,10 +13,10 @@ dir=$(cd $(dirname $0); pwd)
 env=$($PYTHON <<EOF
 import sys, platform
 sys.stdout.write(("$dir/pyenv-%s-%s-%s.%s" % (
-    (platform.system(),
-     platform.python_implementation()) +
+    (platform.system().lower(),
+     platform.python_implementation().lower()) +
      platform.python_version_tuple()[:2]
-)).lower())
+)))
 EOF
 )
 virtualenv_module=$($PYTHON <<EOF
