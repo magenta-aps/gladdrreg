@@ -11,3 +11,4 @@ freezegun>=0.3.8
 gunicorn>=19.7
 eventlet>=0.21
 babel>=2.4.0
+django_extensions>=1.7.8
