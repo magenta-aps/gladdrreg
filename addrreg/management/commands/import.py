@@ -1,4 +1,7 @@
+import concurrent.futures
+import itertools
 import json
+import traceback
 
 import openpyxl
 from django import db
@@ -133,10 +136,11 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
             continue
 
         cls = mapping.pop(None)
+        total = sheet.max_row - 1
 
         if verbose:
             print('importing {} {}'.format(
-                sheet.max_row, cls._meta.verbose_name_plural
+                total, cls._meta.verbose_name_plural
             ))
 
         rows = sheet.rows
@@ -146,23 +150,17 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
             for col in next(rows)
         ]
 
-        for i, row in enumerate(rows):
-            if verbose and not i % 50:
-                total = sheet.max_row - 2
-                print('{:3.0f}% - {} of {}{}'.format(
-                    i / total * 100, i, total, ' ' * 5),
-                    end='\r'
-                )
-
+        def save(row):
             if row[0].value in DROP:
-                continue
+                return
 
             try:
                 kws = {
                     column_names[cellidx]:
                         (VALUE_MAPS[column_names[cellidx]].get(cell.value,
                                                                cell.value)
-                         if column_names[cellidx] in VALUE_MAPS else cell.value)
+                         if column_names[cellidx] in VALUE_MAPS
+                         else cell.value)
                     for cellidx, cell in enumerate(row)
                     if column_names[cellidx]
                 }
@@ -195,8 +193,31 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
 
                 if raise_on_error:
                     raise base.CommandError(msg)
+                elif verbose:
+                    print(msg)
+                    traceback.print_exc()
                 else:
                     print(msg)
+
+        # save the five first rows in order, as other rows might depend on them
+        for i, row in itertools.islice(enumerate(rows, 1), 5):
+            save(row)
+
+        if db.connection.vendor == 'sqlite':
+            pool_size = 1
+        else:
+            pool_size = 3
+
+        # executing two saves concurrently ensures that we'll
+        # typically be preparing the next while waiting for the
+        # current one to save in the database
+        with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
+            for i, f in enumerate(e.map(save, rows), i + 1):
+                if verbose and not i % 50:
+                    print('{:3.0f}% - {} of {}{}'.format(
+                        i / total * 100, i, total, ' ' * 5),
+                          end='\r'
+                    )
 
     if verbose:
         print('done!' + 20 * ' ')
