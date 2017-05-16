@@ -141,5 +141,7 @@ if platform.python_implementation() == 'PyPy':
     from psycopg2cffi import compat
     compat.register()
 
-if os.path.exists(os.path.join(os.path.dirname(__file__), 'local_settings.py')):
+if os.path.exists(
+        os.path.join(os.path.dirname(__file__), 'local_settings.py')
+):
     from .local_settings import *

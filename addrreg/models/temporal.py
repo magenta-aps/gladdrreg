@@ -3,11 +3,15 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import uuid
+import hashlib
+import json
 
-from django.core import exceptions
+from django.core import exceptions, serializers
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from ..util import json_serialize_object
 
 
 class TemporalModelBase(models.base.ModelBase):
@@ -155,6 +159,22 @@ class TemporalModelBase(models.base.ModelBase):
                         )
 
                 super(RegistrationModel, self).save(*args, **kwargs)
+
+            @property
+            def checksum_input(self):
+                obj = serializers.serialize('python', [self])
+                return dict(obj[0]['fields'])
+
+            @property
+            def checksum(self):
+                input = json.dumps(
+                    self.checksum_input,
+                    sort_keys=True, default=json_serialize_object,
+                    separators=(',', ':')
+                ).encode("utf-8")
+                digester = hashlib.sha256()
+                digester.update(input)
+                return digester.hexdigest()
 
         class Meta(regattrs.get('Meta', object)):
             index_together = [

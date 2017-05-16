@@ -58,6 +58,10 @@ class LocalityType(enumfields.IntEnum):
         FARM = _('Farm')
         DEVELOPMENT = _('Development')
 
+    @staticmethod
+    def get_objecttype_names():
+        return ['localitytype']
+
 
 @enum.unique
 class LocalityState(enumfields.IntEnum):
@@ -88,6 +92,10 @@ class Municipality(base.AbstractSumiffiikModel,
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_objecttype_names():
+        return ['municipality']
+
 
 @admin.register(Municipality)
 class MunicipalityAdmin(base.AdminBase):
@@ -109,6 +117,10 @@ class District(base.AbstractSumiffiikModel,
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_objecttype_names():
+        return ['district']
 
 
 @admin.register(District)
@@ -133,6 +145,10 @@ class PostalCode(base.AbstractSumiffiikModel,
     def __str__(self):
         # Translators: Human-readable description of a PostalCode
         return _('{0.code} {0.name}').format(self)
+
+    @staticmethod
+    def get_objecttype_names():
+        return ['postalcode', 'postnr']
 
 
 @admin.register(PostalCode)
@@ -177,6 +193,10 @@ class Locality(base.AbstractSumiffiikModel,
         # Translators: Human-readable description of a Locality
         return _('{0.name} ({0.type.label})').format(self)
 
+    @staticmethod
+    def get_objecttype_names():
+        return ['locality']
+
 
 @admin.register(Locality)
 class LocalityAdmin(base.AdminBase):
@@ -215,6 +235,10 @@ class BNumber(base.AbstractSumiffiikModel,
             parts += [' (', self.name, ')']
 
         return ''.join(parts)
+
+    @staticmethod
+    def get_objecttype_names():
+        return ['bnumber', 'bnr']
 
 
 @admin.register(BNumber)
@@ -257,6 +281,10 @@ class Road(base.AbstractSumiffiikModel,
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_objecttype_names():
+        return ['road']
+
 
 @admin.register(Road)
 class RoadAdmin(base.AdminBase):
@@ -296,6 +324,10 @@ class Address(base.AbstractSumiffiikModel,
     def __str__(self):
         # Translators: Human-readable description of an Address
         return _('{0.house_number} {0.road}').format(self)
+
+    @staticmethod
+    def get_objecttype_names():
+        return ['address']
 
 
 @admin.register(Address)
