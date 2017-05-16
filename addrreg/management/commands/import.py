@@ -186,7 +186,8 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
                 pass
 
             try:
-                cls.objects.create(**kws)
+                item = cls.objects.create(**kws)
+                models.events.Event.create(item)
             except (db.Error, exceptions.ValidationError,
                     exceptions.ObjectDoesNotExist) as exc:
                 msg = 'error processing {} {}: {}'.format(

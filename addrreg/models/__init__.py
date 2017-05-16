@@ -9,7 +9,7 @@ from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from . import base, temporal
+from . import base, temporal, events
 
 admin.site.disable_action('delete_selected')
 

@@ -26,6 +26,8 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls), name='admin'),
     url(r'^$', RedirectView.as_view(url='/admin/'), name='redirect_admin'),
+    url(r'^getNewEvents/?$', views.GetNewEventsView.as_view()),
+    url(r'^receipt/?$', views.Receipt.as_view()),
     url(r'^listChecksums/?$', views.ListChecksumView.as_view()),
     url(r'^get/(?P<checksums>[0-9a-f;]+)$',
         views.GetRegistrationsView.as_view())

@@ -9,6 +9,7 @@ from django.views import View
 from jsonview.decorators import json_view
 from dateutil import parser as dateparser
 import pytz
+import json
 
 from .models import *
 from . import forms
@@ -18,6 +19,44 @@ class JsonView(View):
     @method_decorator(json_view)
     def dispatch(self, request, *args, **kwargs):
         return super(JsonView, self).dispatch(request, *args, **kwargs)
+
+
+class GetNewEventsView(JsonView):
+
+    @staticmethod
+    def format(event):
+        return {
+            'beskedID': event.eventID,
+            'beskedVersion': 1,
+            'beskedData': {
+                'objektReference': {
+                    'objektreference': event.updated_registration
+                }
+            }
+        }
+
+    def get(self, request, *args, **kwargs):
+        new_events = events.Event.objects.filter(receipt_obtained__isnull=True)
+        return {
+            'events': [self.format(event) for event in new_events.all()]
+        }
+
+
+class Receipt(View):
+
+    def post(self, request, *args, **kwargs):
+        receipt = json.loads(request.body.decode('utf-8'))
+        if 'objectID' in receipt:
+            try:
+                event = events.Event.objects.get(eventID=receipt['objectID'])
+            except events.Event.DoesNotExist:
+                return
+            status = receipt.get('status')
+            if status == 'ok':
+                event.receipt()
+            elif status == 'failed':
+                event.receipt(receipt.get('errorCode'))
+            return HttpResponse(status=201)
 
 
 class ListChecksumView(JsonView):
