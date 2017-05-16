@@ -29,6 +29,7 @@ if os.path.exists(_SECRET_KEY_FILE):
     with open(_SECRET_KEY_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -112,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -145,3 +146,5 @@ if os.path.exists(
         os.path.join(os.path.dirname(__file__), 'local_settings.py')
 ):
     from .local_settings import *
+else:
+    print('No local settings!')

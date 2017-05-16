@@ -6,6 +6,7 @@ import uuid
 import hashlib
 import json
 
+from django.conf import settings
 from django.core import exceptions, serializers
 from django.db import models, transaction
 from django.utils import timezone
@@ -20,7 +21,7 @@ class TemporalModelBase(models.base.ModelBase):
     """
 
     def __new__(cls, name, bases, attrs):
-        super_new = super(TemporalModelBase, cls).__new__
+        super_new = super().__new__
 
         class TemporalModel(*bases):
             class Meta(object):
@@ -35,6 +36,18 @@ class TemporalModelBase(models.base.ModelBase):
 
             registration_from = models.DateTimeField(db_index=True,
                                                      editable=False)
+
+            @property
+            def registrations(self):
+                return self.Registrations.objects.filter(object=self)
+
+            @property
+            def created(self):
+                self.registrations.aggregate(models.Min('registration_from'))
+
+            @property
+            def last_changed(self):
+                return self.registration_from
 
             def __get_field_dict(self, exclude=None):
                 return {
@@ -64,11 +77,17 @@ class TemporalModelBase(models.base.ModelBase):
 
                 self._maybe_intercept()
 
-                return super(TemporalModel, self).delete(*args, **kwargs)
+                return super().delete(*args, **kwargs)
 
             @transaction.atomic(savepoint=False)
             def save(self, *args, **kwargs):
                 now = timezone.now()
+
+                try:
+                    user = self._registration_user
+                    del self._registration_user
+                except AttributeError:
+                    user = None
 
                 if self.registration_from and self.registration_from >= now:
                     raise exceptions.ValidationError(
@@ -77,7 +96,7 @@ class TemporalModelBase(models.base.ModelBase):
 
                 self.registration_from = now
 
-                super(TemporalModel, self).save(*args, **kwargs)
+                super().save(*args, **kwargs)
 
                 regcls.objects.filter(
                     object=self,
@@ -91,6 +110,7 @@ class TemporalModelBase(models.base.ModelBase):
                 regcls.objects.create(
                     registration_to=None,
                     object=self,
+                    registration_user=user,
                     **self.__get_field_dict(exclude=('id',))
                 )
 
@@ -127,6 +147,11 @@ class TemporalModelBase(models.base.ModelBase):
             valid_from = models.DateTimeField(null=True, editable=False)
             valid_to = models.DateTimeField(null=True, editable=False)
 
+            registration_user = models.ForeignKey(
+                settings.AUTH_USER_MODEL, models.PROTECT,
+                null=True,
+                db_index=True,
+            )
             registration_from = models.DateTimeField(db_index=True,
                                                      editable=False)
             registration_to = models.DateTimeField(db_index=True,
@@ -163,7 +188,7 @@ class TemporalModelBase(models.base.ModelBase):
 
                 self.checksum = self.calculate_checksum()
 
-                super(RegistrationModel, self).save(*args, **kwargs)
+                super().save(*args, **kwargs)
 
             @property
             def fields(self):
@@ -194,7 +219,7 @@ class TemporalModelBase(models.base.ModelBase):
         regattrs['__qualname__'] += 'Registrations'
         regattrs['Meta'] = Meta
         regcls = super_new(cls, name + 'Registrations',
-                               (RegistrationModel,), regattrs)
+                           (RegistrationModel,), regattrs)
         modelcls.Registrations = regcls
 
         return modelcls

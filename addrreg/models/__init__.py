@@ -5,6 +5,8 @@ from __future__ import absolute_import, unicode_literals, print_function
 import enum
 
 import enumfields
+from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -20,6 +22,7 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
         verbose_name_plural = _('States')
 
         ordering = ('code',)
+        default_permissions = ()
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True,
                                             unique=True)
@@ -33,12 +36,14 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 
 @admin.register(State)
 class StateAdmin(base.AdminBase):
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'state', 'active')
 
 
 @enum.unique
 class LocalityType(enumfields.IntEnum):
-    '''http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf'''
+    '''
+    http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf
+    '''
     UNKNOWN = 0
     TOWN = 1
     SETTLEMENT = 2
@@ -65,7 +70,9 @@ class LocalityType(enumfields.IntEnum):
 
 @enum.unique
 class LocalityState(enumfields.IntEnum):
-    '''http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf'''
+    '''
+    http://www.stat.gl/publ/da/be/201401/pdf/Lokaliteter%20i%20Grønland.pdf
+    '''
     PROJECTED = 10
     ACTIVE = 15
     ABANDONED = 20
@@ -76,13 +83,17 @@ class LocalityState(enumfields.IntEnum):
         ABANDONED = _('Abandoned')
 
 
-class Municipality(base.AbstractSumiffiikModel,
+class Municipality(base.AbstractModel,
                    metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('Municipality')
         verbose_name_plural = _('Municipalities')
 
         ordering = ('abbrev',)
+        default_permissions = ()
+
+    sumiffiik = base.SumiffiikIDField(null=True)
+    sumiffiik_domain = base.SumiffiikDomainField()
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True)
 
@@ -99,18 +110,23 @@ class Municipality(base.AbstractSumiffiikModel,
 
 @admin.register(Municipality)
 class MunicipalityAdmin(base.AdminBase):
-    list_display = ('abbrev', 'name', 'state')
+    list_display = ('abbrev', 'name', 'state', 'active')
 
 
-class District(base.AbstractSumiffiikModel,
+class District(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('District')
         verbose_name_plural = _('Districts')
 
         ordering = ('abbrev',)
+        default_permissions = ()
 
-    code = models.PositiveSmallIntegerField(_('Code'), db_index=True, null=True)
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
+
+    code = models.PositiveSmallIntegerField(_('Code'),
+                                            db_index=True, null=True)
 
     abbrev = models.CharField(_('Abbreviation'), max_length=4, db_index=True)
     name = models.CharField(_('Name'), max_length=60, db_index=True)
@@ -125,16 +141,20 @@ class District(base.AbstractSumiffiikModel,
 
 @admin.register(District)
 class DistrictAdmin(base.AdminBase):
-    list_display = ('abbrev', 'name', 'state')
+    list_display = ('abbrev', 'name', 'state', 'active')
 
 
-class PostalCode(base.AbstractSumiffiikModel,
+class PostalCode(base.AbstractModel,
                  metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('Postal Code')
         verbose_name_plural = _('Postal Codes')
 
         ordering = ('code',)
+        default_permissions = ()
+
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
 
     # aka postnummer
     code = models.PositiveSmallIntegerField(_('Number'),
@@ -153,18 +173,23 @@ class PostalCode(base.AbstractSumiffiikModel,
 
 @admin.register(PostalCode)
 class PostalCodeAdmin(base.AdminBase):
-    list_display = ('name', 'code',)
+    list_display = ('name', 'code', 'state', 'active')
 
 
-class Locality(base.AbstractSumiffiikModel,
+class Locality(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('Locality')
         verbose_name_plural = _('Localities')
 
         ordering = ('abbrev',)
+        default_permissions = ()
 
-    code = models.PositiveSmallIntegerField(_('Code'), db_index=True, null=True)
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
+
+    code = models.PositiveSmallIntegerField(_('Code'),
+                                            db_index=True, null=True)
 
     abbrev = models.CharField(_('Abbreviation'), max_length=4, null=True,
                               db_index=True)
@@ -174,20 +199,16 @@ class Locality(base.AbstractSumiffiikModel,
     type = enumfields.EnumIntegerField(LocalityType, verbose_name=_('Type'),
                                        db_index=True,
                                        default=LocalityType.UNKNOWN)
-    locality_state = enumfields.EnumIntegerField(LocalityState,
-                                                 verbose_name=_(
-                                                     'Locality State'),
-                                                 default=LocalityState.PROJECTED,
-                                                 db_index=True)
-    municipality = models.ForeignKey(Municipality, models.PROTECT,
-                                     verbose_name=_('Municipality'),
-                                     null=True, blank=True, db_index=True)
-    district = models.ForeignKey(District, models.PROTECT,
-                                 verbose_name=_('District'),
-                                 null=True, blank=True, db_index=True)
-    postal_code = models.ForeignKey(PostalCode, models.PROTECT,
-                                    verbose_name=_('Postal Code'),
-                                    null=True, blank=True, db_index=True)
+    locality_state = enumfields.EnumIntegerField(
+        LocalityState, verbose_name=_('Locality State'),
+        default=LocalityState.PROJECTED, db_index=True,
+    )
+    municipality = base.ForeignKey(Municipality, _('Municipality'),
+                                   null=True, blank=True)
+    district = base.ForeignKey(District, _('District'),
+                               null=True, blank=True)
+    postal_code = base.ForeignKey(PostalCode, _('Postal Code'),
+                                  null=True, blank=True)
 
     def __str__(self):
         # Translators: Human-readable description of a Locality
@@ -200,20 +221,31 @@ class Locality(base.AbstractSumiffiikModel,
 
 @admin.register(Locality)
 class LocalityAdmin(base.AdminBase):
-    list_display = ('abbrev', 'name', 'type', 'locality_state')
-    list_filter = (
-        'municipality',
-        'district',
+    list_display = (
+        'abbrev',
+        'name',
         'type',
         'locality_state',
-    ) + base.AdminBase.list_filter
+    )
+
+    list_filter = (
+                      'municipality',
+                      'district',
+                      'type',
+                      'locality_state',
+                  ) + base.AdminBase.list_filter
 
 
-class BNumber(base.AbstractSumiffiikModel,
+class BNumber(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('B-Number')
         verbose_name_plural = _('B-Numbers')
+
+        default_permissions = ()
+
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
 
     code = models.CharField(_('Code'), db_index=True, null=True, max_length=8)
 
@@ -222,12 +254,8 @@ class BNumber(base.AbstractSumiffiikModel,
     # aka blokbetegnelse
     nickname = models.CharField(_('Nickname'), max_length=60, null=True)
 
-    location = models.ForeignKey(Locality, models.PROTECT,
-                                 verbose_name=_('Locality'),
-                                 null=False, db_index=True)
-    municipality = models.ForeignKey(Municipality, models.PROTECT,
-                                     verbose_name=_('Municipality'),
-                                     null=False, db_index=True)
+    location = base.ForeignKey(Locality, verbose_name=_('Locality'), null=False)
+    municipality = base.ForeignKey(Municipality, _('Municipality'), null=False)
 
     def __str__(self):
         parts = [self.code]
@@ -243,7 +271,12 @@ class BNumber(base.AbstractSumiffiikModel,
 
 @admin.register(BNumber)
 class BNumberAdmin(base.AdminBase):
-    list_display = ('code', 'name', 'municipality', 'location',)
+    list_display = (
+        'code',
+        'name',
+        'municipality',
+        'location',
+    )
     search_fields = ('=code', '=name', '=municipality' '=location')
 
     list_filter = (
@@ -252,31 +285,30 @@ class BNumberAdmin(base.AdminBase):
     ) + base.AdminBase.list_filter
 
 
-class Road(base.AbstractSumiffiikModel,
+class Road(base.AbstractModel,
            metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('Road')
         verbose_name_plural = _('Roads')
 
         ordering = ('name',)
+        default_permissions = ()
+
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
 
     code = models.PositiveIntegerField(_('Code'), db_index=True)
-    name = models.CharField(_('Name'), db_index=True, max_length=60)
+    name = models.CharField(_('Name'), db_index=True, max_length=34)
 
     shortname = models.CharField(_('Abbreviated Name'), max_length=20,
                                  null=True)
 
-    danish_name = models.CharField(_('Danish Name'), max_length=60, null=True)
-    greenlandic_name = models.CharField(_('Greenlandic Name'), max_length=60,
-                                        null=True)
-    cpr_name = models.CharField(_('CPR Name'), max_length=60, null=True)
+    alternate_name = models.CharField(_('Alternate Name'), max_length=34,
+                                      null=True)
+    cpr_name = models.CharField(_('CPR Name'), max_length=34, null=True)
 
-    location = models.ForeignKey(Locality, models.PROTECT,
-                                 verbose_name=_('Locality'),
-                                 null=False, blank=True, db_index=True)
-    municipality = models.ForeignKey(Municipality, models.PROTECT,
-                                     verbose_name=_('Municipality'),
-                                     null=False, blank=True, db_index=True)
+    location = base.ForeignKey(Locality, _('Locality'))
+    municipality = base.ForeignKey(Municipality, _('Municipality'))
 
     def __str__(self):
         return self.name
@@ -290,36 +322,34 @@ class Road(base.AbstractSumiffiikModel,
 class RoadAdmin(base.AdminBase):
     list_display = ('name', 'code')
     search_fields = ('name',)
-    list_filter = (
-        'location',
-        'municipality',
-    ) + base.AdminBase.list_filter
 
 
-class Address(base.AbstractSumiffiikModel,
+class Address(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
 
         ordering = 'road',
+        default_permissions = ()
+
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField()
 
     # aka husnummer
-    house_number = models.CharField(_('House Number'), max_length=6, null=True)
+    house_number = models.CharField(_('House Number'), max_length=6,
+                                    null=True, blank=True)
     # aka etage
-    floor = models.CharField(_('Floor'), max_length=6, null=True)
-    # aka sidedør
-    room = models.CharField(_('Room'), max_length=6, null=True)
-
-    b_number = models.ForeignKey(BNumber, models.SET_NULL,
-                                 verbose_name=_('B-Number'),
-                                 null=True, blank=True)
-    road = models.ForeignKey(Road, models.CASCADE,
-                             verbose_name=_('Road'),
+    floor = models.CharField(_('Floor'), max_length=2,
                              null=True, blank=True)
-    municipality = models.ForeignKey(Municipality, models.PROTECT,
-                                     verbose_name=_('Municipality'),
-                                     null=False, blank=True, db_index=True)
+    # aka sidedør
+    room = models.CharField(_('Room'), max_length=6,
+                            null=True, blank=True)
+
+    b_number = base.ForeignKey(BNumber, _('B-Number'), null=True, blank=True)
+    road = base.ForeignKey(Road, _('Road'), null=True, blank=True)
+    municipality = base.ForeignKey(Municipality, _('Municipality'),
+                                   null=False, blank=True)
 
     def __str__(self):
         # Translators: Human-readable description of an Address
