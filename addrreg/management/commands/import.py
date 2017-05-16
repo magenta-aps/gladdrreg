@@ -21,17 +21,20 @@ SPREADSHEET_MAPPINGS = {
         None: models.Municipality,
         'UID': 'id',
         'state': 'state_id',
+        'sumiffiik_ID': 'sumiffiik',
     },
     'district': {
         None: models.District,
         'UID': 'id',
         'state': 'state_id',
+        'sumiffiik_ID': 'sumiffiik',
     },
     'postalcode': {
         None: models.PostalCode,
         'UID': 'id',
         'state': 'state_id',
         'postalarea': 'name',
+        'sumiffiik_ID': 'sumiffiik',
     },
     'locality': {
         None: models.Locality,
@@ -42,6 +45,7 @@ SPREADSHEET_MAPPINGS = {
         'districtID': 'district_id',
         'typecodeID': 'type',
         'statecodeID': 'locality_state',
+        'sumiffiik_ID': 'sumiffiik',
     },
     'bnumber': {
         None: models.BNumber,
@@ -53,32 +57,33 @@ SPREADSHEET_MAPPINGS = {
         'LocalityID': 'location_id',
         'MunicipalityID': 'municipality_id',
         'Note': 'note',
+        'sumiffiik_ID': 'sumiffiik',
     },
     'road': {
         None: models.Road,
         'UID': 'id',
         'state': 'state_id',
         'shortname20': 'shortname',
-        'nameda': 'danish_name',
         'nameCPR': 'cpr_name',
         'locationID': 'location_id',
         'municipalityID': 'municipality_id',
+        'sumiffiik_id': 'sumiffiik',
+        'name_alt': 'alternate_name',
     },
     'address': {
         None: models.Address,
         'UID': 'id',
         'State': 'state_id',
-        'housenumber': 'house_number',
+        'Houseno': 'house_number',
+        'Door': 'room',
         'bnumberID': 'b_number_id',
         'roadID': 'road_id',
         'MunicipalityID': 'municipality_id',
+        'sumiffiik_ID': 'sumiffiik',
     },
 }
 
 OVERRIDES = {
-    99732: {
-        'postal_code_id': None,
-    }
 }
 
 DROP = {
@@ -146,7 +151,7 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
         rows = sheet.rows
 
         column_names = [
-            mapping.get(col.value, col.value)
+            mapping.get(col.value, col.value and col.value.lower())
             for col in next(rows)
         ]
 
@@ -199,9 +204,14 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
                 else:
                     print(msg)
 
-        # save the five first rows in order, as other rows might depend on them
-        for i, row in itertools.islice(enumerate(rows, 1), 5):
-            save(row)
+        i = 0
+
+        if sheet.title == 'state':
+            # HACK: work around the fact that the first state refers
+            # to the second state, by importing them in reverse order
+            for i, row in \
+                    enumerate(reversed(list(itertools.islice(rows, 2))), 1):
+                save(row)
 
         if db.connection.vendor == 'sqlite':
             pool_size = 1
@@ -231,7 +241,7 @@ class Command(base.BaseCommand):
                             help='stop on first error')
         parser.add_argument('path', type=str, nargs='?',
                             default='fixtures/'
-                                    'Adropslagdata_20170423_datatotal.xlsx',
+                                    'Adropslagdata_20170510_datatotal.xlsx',
                             help='the file to import')
 
     def handle(self, *args, **kwargs):

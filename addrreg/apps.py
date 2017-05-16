@@ -7,4 +7,4 @@ from django.utils.translation import ugettext_lazy as _
 
 class AddrRegConfig(AppConfig):
     name = 'addrreg'
-    verbose_name = _('Address Register of Greenland')
+    verbose_name = _('Greenlandic Address Reference Register')
