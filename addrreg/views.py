@@ -14,14 +14,13 @@ from .models import *
 from . import forms
 
 
-# we really need some views!
-class JsonMixin(View):
+class JsonView(View):
     @method_decorator(json_view)
     def dispatch(self, request, *args, **kwargs):
-        return super(JsonMixin, self).dispatch(request, *args, **kwargs)
+        return super(JsonView, self).dispatch(request, *args, **kwargs)
 
 
-class ListChecksumView(JsonMixin):
+class ListChecksumView(JsonView):
 
     all_object_classes = [
         Municipality, District, PostalCode, Locality, BNumber, Road, Address
@@ -84,3 +83,52 @@ class ListChecksumView(JsonMixin):
 
         # Format output
         return {'items': [self.format(item, timestamp) for item in items]}
+
+
+class GetRegistrationsView(JsonView):
+
+    all_object_classes = [
+        Municipality, District, PostalCode, Locality, BNumber, Road, Address
+    ]
+
+    @staticmethod
+    def format(registration):
+        fields = registration.fields
+        for exclusion in [
+            'registration_from', 'registration_to', 'valid_from',
+            'valid_to', 'checksum', 'object', 'objectID'
+        ]:
+            fields.pop(exclusion)
+
+        return {
+            'checksum': registration.checksum,
+            'registerFrom': registration.registration_from,
+            'registerTo': registration.registration_to,
+            'entity': {
+                'uuid': registration.object.objectID,
+                'domain': 'adresseregister'
+            },
+            'effects': [{
+                'effectFrom': registration.valid_from,
+                'effectTo': registration.valid_to,
+                'dataItems': [
+                    fields
+                ]
+            }]
+        }
+
+    def get(self, request, checksums, *args, **kwargs):
+        items = {}
+        for checksum in checksums.split(';'):
+            item = None
+            for object_class in self.all_object_classes:
+                try:
+                    item = object_class.Registrations.objects.get(
+                        checksum=checksum
+                    )
+                    break
+                except object_class.Registrations.DoesNotExist:
+                    pass
+            if item is not None:
+                items[checksum] = self.format(item)
+        return items

@@ -133,6 +133,9 @@ class TemporalModelBase(models.base.ModelBase):
                                                    null=True,
                                                    editable=False)
 
+            checksum = models.CharField(db_index=True, null=True,
+                                        editable=False, max_length=64)
+
             def delete(self, *args, **kwargs):
                 raise exceptions.PermissionDenied(
                     'Registrations tables are append-only'
@@ -158,17 +161,18 @@ class TemporalModelBase(models.base.ModelBase):
                             'registration ends before it starts!'
                         )
 
+                self.checksum = self.calculate_checksum()
+
                 super(RegistrationModel, self).save(*args, **kwargs)
 
             @property
-            def checksum_input(self):
+            def fields(self):
                 obj = serializers.serialize('python', [self])
                 return dict(obj[0]['fields'])
 
-            @property
-            def checksum(self):
+            def calculate_checksum(self):
                 input = json.dumps(
-                    self.checksum_input,
+                    self.fields,
                     sort_keys=True, default=json_serialize_object,
                     separators=(',', ':')
                 ).encode("utf-8")
