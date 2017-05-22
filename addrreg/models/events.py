@@ -1,7 +1,7 @@
 # -*- mode: python; coding: utf-8 -*-
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from django.db import models, transaction
 
@@ -36,6 +36,6 @@ class Event(models.Model):
             event.save()
 
     def receipt(self, errorcode=None):
-        self.receipt_obtained = datetime.utcnow()
+        self.receipt_obtained = datetime.now(timezone.utc)
         self.receipt_errorcode = errorcode
         self.save()

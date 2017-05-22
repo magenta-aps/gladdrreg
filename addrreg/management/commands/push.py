@@ -13,26 +13,33 @@ class Command(base.BaseCommand):
     def handle(self, *args, **kwargs):
         endpoint = "http://localhost:8444/odata/gapi/Events"
 
+        all_object_classes = [
+            Municipality, District, PostalCode, Locality, BNumber, Road, Address
+        ]
+        type_map = {cls.type_name() : cls for cls in all_object_classes}
+
         for event in Event.objects.filter(
             receipt_obtained__isnull=True,
-            updated_type='municipality'
+            updated_type__in=['municipality', 'district', 'postalcode']
         ):
-            item = Municipality.Registrations.objects.get(
-                checksum=event.updated_registration)
+            cls = type_map[event.updated_type]
+            item = cls.Registrations.objects.get(
+                checksum=event.updated_registration
+            )
 
             message_body = {
                 "beskedVersion": "1.0",
                 "eventID": event.eventID,
                 "beskedData": {
                     "Objektdata": {
-                        "dataskema": "Municipality",
+                        "dataskema": cls.__name__,
                         # Using a better serializer, able to serialize
                         # datetimes and uuids
                         "objektdata": dump_json(item.format())
                     }
                 }
             }
-            requests.post(
+            r = requests.post(
                 endpoint,
                 data=dump_json(message_body),
                 headers={'Content-Type':'application/json'}
