@@ -11,6 +11,7 @@ class Event(models.Model):
     )
     eventID = models.UUIDField()
     updated_registration = models.CharField(max_length=64)
+    updated_type = models.CharField(max_length=32)
     receipt_obtained = models.DateTimeField(null=True)
     receipt_errorcode = models.CharField(max_length=32, null=True)
 
@@ -26,7 +27,12 @@ class Event(models.Model):
             for r in item.registrations.all():
                 Event.create(r)
         else:
-            event = Event(updated_registration=item.checksum)
+            item.calculate_checksum()
+            print(item.type_name()+"    "+item.checksum)
+            event = Event(
+                updated_type=item.type_name(),
+                updated_registration=item.checksum
+            )
             event.save()
 
     def receipt(self, errorcode=None):

@@ -114,6 +114,29 @@ class TemporalModelBase(models.base.ModelBase):
                     **self.__get_field_dict(exclude=('id',))
                 )
 
+
+            def format(self, timestamp=None):
+                registrations = self.registrations
+                if timestamp is not None:
+                    registrations = registrations.filter(
+                        registration_from__gte=timestamp
+                    )
+                for registration in registrations.all():
+                    registration.calculate_checksum()
+                return {
+                    'type': self.type_name(),
+                    'objectID': self.objectID,
+                    'registreringer': [
+                        {
+                            'sekvensNummer': index,
+                            'checksum': registration.checksum
+                        } for index, registration in
+                        enumerate(
+                            registrations.order_by('registration_from')
+                        )
+                    ]
+                }
+
         regattrs = attrs.copy()
         modelcls = super_new(cls, name, (TemporalModel,), attrs)
         unique_togethers = set(modelcls._meta.unique_together)
@@ -161,6 +184,12 @@ class TemporalModelBase(models.base.ModelBase):
             checksum = models.CharField(db_index=True, null=True,
                                         editable=False, max_length=64)
 
+            modelclass = modelcls
+
+            @classmethod
+            def type_name(cls):
+                return cls.modelclass.type_name()
+
             def delete(self, *args, **kwargs):
                 raise exceptions.PermissionDenied(
                     'Registrations tables are append-only'
@@ -186,8 +215,6 @@ class TemporalModelBase(models.base.ModelBase):
                             'registration ends before it starts!'
                         )
 
-                self.checksum = self.calculate_checksum()
-
                 super().save(*args, **kwargs)
 
             @property
@@ -196,14 +223,41 @@ class TemporalModelBase(models.base.ModelBase):
                 return dict(obj[0]['fields'])
 
             def calculate_checksum(self):
-                input = json.dumps(
-                    self.fields,
-                    sort_keys=True, default=json_serialize_object,
-                    separators=(',', ':')
-                ).encode("utf-8")
-                digester = hashlib.sha256()
-                digester.update(input)
-                return digester.hexdigest()
+                if self.checksum is None:
+                    input = json.dumps(
+                        self.fields,
+                        sort_keys=True, default=json_serialize_object,
+                        separators=(',', ':')
+                    ).encode("utf-8")
+                    digester = hashlib.sha256()
+                    digester.update(input)
+                    self.checksum = digester.hexdigest()
+                    self.save()
+
+            def format(self):
+                fields = self.fields
+                for exclusion in [
+                    'registration_from', 'registration_to', 'valid_from',
+                    'valid_to', 'checksum', 'object', 'objectID'
+                ]:
+                    fields.pop(exclusion)
+
+                return {
+                    'checksum': self.checksum,
+                    'registrationFrom': self.registration_from,
+                    'registrationTo': self.registration_to,
+                    'entity': {
+                        'uuid': self.object.objectID,
+                        'domain': 'adresseregister'
+                    },
+                    'effects': [{
+                        'effectFrom': self.valid_from or self.registration_from,
+                        'effectTo': self.valid_to or self.registration_to,
+                        'dataItems': [
+                            fields
+                        ]
+                    }]
+                }
 
         class Meta(regattrs.get('Meta', object)):
             index_together = [

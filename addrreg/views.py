@@ -3,9 +3,11 @@ from __future__ import absolute_import, unicode_literals, print_function
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from jsonview.decorators import json_view
 from dateutil import parser as dateparser
 import pytz
@@ -16,6 +18,7 @@ from . import forms
 
 
 class JsonView(View):
+
     @method_decorator(json_view)
     def dispatch(self, request, *args, **kwargs):
         return super(JsonView, self).dispatch(request, *args, **kwargs)
@@ -26,37 +29,46 @@ class GetNewEventsView(JsonView):
     @staticmethod
     def format(event):
         return {
-            'beskedID': event.eventID,
+            'eventID': event.eventID,
             'beskedVersion': 1,
             'beskedData': {
-                'objektReference': {
-                    'objektreference': event.updated_registration
+                'Objektreference': {
+                    'objektreference': "http://localhost:8000" + reverse(
+                        'getRegistrations', args=[
+                            event.updated_type.lower(),
+                            event.updated_registration,
+                        ]
+                    )
                 }
             }
         }
 
     def get(self, request, *args, **kwargs):
-        new_events = events.Event.objects.filter(receipt_obtained__isnull=True)
-        return {
+        new_events = events.Event.objects.filter(
+            receipt_obtained__isnull=True, updated_type='municipality'
+        )
+        data= {
             'events': [self.format(event) for event in new_events.all()]
         }
+        return data
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class Receipt(View):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, eventID, *args, **kwargs):
+        print(request.body.decode('utf-8'))
         receipt = json.loads(request.body.decode('utf-8'))
-        if 'objectID' in receipt:
-            try:
-                event = events.Event.objects.get(eventID=receipt['objectID'])
-            except events.Event.DoesNotExist:
-                return
-            status = receipt.get('status')
-            if status == 'ok':
-                event.receipt()
-            elif status == 'failed':
-                event.receipt(receipt.get('errorCode'))
-            return HttpResponse(status=201)
+        try:
+            event = events.Event.objects.get(eventID=eventID)
+        except events.Event.DoesNotExist:
+            return HttpResponse(status=404)
+        status = receipt.get('status')
+        if status == 'ok':
+            event.receipt()
+        elif status == 'failed':
+            event.receipt(receipt.get('errorCode'))
+        return HttpResponse(status=201)
 
 
 class ListChecksumView(JsonView):
@@ -64,27 +76,6 @@ class ListChecksumView(JsonView):
     all_object_classes = [
         Municipality, District, PostalCode, Locality, BNumber, Road, Address
     ]
-
-    @staticmethod
-    def format(item, timestamp=None):
-        registrations = item.registrations
-        if timestamp is not None:
-            registrations = registrations.filter(
-                registration_from__gte=timestamp
-            )
-        return {
-            'type': item.get_objecttype_names()[0],
-            'objectID': item.objectID,
-            'registreringer': [
-                {
-                    'sekvensNummer': index,
-                    'checksum': registration.checksum
-                } for index, registration in
-                enumerate(
-                    registrations.order_by('registration_from')
-                )
-            ]
-        }
 
     def get(self, request, *args, **kwargs):
 
@@ -106,68 +97,46 @@ class ListChecksumView(JsonView):
             object_classes = [
                 cls
                 for cls in ListChecksumView.all_object_classes
-                if object_type_name in cls.get_objecttype_names()
+                if object_type_name in cls.type_names()
             ]
         else:
             object_classes = ListChecksumView.all_object_classes
 
         # Get items
-        items = []
+        entities = []
         for object_class in object_classes:
             qs = object_class.objects
             if timestamp is not None:
                 qs = qs.filter(registrations__registration_from__gte=timestamp)
 
-            items.extend(qs.all())
+            entities.extend(qs.all())
 
         # Format output
-        return {'items': [self.format(item, timestamp) for item in items]}
+        return {'items': [entity.format(timestamp) for entity in entities]}
 
 
 class GetRegistrationsView(JsonView):
 
-    all_object_classes = [
-        Municipality, District, PostalCode, Locality, BNumber, Road, Address
-    ]
+    all_object_classes = {
+        cls.type_name(): cls
+        for cls in [
+            State, Municipality, District, PostalCode, Locality, BNumber, Road,
+            Address
+        ]
+    }
 
-    @staticmethod
-    def format(registration):
-        fields = registration.fields
-        for exclusion in [
-            'registration_from', 'registration_to', 'valid_from',
-            'valid_to', 'checksum', 'object', 'objectID'
-        ]:
-            fields.pop(exclusion)
-
-        return {
-            'checksum': registration.checksum,
-            'registerFrom': registration.registration_from,
-            'registerTo': registration.registration_to,
-            'entity': {
-                'uuid': registration.object.objectID,
-                'domain': 'adresseregister'
-            },
-            'effects': [{
-                'effectFrom': registration.valid_from,
-                'effectTo': registration.valid_to,
-                'dataItems': [
-                    fields
-                ]
-            }]
-        }
-
-    def get(self, request, checksums, *args, **kwargs):
+    def get(self, request, type, checksums, *args, **kwargs):
         items = {}
+        object_class = self.all_object_classes[type]
         for checksum in checksums.split(';'):
-            item = None
-            for object_class in self.all_object_classes:
-                try:
-                    item = object_class.Registrations.objects.get(
-                        checksum=checksum
-                    )
-                    break
-                except object_class.Registrations.DoesNotExist:
-                    pass
-            if item is not None:
-                items[checksum] = self.format(item)
+            registration = None
+            try:
+                registration = object_class.Registrations.objects.get(
+                    checksum=checksum
+                )
+                items[checksum] = registration.format()
+            except object_class.Registrations.DoesNotExist:
+                pass
+
+        print(items)
         return items

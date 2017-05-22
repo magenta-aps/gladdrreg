@@ -23,12 +23,15 @@ from django.contrib import admin
 
 from . import views
 
+uuidpattern="%s{8}-%s{4}-%s{4}-%s{4}-%s{12}" % tuple("[0-9a-f]" for x in range(
+    0,5))
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls), name='admin'),
     url(r'^$', RedirectView.as_view(url='/admin/'), name='redirect_admin'),
     url(r'^getNewEvents/?$', views.GetNewEventsView.as_view()),
-    url(r'^receipt/?$', views.Receipt.as_view()),
+    url(r"^receipt/(?P<eventID>%s)?$" % uuidpattern, views.Receipt.as_view()),
     url(r'^listChecksums/?$', views.ListChecksumView.as_view()),
-    url(r'^get/(?P<checksums>[0-9a-f;]+)$',
-        views.GetRegistrationsView.as_view())
+    url(r'^get/(?P<type>[a-z]+)/(?P<checksums>[0-9a-f;]+)$',
+        views.GetRegistrationsView.as_view(), name='getRegistrations')
 ]

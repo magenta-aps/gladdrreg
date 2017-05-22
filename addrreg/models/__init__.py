@@ -103,10 +103,6 @@ class Municipality(base.AbstractModel,
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def get_objecttype_names():
-        return ['municipality']
-
 
 @admin.register(Municipality)
 class MunicipalityAdmin(base.AdminBase):
@@ -133,10 +129,6 @@ class District(base.AbstractModel,
 
     def __str__(self):
         return self.name
-
-    @staticmethod
-    def get_objecttype_names():
-        return ['district']
 
 
 @admin.register(District)
@@ -166,9 +158,9 @@ class PostalCode(base.AbstractModel,
         # Translators: Human-readable description of a PostalCode
         return _('{0.code} {0.name}').format(self)
 
-    @staticmethod
-    def get_objecttype_names():
-        return ['postalcode', 'postnr']
+    @classmethod
+    def alias_names(cls):
+        return ['postnr']
 
 
 @admin.register(PostalCode)
@@ -213,10 +205,6 @@ class Locality(base.AbstractModel,
     def __str__(self):
         # Translators: Human-readable description of a Locality
         return _('{0.name} ({0.type.label})').format(self)
-
-    @staticmethod
-    def get_objecttype_names():
-        return ['locality']
 
 
 @admin.register(Locality)
@@ -264,9 +252,9 @@ class BNumber(base.AbstractModel,
 
         return ''.join(parts)
 
-    @staticmethod
-    def get_objecttype_names():
-        return ['bnumber', 'bnr']
+    @classmethod
+    def alias_names(cls):
+        return ['bnr']
 
 
 @admin.register(BNumber)
@@ -313,10 +301,6 @@ class Road(base.AbstractModel,
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def get_objecttype_names():
-        return ['road']
-
 
 @admin.register(Road)
 class RoadAdmin(base.AdminBase):
@@ -354,10 +338,6 @@ class Address(base.AbstractModel,
     def __str__(self):
         # Translators: Human-readable description of an Address
         return _('{0.house_number} {0.road}').format(self)
-
-    @staticmethod
-    def get_objecttype_names():
-        return ['address']
 
 
 @admin.register(Address)
