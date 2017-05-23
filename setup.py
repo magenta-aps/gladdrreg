@@ -32,6 +32,7 @@ else:
     requires += [
         'django-mssql>=1.8',
         "pypiwin32",
+        'django-windows-tools',
     ]
 
 setuptools.setup(
