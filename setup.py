@@ -3,7 +3,7 @@ import os
 import platform
 import sys
 
-from setuptools import setup, find_packages
+import setuptools
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -62,7 +62,7 @@ setuptools.setup(
     ],
 
     keywords='django greenland dafo',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=setuptools.find_packages(exclude=['contrib', 'docs', 'tests']),
 
     install_requires=requires,
     extras_require={
