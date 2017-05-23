@@ -38,8 +38,7 @@ setuptools.setup(
     name='gladdrreg',
     version='0.0.1',
 
-    description=('Django app implementing the Address Resolution Register '
-                 'of Greenland'),
+    description='Address Resolution Register of Greenland',
     long_description=long_description,
 
     # The project's main homepage.

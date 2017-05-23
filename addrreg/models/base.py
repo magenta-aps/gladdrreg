@@ -46,9 +46,6 @@ class SumiffiikIDField(models.UUIDField):
         kwargs.setdefault('null', False)
         kwargs.setdefault('blank', False)
 
-        # MS-SQL considers null values similar :(
-        kwargs.setdefault('unique', not kwargs['null'])
-
         super().__init__(**kwargs)
 
     def get_db_prep_value(self, value, *args, **kwargs):
@@ -96,3 +93,79 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
         "state": admin.HORIZONTAL,
     }
 
+    superuser_only = False
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj)
+
+        if not request.user.is_superuser and hasattr(self.model, 'municipality'):
+            fields += ('municipality',)
+
+        return fields
+
+    def get_field_queryset(self, db, db_field, request):
+        queryset = super().get_field_queryset(db, db_field, request)
+        user = request.user
+
+        # should work when a queryset is returned, but untested
+        if queryset is None:
+            queryset = db_field.remote_field.model.objects
+
+        if getattr(db_field.remote_field.model, 'active', None):
+            queryset = queryset.filter(active=True)
+
+        if not user.is_superuser:
+            if db_field.remote_field.model._meta.label == 'addrreg.Municipality':
+                queryset = queryset.filter(rights__users=user)
+
+            if hasattr(db_field.remote_field.model, 'municipality'):
+                queryset = queryset.filter(municipality__rights__users=user)
+
+        return queryset
+
+    def get_search_results(self, request, queryset, search_term):
+        if not request.user.is_superuser and hasattr(self.model, 'municipality'):
+            queryset = queryset.filter(municipality__rights__users=request.user)
+
+        return super().get_search_results(request, queryset, search_term)
+
+    def __has_municipality(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        elif not hasattr(request.user, 'rights'):
+            return False
+        # can do this in general?
+
+        if not obj:
+            return (request.user.rights.all() and
+                    hasattr(self.model, 'municipality'))
+
+        elif hasattr(obj, 'municipality'):
+            return request.user.rights.filter(
+                municipality=obj.municipality
+            ).exists()
+        else:
+            return False
+
+    def save_model(self, request, obj, form, change):
+        if (hasattr(type(obj), 'municipality') and
+                not hasattr(obj, 'municipality')):
+            obj.municipality = request.user.rights.only().get().municipality
+
+        obj._registration_user = request.user
+
+        super().save_model(request, obj, form, change)
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return self.__has_municipality(request, obj)
+
+    def has_add_permission(self, request):
+        return self.__has_municipality(request)
+
+    def has_module_permission(self, request):
+        if self.superuser_only:
+            return request.user.is_superuser
+        return self.__has_municipality(request)
