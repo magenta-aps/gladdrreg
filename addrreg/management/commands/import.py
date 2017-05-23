@@ -3,7 +3,9 @@ import itertools
 import json
 import traceback
 
+import progress.bar
 import openpyxl
+
 from django import db
 from django.core import exceptions
 from django.core.management import base
@@ -134,6 +136,12 @@ VALUE_MAPS = {
 def import_spreadsheet(fp, verbose=False, raise_on_error=False):
     wb = openpyxl.load_workbook(fp, read_only=True, data_only=True)
 
+    total = sum(sheet.max_row - 1 for sheet in wb
+                if sheet.title in SPREADSHEET_MAPPINGS)
+    bar = progress.bar.Bar(max=total,
+                           suffix='%(index).0f of %(max).0f - '
+                           '%(elapsed_td)s / %(total_td)s')
+
     for sheet in wb:
         try:
             mapping = SPREADSHEET_MAPPINGS[sheet.title]
@@ -141,12 +149,6 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
             continue
 
         cls = mapping.pop(None)
-        total = sheet.max_row - 1
-
-        if verbose:
-            print('importing {} {}'.format(
-                total, cls._meta.verbose_name_plural
-            ))
 
         rows = sheet.rows
 
@@ -212,6 +214,7 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
             for i, row in \
                     enumerate(reversed(list(itertools.islice(rows, 2))), 1):
                 save(row)
+                bar.next()
 
         if db.connection.vendor == 'sqlite':
             pool_size = 1
@@ -223,14 +226,8 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
         # current one to save in the database
         with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
             for i, f in enumerate(e.map(save, rows), i + 1):
-                if verbose and not i % 50:
-                    print('{:3.0f}% - {} of {}{}'.format(
-                        i / total * 100, i, total, ' ' * 5),
-                          end='\r'
-                    )
-
-    if verbose:
-        print('done!' + 20 * ' ')
+                bar.next()
+    bar.finish()
 
 
 class Command(base.BaseCommand):

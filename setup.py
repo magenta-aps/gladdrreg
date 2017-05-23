@@ -19,6 +19,7 @@ requires = [
         "gunicorn>=19.7",
         "eventlet>=0.21",
         "babel>=2.4.0",
+        "progress>=1.3",
 ]
 
 if sys.platform != 'win32':
