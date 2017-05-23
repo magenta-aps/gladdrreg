@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
-if sys.platform == 'windows':
+if sys.platform == 'win32':
     INSTALLED_APPS += [
         'django_windows_tools',
     ]
