@@ -16,7 +16,6 @@ requires = [
         "django-enumfields>=0.9.0",
         "django_extensions>=1.7.8",
         "openpyxl>=2.4",
-        "gunicorn>=19.7",
         "eventlet>=0.21",
         "babel>=2.4.0",
         "progress>=1.3",
