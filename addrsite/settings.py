@@ -148,3 +148,7 @@ if os.path.exists(
     from .local_settings import *
 else:
     print('No local settings!')
+
+SERIALIZATION_MODULES = {
+    "python_with_identity": 'addrreg.addreg_serializer'
+}

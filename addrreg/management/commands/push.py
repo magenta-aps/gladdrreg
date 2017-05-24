@@ -18,10 +18,14 @@ class Command(base.BaseCommand):
         ]
         type_map = {cls.type_name() : cls for cls in all_object_classes}
 
-        for event in Event.objects.filter(
-            receipt_obtained__isnull=True,
-            updated_type__in=['municipality', 'district', 'postalcode']
-        ):
+        qs = Event.objects.filter(
+            # receipt_obtained__isnull=True,
+            updated_type__in=['address']
+        )[0:1000]
+        count = qs.count()
+
+        i = 0
+        for event in qs:
             cls = type_map[event.updated_type]
             item = cls.Registrations.objects.get(
                 checksum=event.updated_registration
@@ -44,4 +48,6 @@ class Command(base.BaseCommand):
                 data=dump_json(message_body),
                 headers={'Content-Type':'application/json'}
             )
-
+            i += 1
+            print("%.1f%%" % (100*i/count), end='\r')
+        print("Done!")

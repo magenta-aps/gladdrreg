@@ -137,6 +137,12 @@ class TemporalModelBase(models.base.ModelBase):
                     ]
                 }
 
+            def natural_key(self):
+                return {
+                    'uuid': self.objectID,
+                    'domain': 'address_register'
+                }
+
         regattrs = attrs.copy()
         modelcls = super_new(cls, name, (TemporalModel,), attrs)
         unique_togethers = set(modelcls._meta.unique_together)
@@ -219,7 +225,7 @@ class TemporalModelBase(models.base.ModelBase):
 
             @property
             def fields(self):
-                obj = serializers.serialize('python', [self])
+                obj = serializers.serialize('python_with_identity', [self])
                 return dict(obj[0]['fields'])
 
             def calculate_checksum(self):
