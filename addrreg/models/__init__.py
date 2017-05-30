@@ -135,6 +135,8 @@ class District(base.AbstractModel,
 class DistrictAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
 
+    search_fields = ('=code', 'name', '=abbrev')
+
 
 class PostalCode(base.AbstractModel,
                  metaclass=temporal.TemporalModelBase):
@@ -261,7 +263,7 @@ class BNumberAdmin(base.AdminBase):
         'municipality',
         'location',
     )
-    search_fields = ('=code', '=name', '=municipality' '=location')
+    search_fields = ('=code', 'name', 'municipality', 'location')
 
     list_filter = (
                       'location',
@@ -319,8 +321,21 @@ class RoadAdminForm(forms.ModelForm):
 class RoadAdmin(base.AdminBase):
     form = RoadAdminForm
 
-    list_display = ('name', 'code')
-    search_fields = ('name',)
+    list_display = ('name', 'location', 'code', 'state', 'active')
+    list_filter = (
+        'municipality',
+        'location',
+    ) + base.AdminBase.list_filter
+
+    search_fields = (
+        '=code',
+        'name',
+        'shortname',
+        'alternate_name',
+        'cpr_name',
+        'location__name',
+        'municipality__name',
+    )
 
 
 class Address(base.AbstractModel,
@@ -389,8 +404,8 @@ class AddressAdmin(base.AdminBase):
                   ) + base.AdminBase.list_filter
     search_fields = (
         'road__name',
+        'house_number',
         'municipality__name',
-        'locality__name',
     )
 
 
