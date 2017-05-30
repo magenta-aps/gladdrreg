@@ -163,7 +163,7 @@ class PostalCode(base.AbstractModel,
 
 @admin.register(PostalCode)
 class PostalCodeAdmin(base.AdminBase):
-    list_display = ('name', 'code', 'state', 'active')
+    list_display = ('code', 'name', 'state', 'active')
 
 
 class Locality(base.AbstractModel,
@@ -287,7 +287,9 @@ class Road(base.AbstractModel,
     name = models.CharField(_('Name'), db_index=True, max_length=34)
 
     shortname = models.CharField(_('Abbreviated Name'), max_length=20,
-                                 null=True)
+                                 help_text=_('20 character maximum'),
+                                 null=True,
+    )
 
     alternate_name = models.CharField(_('Alternate Name'), max_length=34,
                                       null=True)
