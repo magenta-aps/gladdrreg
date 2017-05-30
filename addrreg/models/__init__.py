@@ -317,6 +317,7 @@ class RoadAdminForm(base.FormBase):
             raise forms.ValidationError(
                 _('Cannot refer to B-Number in different municipality!'))
 
+
 @admin.register(Road)
 class RoadAdmin(base.AdminBase):
     form = RoadAdminForm

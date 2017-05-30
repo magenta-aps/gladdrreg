@@ -126,8 +126,9 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         fields = super().get_readonly_fields(request, obj)
+        user = request.user
 
-        if not request.user.is_superuser and hasattr(self.model, 'municipality'):
+        if user.is_superuser and hasattr(self.model, 'municipality'):
             fields += ('municipality',)
 
         return fields
@@ -135,26 +136,29 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
     def get_field_queryset(self, db, db_field, request):
         queryset = super().get_field_queryset(db, db_field, request)
         user = request.user
+        remote_model = db_field.remote_field.model
 
         # should work when a queryset is returned, but untested
         if queryset is None:
-            queryset = db_field.remote_field.model.objects
+            queryset = remote_model.objects
 
-        if getattr(db_field.remote_field.model, 'active', None):
+        if getattr(remote_model, 'active', None):
             queryset = queryset.filter(active=True)
 
         if not user.is_superuser:
-            if db_field.remote_field.model._meta.label == 'addrreg.Municipality':
+            if remote_model._meta.label == 'addrreg.Municipality':
                 queryset = queryset.filter(rights__users=user)
 
-            if hasattr(db_field.remote_field.model, 'municipality'):
+            if hasattr(remote_model, 'municipality'):
                 queryset = queryset.filter(municipality__rights__users=user)
 
         return queryset
 
     def get_search_results(self, request, queryset, search_term):
-        if not request.user.is_superuser and hasattr(self.model, 'municipality'):
-            queryset = queryset.filter(municipality__rights__users=request.user)
+        user = request.user
+
+        if not user.is_superuser and hasattr(self.model, 'municipality'):
+            queryset = queryset.filter(municipality__rights__users=user)
 
         return super().get_search_results(request, queryset, search_term)
 
