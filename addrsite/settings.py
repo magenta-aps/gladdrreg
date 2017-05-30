@@ -156,6 +156,6 @@ if platform.python_implementation() == 'PyPy':
 
 if os.path.exists(os.path.join(os.path.dirname(__file__),
                                'local_settings.py')):
-    from .local_settings import * # noqa
+    from .local_settings import *  # noqa
 else:
     print('No local settings!')

@@ -26,7 +26,7 @@ from .management.commands import import_
 
 try:
     import selenium
-except:
+except ImportError:
     selenium = None
 
 
@@ -432,6 +432,7 @@ class VerifyImport(test.SimpleTestCase):
             self.assertEquals(t['stateda'], str(e.label))
             self.assertEquals(t['code'], e.value)
 
+
 @unittest.skipIf(not selenium, 'selenium not installed')
 class RightsTests(test.LiveServerTestCase):
     @classmethod
@@ -515,7 +516,6 @@ class RightsTests(test.LiveServerTestCase):
         self.assertTrue(self.client.login(username=user, password='password'),
                         'login failed - invalid credentials!')
 
-
         self.browser.find_element_by_id("id_username").send_keys(
             user,
         )
@@ -579,8 +579,12 @@ class RightsTests(test.LiveServerTestCase):
                 'States',
             ],
 
-            'UserA': [ 'Addresses', 'B-Numbers', 'Roads' ],
-            'UserB': [ 'Addresses', 'B-Numbers', 'Roads' ],
+            'UserA': [
+                'Addresses', 'B-Numbers', 'Roads',
+            ],
+            'UserB': [
+                'Addresses', 'B-Numbers', 'Roads',
+            ],
             'UserC': None,
         }
 
@@ -590,4 +594,3 @@ class RightsTests(test.LiveServerTestCase):
                     modules,
                     self.get_user_modules(user, 'addrreg'),
                 )
-

@@ -92,6 +92,7 @@ class SumiffiikDomainField(models.CharField):
     def default(self, val):
         pass
 
+
 class FormBase(forms.ModelForm):
     class Meta:
         widgets = {
@@ -105,7 +106,6 @@ class FormBase(forms.ModelForm):
             return uuid.UUID(sumiffiik.strip('{}'))
         except ValueError:
             raise ValidationError
-
 
 
 class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):

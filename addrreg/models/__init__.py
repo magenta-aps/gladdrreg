@@ -288,8 +288,7 @@ class Road(base.AbstractModel,
 
     shortname = models.CharField(_('Abbreviated Name'), max_length=20,
                                  help_text=_('20 character maximum'),
-                                 null=True,
-    )
+                                 null=True)
 
     alternate_name = models.CharField(_('Alternate Name'), max_length=34,
                                       null=True)
