@@ -58,6 +58,24 @@ class SumiffiikIDField(models.UUIDField):
 
         return super().get_db_prep_value(value, *args, **kwargs)
 
+    def formfield(self, **kwargs):
+        # Passing max_length to forms.CharField means that the value's length
+        # will be validated twice. This is considered acceptable since we want
+        # the value in the form field (to pass into widget for example).
+        defaults = {
+            'widget': SumiffiikIDInput(attrs={'maxlength': 38})
+        }
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class SumiffiikIDInput(admin.widgets.AdminTextInputWidget):
+    def render(self, name, value, attrs=None):
+        if value is not None:
+            value = '{{{}}}'.format(uuid.UUID(value.strip('{}')))
+
+        return super().render(name, value, attrs)
+
 
 class SumiffiikDomainField(models.CharField):
     def __init__(self, **kwargs):
@@ -74,13 +92,24 @@ class SumiffiikDomainField(models.CharField):
     def default(self, val):
         pass
 
-
-class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
+class FormBase(forms.ModelForm):
     class Meta:
         widgets = {
             'note': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
             'last_changed': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
         }
+
+    def clean_sumiffiik(self):
+        sumiffiik = self.cleaned_data['sumiffiik']
+        try:
+            return uuid.UUID(sumiffiik.strip('{}'))
+        except ValueError:
+            raise ValidationError
+
+
+
+class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
+    form = FormBase
 
     view_on_site = False
 

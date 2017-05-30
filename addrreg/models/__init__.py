@@ -300,7 +300,7 @@ class Road(base.AbstractModel,
         return self.name
 
 
-class RoadAdminForm(forms.ModelForm):
+class RoadAdminForm(base.FormBase):
     def clean_b_number(self):
         b_number = self.cleaned_data['b_number']
         municipality = self.cleaned_data.get('municipality',
