@@ -140,94 +140,96 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
                 if sheet.title in SPREADSHEET_MAPPINGS)
     bar = progress.bar.Bar(max=total,
                            suffix='%(index).0f of %(max).0f - '
-                           '%(elapsed_td)s / %(total_td)s')
+                                  '%(elapsed_td)s / %(eta_td)s')
 
-    for sheet in wb:
-        try:
-            mapping = SPREADSHEET_MAPPINGS[sheet.title]
-        except KeyError:
-            continue
-
-        cls = mapping.pop(None)
-
-        rows = sheet.rows
-
-        column_names = [
-            mapping.get(col.value, col.value and col.value.lower())
-            for col in next(rows)
-        ]
-
-        def save(row):
-            if row[0].value in DROP:
-                return
-
+    try:
+        for sheet in wb:
             try:
-                kws = {
-                    column_names[cellidx]:
-                        (VALUE_MAPS[column_names[cellidx]].get(cell.value,
-                                                               cell.value)
-                         if column_names[cellidx] in VALUE_MAPS
-                         else cell.value)
-                    for cellidx, cell in enumerate(row)
-                    if column_names[cellidx]
-                }
+                mapping = SPREADSHEET_MAPPINGS[sheet.title]
             except KeyError:
-                msg = 'error mapping {} {}: {}'.format(
-                    sheet.title, kws['id'], json.dumps({
-                        column_names[cellidx]: cell.value
+                continue
+
+            cls = mapping.pop(None)
+
+            rows = sheet.rows
+
+            column_names = [
+                mapping.get(col.value, col.value and col.value.lower())
+                for col in next(rows)
+            ]
+
+            def save(row):
+                if row[0].value in DROP:
+                    return
+
+                try:
+                    kws = {
+                        column_names[cellidx]:
+                            (VALUE_MAPS[column_names[cellidx]].get(cell.value,
+                                                                   cell.value)
+                             if column_names[cellidx] in VALUE_MAPS
+                             else cell.value)
                         for cellidx, cell in enumerate(row)
                         if column_names[cellidx]
-                    }, indent=2)
-                )
+                    }
+                except KeyError:
+                    msg = 'error mapping {} {}: {}'.format(
+                        sheet.title, kws['id'], json.dumps({
+                            column_names[cellidx]: cell.value
+                            for cellidx, cell in enumerate(row)
+                            if column_names[cellidx]
+                        }, indent=2)
+                    )
 
-                if raise_on_error:
-                    raise base.CommandError(msg)
-                else:
-                    print(msg)
+                    if raise_on_error:
+                        raise base.CommandError(msg)
+                    else:
+                        print(msg)
 
-            try:
-                kws.update(OVERRIDES[kws['id']])
-            except KeyError:
-                pass
+                try:
+                    kws.update(OVERRIDES[kws['id']])
+                except KeyError:
+                    pass
 
-            try:
-                cls.objects.create(**kws)
-            except (db.Error, exceptions.ValidationError,
-                    exceptions.ObjectDoesNotExist) as exc:
-                msg = 'error processing {} {}: {}'.format(
-                    sheet.title, kws['id'], json.dumps(kws, indent=2),
-                )
+                try:
+                    cls.objects.create(**kws)
+                except (db.Error, exceptions.ValidationError,
+                        exceptions.ObjectDoesNotExist) as exc:
+                    msg = 'error processing {} {}: {}'.format(
+                        sheet.title, kws['id'], json.dumps(kws, indent=2),
+                    )
 
-                if raise_on_error:
-                    raise base.CommandError(msg)
-                elif verbose:
-                    print(msg)
-                    traceback.print_exc()
-                else:
-                    print(msg)
+                    if raise_on_error:
+                        raise base.CommandError(msg)
+                    elif verbose:
+                        print(msg)
+                        traceback.print_exc()
+                    else:
+                        print(msg)
 
-        i = 0
+            i = 0
 
-        if sheet.title == 'state':
-            # HACK: work around the fact that the first state refers
-            # to the second state, by importing them in reverse order
-            for i, row in \
-                    enumerate(reversed(list(itertools.islice(rows, 2))), 1):
-                save(row)
-                bar.next()
+            if sheet.title == 'state':
+                # HACK: work around the fact that the first state refers
+                # to the second state, by importing them in reverse order
+                for i, row in \
+                        enumerate(reversed(list(itertools.islice(rows, 2))), 1):
+                    save(row)
+                    bar.next()
 
-        if db.connection.vendor == 'sqlite':
-            pool_size = 1
-        else:
-            pool_size = 3
+            if db.connection.vendor == 'sqlite':
+                pool_size = 1
+            else:
+                pool_size = 3
 
-        # executing two saves concurrently ensures that we'll
-        # typically be preparing the next while waiting for the
-        # current one to save in the database
-        with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
-            for i, f in enumerate(e.map(save, rows), i + 1):
-                bar.next()
-    bar.finish()
+            # executing two saves concurrently ensures that we'll
+            # typically be preparing the next while waiting for the
+            # current one to save in the database
+            with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
+                for i, f in enumerate(e.map(save, rows), i + 1):
+                    bar.next()
+    finally:
+        bar.finish()
 
 
 class Command(base.BaseCommand):
