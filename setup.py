@@ -15,6 +15,7 @@ requires = [
         "django>=1.10, <1.11",
         "django-enumfields>=0.9.0",
         "django_extensions>=1.7.8",
+        "django-modeladmin-reorder>=0.2",
         "openpyxl>=2.4",
         "eventlet>=0.21",
         "babel>=2.4.0",

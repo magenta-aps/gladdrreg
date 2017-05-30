@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+	'admin_reorder',
 ]
 
 if sys.platform == 'win32':
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+	'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'addrsite.urls'
@@ -102,6 +104,28 @@ DATABASES = {
     }
 }
 
+
+# Admin site reordering
+# https://django-modeladmin-reorder.readthedocs.io/en/latest/readme.html#configuration
+
+ADMIN_REORDER = (
+    {'app': 'addrreg', 'models': (
+		'addrreg.Address',
+		'addrreg.BNumber',
+		'addrreg.Road',
+		'addrreg.District',
+		'addrreg.Locality',
+		'addrreg.Municipality',
+		'addrreg.PostalCode',
+		'addrreg.State',
+	)},
+
+    # Reorder app models
+    {'app': 'auth', 'models': (
+		'auth.User',
+		'addrreg.MunicipalityRights',
+	)},
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
