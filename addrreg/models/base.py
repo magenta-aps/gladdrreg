@@ -105,7 +105,7 @@ class FormBase(forms.ModelForm):
         try:
             return uuid.UUID(sumiffiik.strip('{}'))
         except ValueError:
-            raise ValidationError
+            raise forms.ValidationError
 
 
 class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
