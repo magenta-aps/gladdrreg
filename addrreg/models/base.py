@@ -113,6 +113,13 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
 
     view_on_site = False
 
+    _fieldsets = (
+        (_('State'), {
+            'fields': ('state', 'active', 'note'),
+            'classes': ('wide',),
+        }),
+    )
+
     list_filter = (
         'active',
         'state',

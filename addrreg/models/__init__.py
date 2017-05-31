@@ -42,6 +42,13 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 class StateAdmin(base.AdminBase):
     list_display = ('name', 'description', 'state', 'active')
 
+    fieldsets = (
+        (None, {
+            'fields': ('code', 'name', 'active'),
+            'classes': ('wide', 'extra_pretty'),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 @enum.unique
 class LocalityType(enumfields.IntEnum):
@@ -108,6 +115,17 @@ class Municipality(base.AbstractModel,
 class MunicipalityAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
 
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 class District(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
@@ -137,6 +155,17 @@ class DistrictAdmin(base.AdminBase):
 
     search_fields = ('=code', 'name', '=abbrev')
 
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 class PostalCode(base.AbstractModel,
                  metaclass=temporal.TemporalModelBase):
@@ -164,6 +193,17 @@ class PostalCode(base.AbstractModel,
 @admin.register(PostalCode)
 class PostalCodeAdmin(base.AdminBase):
     list_display = ('code', 'name', 'state', 'active')
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('code', 'name'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Locality(base.AbstractModel,
@@ -223,6 +263,20 @@ class LocalityAdmin(base.AdminBase):
 
     superuser_only = True
 
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code', 'type', 'locality_state'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'municipality', 'district', 'postal_code',
+                'sumiffiik', 'sumiffiik_domain',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 class BNumber(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
@@ -269,6 +323,20 @@ class BNumberAdmin(base.AdminBase):
                       'location',
                       'municipality',
                   ) + base.AdminBase.list_filter
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('code', 'name', 'nickname'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'municipality', 'location',
+                'sumiffiik', 'sumiffiik_domain',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Road(base.AbstractModel,
@@ -338,6 +406,23 @@ class RoadAdmin(base.AdminBase):
         'location__name',
         'municipality__name',
     )
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': (
+                'name', 'code',
+                'shortname', 'alternate_name', 'cpr_name',
+            ),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'sumiffiik', 'sumiffiik_domain',
+                'location', 'municipality',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Address(base.AbstractModel,
@@ -430,6 +515,22 @@ class AddressAdmin(base.AdminBase):
         'house_number',
         'municipality__name',
     )
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': (
+                'road', 'house_number', 'floor', 'room', 'b_number',
+            ),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'sumiffiik', 'sumiffiik_domain',
+                'location', 'municipality',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class MunicipalityRights(models.Model):
