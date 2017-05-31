@@ -362,10 +362,9 @@ class Address(base.AbstractModel,
     room = models.CharField(_('Room'), max_length=6,
                             null=True, blank=True)
 
-    b_number = base.ForeignKey(BNumber, _('B-Number'), null=True, blank=True)
-    road = base.ForeignKey(Road, _('Road'), null=True, blank=True)
-    municipality = base.ForeignKey(Municipality, _('Municipality'),
-                                   null=False, blank=True)
+    b_number = base.ForeignKey(BNumber, _('B-Number'))
+    road = base.ForeignKey(Road, _('Road'))
+    municipality = base.ForeignKey(Municipality, _('Municipality'))
 
     def location(self):
         return self.road.location
