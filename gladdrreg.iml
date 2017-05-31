@@ -19,7 +19,7 @@
       <excludeFolder url="file://$MODULE_DIR$/pyenv-darwin" />
       <excludeFolder url="file://$MODULE_DIR$/pyenv-linux" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.5.2 virtualenv at ~/Projekt/datafordeler/adresseregister/pyenv-linux-cpython-3.5" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

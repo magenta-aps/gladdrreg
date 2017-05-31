@@ -36,6 +36,18 @@ class AbstractModel(models.Model):
     active = models.BooleanField(_('Active'), default=True)
     note = models.CharField(_('Notes'), null=True, max_length=255)
 
+    @classmethod
+    def type_name(cls):
+        return cls.__name__.lower()
+
+    @classmethod
+    def alias_names(cls):
+        return []
+
+    @classmethod
+    def type_names(cls):
+        return [cls.type_name()] + cls.alias_names()
+
 
 class SumiffiikIDField(models.UUIDField):
     def __init__(self, **kwargs):

@@ -58,8 +58,8 @@ if sys.platform == 'win32':
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -177,3 +177,7 @@ if os.path.exists(os.path.join(os.path.dirname(__file__),
     from .local_settings import *  # noqa
 else:
     print('No local settings!')
+
+SERIALIZATION_MODULES = {
+    "python_with_identity": 'addrreg.addreg_serializer'
+}

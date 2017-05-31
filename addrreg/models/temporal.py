@@ -3,12 +3,16 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
 import uuid
+import hashlib
+import json
 
 from django.conf import settings
-from django.core import exceptions
+from django.core import exceptions, serializers
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from ..util import json_serialize_object
 
 
 class TemporalModelBase(models.base.ModelBase):
@@ -110,6 +114,35 @@ class TemporalModelBase(models.base.ModelBase):
                     **self.__get_field_dict(exclude=('id',))
                 )
 
+
+            def format(self, timestamp=None):
+                registrations = self.registrations
+                if timestamp is not None:
+                    registrations = registrations.filter(
+                        registration_from__gte=timestamp
+                    )
+                for registration in registrations.all():
+                    registration.calculate_checksum()
+                return {
+                    'type': self.type_name(),
+                    'objectID': self.objectID,
+                    'registreringer': [
+                        {
+                            'sekvensNummer': index,
+                            'checksum': registration.checksum
+                        } for index, registration in
+                        enumerate(
+                            registrations.order_by('registration_from')
+                        )
+                    ]
+                }
+
+            def natural_key(self):
+                return {
+                    'uuid': self.objectID,
+                    'domain': 'address_register'
+                }
+
         regattrs = attrs.copy()
         modelcls = super_new(cls, name, (TemporalModel,), attrs)
 
@@ -162,6 +195,15 @@ class TemporalModelBase(models.base.ModelBase):
                                                    null=True,
                                                    editable=False)
 
+            checksum = models.CharField(db_index=True, null=True,
+                                        editable=False, max_length=64)
+
+            modelclass = modelcls
+
+            @classmethod
+            def type_name(cls):
+                return cls.modelclass.type_name()
+
             def delete(self, *args, **kwargs):
                 raise exceptions.PermissionDenied(
                     'Registrations tables are append-only'
@@ -188,6 +230,48 @@ class TemporalModelBase(models.base.ModelBase):
                         )
 
                 super().save(*args, **kwargs)
+
+            @property
+            def fields(self):
+                obj = serializers.serialize('python_with_identity', [self])
+                return dict(obj[0]['fields'])
+
+            def calculate_checksum(self):
+                if self.checksum is None:
+                    input = json.dumps(
+                        self.fields,
+                        sort_keys=True, default=json_serialize_object,
+                        separators=(',', ':')
+                    ).encode("utf-8")
+                    digester = hashlib.sha256()
+                    digester.update(input)
+                    self.checksum = digester.hexdigest()
+                    self.save()
+
+            def format(self):
+                fields = self.fields
+                for exclusion in [
+                    'registration_from', 'registration_to', 'valid_from',
+                    'valid_to', 'checksum', 'object', 'objectID'
+                ]:
+                    fields.pop(exclusion)
+
+                return {
+                    'checksum': self.checksum,
+                    'registrationFrom': self.registration_from,
+                    'registrationTo': self.registration_to,
+                    'entity': {
+                        'uuid': self.object.objectID,
+                        'domain': 'adresseregister'
+                    },
+                    'effects': [{
+                        'effectFrom': self.valid_from or self.registration_from,
+                        'effectTo': self.valid_to or self.registration_to,
+                        'dataItems': [
+                            fields
+                        ]
+                    }]
+                }
 
         class Meta(regattrs.get('Meta', object)):
             index_together = [
