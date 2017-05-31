@@ -42,7 +42,11 @@ if __name__ == "__main__":
     if not is_in_venv:
         if (CURRENT_PYTHON[0] != REQUIRED_PYTHON[0] or
                 CURRENT_PYTHON[1] < REQUIRED_PYTHON[1]):
+            if platform.system() == 'Windows':
+                raise Exception('This script requires Python %d.%d or later' %
+                                REQUIRED_PYTHON)
             exe = 'python%d.%d' % REQUIRED_PYTHON
+
             os.execlp(exe, exe, *sys.argv)
 
         if not os.path.isfile(venv_executable):
