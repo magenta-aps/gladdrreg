@@ -367,12 +367,28 @@ class Address(base.AbstractModel,
     municipality = base.ForeignKey(Municipality, _('Municipality'),
                                    null=False, blank=True)
 
+    def location(self):
+        return self.road.location
+
+    location.short_description = _('Locality')
+
     def __str__(self):
-        # Translators: Human-readable description of an Address
-        return _('{0.house_number} {0.road}').format(self)
+        if self.floor:
+            if self.room:
+                return (
+                    '{0.house_number} {0.road}, {0.floor}, {0.room}'
+                ).format(self)
+            else:
+                return (
+                    '{0.house_number} {0.road}, {0.floor}'
+                ).format(self)
+        elif self.house_number:
+            return _('{0.house_number} {0.road}').format(self)
+        else:
+            return _('{0.road}').format(self)
 
 
-class AddressAdminForm(forms.ModelForm):
+class AddressAdminForm(base.FormBase):
     def clean_b_number(self):
         b_number = self.cleaned_data['b_number']
         municipality = self.cleaned_data.get('municipality',
@@ -399,11 +415,17 @@ class AddressAdmin(base.AdminBase):
         'house_number',
         'floor',
         'room',
+        'location',
         'municipality',
     )
+
+    readonly_fields = ('location',)
+
     list_filter = (
-                      'municipality',
-                  ) + base.AdminBase.list_filter
+        'road__location__name',
+        'municipality',
+    ) + base.AdminBase.list_filter
+
     search_fields = (
         'road__name',
         'house_number',
