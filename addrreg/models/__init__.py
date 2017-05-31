@@ -24,6 +24,10 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
         ordering = ('code',)
         default_permissions = ()
 
+    state = models.ForeignKey('addrreg.State', models.DO_NOTHING,
+                              verbose_name=_('State'), db_index=True,
+                              related_name='+')
+
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True,
                                             unique=True)
     name = models.CharField(_('Name'), max_length=20, null=True)
@@ -37,6 +41,13 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 @admin.register(State)
 class StateAdmin(base.AdminBase):
     list_display = ('name', 'description', 'state', 'active')
+
+    fieldsets = (
+        (None, {
+            'fields': ('code', 'name', 'active'),
+            'classes': ('wide', 'extra_pretty'),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 @enum.unique
@@ -108,6 +119,17 @@ class Municipality(base.AbstractModel,
 class MunicipalityAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
 
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 class District(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
@@ -134,6 +156,19 @@ class District(base.AbstractModel,
 @admin.register(District)
 class DistrictAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
+
+    search_fields = ('=code', 'name', '=abbrev')
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class PostalCode(base.AbstractModel,
@@ -165,7 +200,18 @@ class PostalCode(base.AbstractModel,
 
 @admin.register(PostalCode)
 class PostalCodeAdmin(base.AdminBase):
-    list_display = ('name', 'code', 'state', 'active')
+    list_display = ('code', 'name', 'state', 'active')
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('code', 'name'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Locality(base.AbstractModel,
@@ -223,6 +269,22 @@ class LocalityAdmin(base.AdminBase):
                       'locality_state',
                   ) + base.AdminBase.list_filter
 
+    superuser_only = True
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('name', 'abbrev', 'code', 'type', 'locality_state'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'municipality', 'district', 'postal_code',
+                'sumiffiik', 'sumiffiik_domain',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
 
 class BNumber(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
@@ -242,8 +304,10 @@ class BNumber(base.AbstractModel,
     # aka blokbetegnelse
     nickname = models.CharField(_('Nickname'), max_length=60, null=True)
 
-    location = base.ForeignKey(Locality, verbose_name=_('Locality'), null=False)
-    municipality = base.ForeignKey(Municipality, _('Municipality'), null=False)
+    location = base.ForeignKey(Locality, verbose_name=_('Locality'),
+                               null=False)
+    municipality = base.ForeignKey(Municipality, _('Municipality'),
+                                   null=False)
 
     def __str__(self):
         parts = [self.code]
@@ -265,12 +329,26 @@ class BNumberAdmin(base.AdminBase):
         'municipality',
         'location',
     )
-    search_fields = ('=code', '=name', '=municipality' '=location')
+    search_fields = ('=code', 'name', 'municipality', 'location')
 
     list_filter = (
-        'location',
-        'municipality',
-    ) + base.AdminBase.list_filter
+                      'location',
+                      'municipality',
+                  ) + base.AdminBase.list_filter
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': ('code', 'name', 'nickname'),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'municipality', 'location',
+                'sumiffiik', 'sumiffiik_domain',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Road(base.AbstractModel,
@@ -289,6 +367,7 @@ class Road(base.AbstractModel,
     name = models.CharField(_('Name'), db_index=True, max_length=34)
 
     shortname = models.CharField(_('Abbreviated Name'), max_length=20,
+                                 help_text=_('20 character maximum'),
                                  null=True)
 
     alternate_name = models.CharField(_('Alternate Name'), max_length=34,
@@ -302,10 +381,60 @@ class Road(base.AbstractModel,
         return self.name
 
 
+class RoadAdminForm(base.FormBase):
+    def clean_b_number(self):
+        b_number = self.cleaned_data['b_number']
+        municipality = self.cleaned_data.get('municipality',
+                                             self.instance.municipality)
+
+        if b_number and b_number.municipality != municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
+
+    def clean_road(self):
+        road = self.cleaned_data['road']
+
+        if road.municipality != self.instance.municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
+
+
 @admin.register(Road)
 class RoadAdmin(base.AdminBase):
-    list_display = ('name', 'code')
-    search_fields = ('name',)
+    form = RoadAdminForm
+
+    list_display = ('name', 'location', 'code', 'state', 'active')
+    list_filter = (
+        'municipality',
+        'location',
+    ) + base.AdminBase.list_filter
+
+    search_fields = (
+        '=code',
+        'name',
+        'shortname',
+        'alternate_name',
+        'cpr_name',
+        'location__name',
+        'municipality__name',
+    )
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': (
+                'name', 'code',
+                'shortname', 'alternate_name', 'cpr_name',
+            ),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'sumiffiik', 'sumiffiik_domain',
+                'location', 'municipality',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
 
 
 class Address(base.AbstractModel,
@@ -330,30 +459,112 @@ class Address(base.AbstractModel,
     room = models.CharField(_('Room'), max_length=6,
                             null=True, blank=True)
 
-    b_number = base.ForeignKey(BNumber, _('B-Number'), null=True, blank=True)
-    road = base.ForeignKey(Road, _('Road'), null=True, blank=True)
-    municipality = base.ForeignKey(Municipality, _('Municipality'),
-                                   null=False, blank=True)
+    b_number = base.ForeignKey(BNumber, _('B-Number'))
+    road = base.ForeignKey(Road, _('Road'))
+    municipality = base.ForeignKey(Municipality, _('Municipality'))
+
+    def location(self):
+        return self.road.location
+
+    location.short_description = _('Locality')
 
     def __str__(self):
-        # Translators: Human-readable description of an Address
-        return _('{0.house_number} {0.road}').format(self)
+        if self.floor:
+            if self.room:
+                return (
+                    '{0.house_number} {0.road}, {0.floor}, {0.room}'
+                ).format(self)
+            else:
+                return (
+                    '{0.house_number} {0.road}, {0.floor}'
+                ).format(self)
+        elif self.house_number:
+            return _('{0.house_number} {0.road}').format(self)
+        else:
+            return _('{0.road}').format(self)
+
+
+class AddressAdminForm(base.FormBase):
+    def clean_b_number(self):
+        b_number = self.cleaned_data['b_number']
+        municipality = self.cleaned_data.get('municipality',
+                                             self.instance.municipality)
+
+        if b_number and b_number.municipality != municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
+
+    def clean_road(self):
+        road = self.cleaned_data['road']
+
+        if road.municipality != self.instance.municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
 
 
 @admin.register(Address)
 class AddressAdmin(base.AdminBase):
+    form = AddressAdminForm
+
     list_display = (
         'road',
         'house_number',
         'floor',
         'room',
+        'location',
         'municipality',
     )
+
+    readonly_fields = ('location',)
+
     list_filter = (
+        'road__location__name',
         'municipality',
     ) + base.AdminBase.list_filter
+
     search_fields = (
         'road__name',
+        'house_number',
         'municipality__name',
-        'locality__name',
     )
+
+    fieldsets = (
+        (_('Info'), {
+            'fields': (
+                'road', 'house_number', 'floor', 'room', 'b_number',
+            ),
+            'classes': ('wide',),
+        }),
+        (_('Geography'), {
+            'fields': (
+                'sumiffiik', 'sumiffiik_domain',
+                'location', 'municipality',
+            ),
+            'classes': ('wide',),
+        }),
+    ) + base.AdminBase._fieldsets
+
+
+class MunicipalityRights(models.Model):
+    class Meta:
+        verbose_name = _('Municipality Rights')
+        verbose_name_plural = _('Municipality Rights')
+
+        default_permissions = ()
+
+    municipality = models.OneToOneField(
+        'Municipality', models.CASCADE,
+        verbose_name=_('Municipality'),
+        related_name='rights',
+    )
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('Users'),
+        related_name='rights',
+    )
+
+    def __str__(self):
+        return self.municipality.name
+
+
+admin.site.register(MunicipalityRights)

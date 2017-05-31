@@ -58,9 +58,6 @@ class SumiffiikIDField(models.UUIDField):
         kwargs.setdefault('null', False)
         kwargs.setdefault('blank', False)
 
-        # MS-SQL considers null values similar :(
-        kwargs.setdefault('unique', not kwargs['null'])
-
         super().__init__(**kwargs)
 
     def get_db_prep_value(self, value, *args, **kwargs):
@@ -72,6 +69,24 @@ class SumiffiikIDField(models.UUIDField):
             return None
 
         return super().get_db_prep_value(value, *args, **kwargs)
+
+    def formfield(self, **kwargs):
+        # Passing max_length to forms.CharField means that the value's length
+        # will be validated twice. This is considered acceptable since we want
+        # the value in the form field (to pass into widget for example).
+        defaults = {
+            'widget': SumiffiikIDInput(attrs={'maxlength': 38})
+        }
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class SumiffiikIDInput(admin.widgets.AdminTextInputWidget):
+    def render(self, name, value, attrs=None):
+        if value is not None:
+            value = '{{{}}}'.format(uuid.UUID(value.strip('{}')))
+
+        return super().render(name, value, attrs)
 
 
 class SumiffiikDomainField(models.CharField):
@@ -90,14 +105,32 @@ class SumiffiikDomainField(models.CharField):
         pass
 
 
-class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
+class FormBase(forms.ModelForm):
     class Meta:
         widgets = {
             'note': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
             'last_changed': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
         }
 
+    def clean_sumiffiik(self):
+        sumiffiik = self.cleaned_data['sumiffiik']
+        try:
+            return uuid.UUID(sumiffiik.strip('{}'))
+        except ValueError:
+            raise ValidationError
+
+
+class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
+    form = FormBase
+
     view_on_site = False
+
+    _fieldsets = (
+        (_('State'), {
+            'fields': ('state', 'active', 'note'),
+            'classes': ('wide',),
+        }),
+    )
 
     list_filter = (
         'active',
@@ -108,3 +141,83 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
         "state": admin.HORIZONTAL,
     }
 
+    superuser_only = False
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj)
+        user = request.user
+
+        if not user.is_superuser and hasattr(self.model, 'municipality'):
+            fields += ('municipality',)
+
+        return fields
+
+    def get_field_queryset(self, db, db_field, request):
+        queryset = super().get_field_queryset(db, db_field, request)
+        user = request.user
+        remote_model = db_field.remote_field.model
+
+        # should work when a queryset is returned, but untested
+        if queryset is None:
+            queryset = remote_model.objects
+
+        if getattr(remote_model, 'active', None):
+            queryset = queryset.filter(active=True)
+
+        if not user.is_superuser:
+            if remote_model._meta.label == 'addrreg.Municipality':
+                queryset = queryset.filter(rights__users=user)
+
+            if hasattr(remote_model, 'municipality'):
+                queryset = queryset.filter(municipality__rights__users=user)
+
+        return queryset
+
+    def get_search_results(self, request, queryset, search_term):
+        user = request.user
+
+        if not user.is_superuser and hasattr(self.model, 'municipality'):
+            queryset = queryset.filter(municipality__rights__users=user)
+
+        return super().get_search_results(request, queryset, search_term)
+
+    def __has_municipality(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        elif not hasattr(request.user, 'rights'):
+            return False
+        # can do this in general?
+
+        if not obj:
+            return (request.user.rights.all() and
+                    hasattr(self.model, 'municipality'))
+
+        elif hasattr(obj, 'municipality'):
+            return request.user.rights.filter(
+                municipality=obj.municipality
+            ).exists()
+        else:
+            return False
+
+    def save_model(self, request, obj, form, change):
+        if (hasattr(type(obj), 'municipality') and
+                not hasattr(obj, 'municipality')):
+            obj.municipality = request.user.rights.only().get().municipality
+
+        obj._registration_user = request.user
+
+        super().save_model(request, obj, form, change)
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return self.__has_municipality(request, obj)
+
+    def has_add_permission(self, request):
+        return self.__has_municipality(request)
+
+    def has_module_permission(self, request):
+        if self.superuser_only:
+            return request.user.is_superuser
+        return self.__has_municipality(request)

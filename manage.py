@@ -20,28 +20,33 @@ if __name__ == "__main__":
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # allow testing on different platforms and VMs
-    venvdir = os.path.join(basedir, "pyenv-{}-{}-{}.{}".format(
+    venvdir = os.path.join(basedir, "venv-{}-{}-{}.{}".format(
         platform.system(), platform.python_implementation(),
         *platform.python_version_tuple()[:2]
     ).lower())
 
     # commonpath() is Python 3.5+, so first, check for the platform
     is_in_venv = (
-        REQUIRED_PYTHON <= CURRENT_PYTHON  and
+        REQUIRED_PYTHON <= CURRENT_PYTHON and
         (os.path.splitdrive(sys.executable)[0] ==
          os.path.splitdrive(basedir)[0]) and
         os.path.commonpath([sys.executable, basedir]) == basedir
     )
 
-    venv_executable = (os.path.join(venvdir, 'bin', 'python')
+    exec_name = os.path.basename(sys.executable)
+    venv_executable = (os.path.join(venvdir, 'bin', exec_name)
                        if platform.system() != 'Windows'
-                       else os.path.join(venvdir, 'Scripts', 'python.exe'))
+                       else os.path.join(venvdir, 'Scripts', exec_name))
 
     # create the virtual env, if necessary
     if not is_in_venv:
         if (CURRENT_PYTHON[0] != REQUIRED_PYTHON[0] or
                 CURRENT_PYTHON[1] < REQUIRED_PYTHON[1]):
+            if platform.system() == 'Windows':
+                raise Exception('This script requires Python %d.%d or later' %
+                                REQUIRED_PYTHON)
             exe = 'python%d.%d' % REQUIRED_PYTHON
+
             os.execlp(exe, exe, *sys.argv)
 
         if not os.path.isfile(venv_executable):
@@ -49,19 +54,29 @@ if __name__ == "__main__":
 
                 try:
                     venv.main(['--upgrade', venvdir])
-                except:
+                except SystemExit:
+                    # handle Ubuntu's horrible hackery where you get a
+                    # venv without pip...
                     import shutil
                     shutil.rmtree(venvdir)
                     raise
 
+        subprocess.check_call([
+            venv_executable, '-m', 'pip', 'install', '-qe', basedir
+        ])
+
         if platform.system() == 'Windows':
             # os.execlp doesn't actually replace the current process
             # on Windows
-            sys.exit(subprocess.call([venv_executable] + sys.argv))
+            with subprocess.Popen([venv_executable] + sys.argv) as proc:
+                try:
+                    proc.wait()
+                except KeyboardInterrupt:
+                    proc.terminate()
+
+                sys.exit(proc.returncode)
         else:
             os.execlp(venv_executable, venv_executable, *sys.argv)
-
-    subprocess.check_call([venv_executable, '-m', 'pip', 'install', '-qe', basedir])
 
     # create a secret key, so that we can guarantee its presence
     # whilst keeping it out of version control

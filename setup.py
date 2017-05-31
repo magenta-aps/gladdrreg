@@ -3,7 +3,7 @@ import os
 import platform
 import sys
 
-from setuptools import setup, find_packages
+import setuptools
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,11 +15,14 @@ requires = [
         "django>=1.10, <1.11",
         "django-enumfields>=0.9.0",
         "django_extensions>=1.7.8",
+        "django-modeladmin-reorder>=0.2",
+        "django-jsonview>=1.0.0",
         "openpyxl>=2.4",
-        "gunicorn>=19.7",
         "eventlet>=0.21",
         "babel>=2.4.0",
-        "requests"
+        "requests>=2.17.3",
+        "progress>=1.3",
+        "python-dateutil>=2.6.0"
 ]
 
 if sys.platform != 'win32':
@@ -32,14 +35,14 @@ else:
     requires += [
         'django-mssql>=1.8',
         "pypiwin32",
+        'django-windows-tools',
     ]
 
 setuptools.setup(
     name='gladdrreg',
     version='0.0.1',
 
-    description=('Django app implementing the Address Resolution Register '
-                 'of Greenland'),
+    description='Address Resolution Register of Greenland',
     long_description=long_description,
 
     # The project's main homepage.
@@ -62,7 +65,7 @@ setuptools.setup(
     ],
 
     keywords='django greenland dafo',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=setuptools.find_packages(exclude=['contrib', 'docs', 'tests']),
 
     install_requires=requires,
     extras_require={

@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 from __future__ import absolute_import, unicode_literals, print_function
 
-import platform
-
+import base64
 import os
+import platform
+import sys
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Ensure that we keep the secret key used in production secret!
 _SECRET_KEY_FILE = os.path.join(BASE_DIR, '.secret-key')
-if os.path.exists(_SECRET_KEY_FILE):
-    with open(_SECRET_KEY_FILE) as fp:
+with open(_SECRET_KEY_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 
 
@@ -46,7 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+	'admin_reorder',
 ]
+
+if sys.platform == 'win32':
+    INSTALLED_APPS += [
+        'django_windows_tools',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+	'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'addrsite.urls'
@@ -90,6 +98,28 @@ DATABASES = {
     }
 }
 
+
+# Admin site reordering
+# https://django-modeladmin-reorder.readthedocs.io/en/latest/readme.html#configuration
+
+ADMIN_REORDER = (
+    {'app': 'addrreg', 'models': (
+		'addrreg.Address',
+		'addrreg.BNumber',
+		'addrreg.Road',
+		'addrreg.District',
+		'addrreg.Locality',
+		'addrreg.Municipality',
+		'addrreg.PostalCode',
+		'addrreg.State',
+	)},
+
+    # Reorder app models
+    {'app': 'auth', 'models': (
+		'auth.User',
+		'addrreg.MunicipalityRights',
+	)},
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -142,10 +172,9 @@ if platform.python_implementation() == 'PyPy':
     from psycopg2cffi import compat
     compat.register()
 
-if os.path.exists(
-        os.path.join(os.path.dirname(__file__), 'local_settings.py')
-):
-    from .local_settings import *
+if os.path.exists(os.path.join(os.path.dirname(__file__),
+                               'local_settings.py')):
+    from .local_settings import *  # noqa
 else:
     print('No local settings!')
 

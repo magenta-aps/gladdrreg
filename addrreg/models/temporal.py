@@ -145,23 +145,31 @@ class TemporalModelBase(models.base.ModelBase):
 
         regattrs = attrs.copy()
         modelcls = super_new(cls, name, (TemporalModel,), attrs)
-        unique_togethers = set(modelcls._meta.unique_together)
 
         # the registration table contains duplicates of each main table
         # entry, so we have to drop all unique constraints
         # TODO: does this handle many-to-many relations somehow?
         for field in modelcls._meta.fields:
-            if not field.unique:
+            # inspired by Field.clone() in Django, but changed by
+            # reassigning to unique, and supressing swappable so we
+            # retain self-references as strings
+            _swappable = getattr(field, 'swappable', None)
+
+            if _swappable:
+                field.swappable = False
+
+            fieldargs, field_kwargs = field.deconstruct()[2:]
+
+            if _swappable is not None:
+                field.swappable = _swappable
+
+            if not field.unique and not field_kwargs.get('unique'):
                 continue
 
-            # inspired by Field.clone() in Django, but changed by
-            # reassigning to unique
-            fieldargs, field_kwargs = field.deconstruct()[2:]
             field_kwargs['unique'] = False
-            regattrs[field.name] = type(field)(*fieldargs, **field_kwargs)
+            field_kwargs['db_index'] = True
 
-            if field.name != 'objectID':
-                unique_togethers.add((field.name,))
+            regattrs[field.name] = type(field)(*fieldargs, **field_kwargs)
 
         class RegistrationModel(*bases):
             class Meta(object):
@@ -269,9 +277,6 @@ class TemporalModelBase(models.base.ModelBase):
             index_together = [
                 ["object", "registration_from", "registration_to", ],
                 ["objectID", "registration_from", "registration_to", ],
-            ]
-            unique_together = [
-                constraint + ('objectID',) for constraint in unique_togethers
             ]
 
             db_table = modelcls._meta.db_table + str('_registrations')
