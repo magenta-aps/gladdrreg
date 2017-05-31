@@ -287,6 +287,8 @@ class LocalityAdmin(base.AdminBase):
         'name',
         'type',
         'locality_state',
+        'state',
+        'active',
     )
 
     list_filter = (
@@ -354,6 +356,8 @@ class BNumberAdmin(base.AdminBase):
         'name',
         'municipality',
         'location',
+        'state',
+        'active',
     )
     search_fields = ('=code', 'name', 'municipality', 'location')
 
@@ -507,6 +511,8 @@ class AddressAdmin(base.AdminBase):
         'room',
         'location',
         'municipality',
+        'state',
+        'active',
     )
 
     readonly_fields = ('location',)
