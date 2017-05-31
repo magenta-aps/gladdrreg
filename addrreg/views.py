@@ -45,7 +45,7 @@ class GetNewEventsView(JsonView):
 
     def get(self, request, *args, **kwargs):
         new_events = events.Event.objects.filter(
-            receipt_obtained__isnull=True, updated_type='municipality'
+            receipt_obtained__isnull=True,
         )
         data= {
             'events': [self.format(event) for event in new_events.all()]

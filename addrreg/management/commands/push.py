@@ -1,4 +1,3 @@
-
 from ...models import *
 from ...models.events import *
 
@@ -14,14 +13,15 @@ class Command(base.BaseCommand):
         endpoint = "http://localhost:8444/odata/gapi/Events"
 
         all_object_classes = [
-            Municipality, District, PostalCode, Locality, BNumber, Road, Address
+            State, Municipality, District, PostalCode, Locality, BNumber,
+            Road, Address
         ]
         type_map = {cls.type_name() : cls for cls in all_object_classes}
 
         qs = Event.objects.filter(
-            # receipt_obtained__isnull=True,
-            updated_type__in=['address']
-        )[0:1000]
+            receipt_obtained__isnull=True,
+            updated_type__in=type_map.keys()
+        )
         count = qs.count()
 
         i = 0
@@ -40,7 +40,7 @@ class Command(base.BaseCommand):
                         # Using a better serializer, able to serialize
                         # datetimes and uuids
                         "objektdata": dump_json(item.format())
-                    }
+                    },
                 }
             }
             r = requests.post(
@@ -50,4 +50,4 @@ class Command(base.BaseCommand):
             )
             i += 1
             print("%.1f%%" % (100*i/count), end='\r')
-        print("Done!")
+        print("Done! ")
