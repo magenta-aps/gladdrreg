@@ -27,12 +27,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Ensure that we keep the secret key used in production secret!
 _SECRET_KEY_FILE = os.path.join(BASE_DIR, '.secret-key')
-if os.path.exists(_SECRET_KEY_FILE):
-    with open(_SECRET_KEY_FILE, 'wt') as fp:
-        # TODO: use 'secrets' when we require 3.6
-        fp.write(base64.urlsafe_b64encode(os.urandom(32))
-                 .rstrip(b'=').decode('ascii'))
-
 with open(_SECRET_KEY_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 
