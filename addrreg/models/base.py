@@ -2,6 +2,8 @@
 
 from __future__ import absolute_import, unicode_literals, print_function
 
+import functools
+import operator
 import uuid
 
 from django import forms
@@ -140,26 +142,30 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
 
         return fields
 
-    def get_field_queryset(self, db, db_field, request):
-        queryset = super().get_field_queryset(db, db_field, request)
+    def get_related_filter(self, remote_model, request):
         user = request.user
-        remote_model = db_field.remote_field.model
-
-        # should work when a queryset is returned, but untested
-        if queryset is None:
-            queryset = remote_model.objects
+        filters = []
 
         if getattr(remote_model, 'active', None):
-            queryset = queryset.filter(active=True)
+            filters.append(models.Q(active=True))
 
         if not user.is_superuser:
             if remote_model._meta.label == 'addrreg.Municipality':
-                queryset = queryset.filter(rights__users=user)
+                filters.append(models.Q(rights__users=user))
 
             if hasattr(remote_model, 'municipality'):
-                queryset = queryset.filter(municipality__rights__users=user)
+                filters.append(models.Q(municipality__rights__users=user))
 
-        return queryset
+        return functools.reduce(operator.and_, filters)
+
+    def get_field_queryset(self, db, db_field, request):
+        remote_model = db_field.remote_field.model
+        queryset = (
+            super().get_field_queryset(db, db_field, request) or
+            remote_model.objects
+        )
+
+        return queryset.filter(self.get_related_filter(remote_model, request))
 
     def get_search_results(self, request, queryset, search_term):
         user = request.user
