@@ -15,3 +15,6 @@ admin.site.site_header = apps.AddrRegConfig.verbose_name
 
 # Text to put at the top of the admin index page.
 admin.site.index_title = _('Administration Overview')
+
+# Suppress the "View Site" link, given we have no site!
+admin.site.site_url = None
