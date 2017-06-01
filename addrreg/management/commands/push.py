@@ -10,7 +10,7 @@ class Command(base.BaseCommand):
     help = 'Issue a push to the Datafordeler'
 
     def handle(self, *args, **kwargs):
-        endpoint = "http://localhost:8444/odata/gapi/Events"
+        endpoint = "https://localhost:8444/odata/gapi/Events"
 
         all_object_classes = [
             State, Municipality, District, PostalCode, Locality, BNumber,
@@ -46,7 +46,8 @@ class Command(base.BaseCommand):
             r = requests.post(
                 endpoint,
                 data=dump_json(message_body),
-                headers={'Content-Type':'application/json'}
+                headers={'Content-Type':'application/json'},
+                verify=False
             )
             i += 1
             print("%.1f%%" % (100*i/count), end='\r')
