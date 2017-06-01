@@ -9,8 +9,26 @@ from django.core.management import base
 class Command(base.BaseCommand):
     help = 'Issue a push to the Datafordeler'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--host', action='store', default='https://localhost',
+            help=u"Destination server to push to (e.g. https://data.gl)"
+        )
+        parser.add_argument(
+            '--path', action='store', default='/odata/gapi/Events',
+            help=u"Destination server path to push to"
+        )
+
     def handle(self, *args, **kwargs):
-        endpoint = "https://localhost:8444/odata/gapi/Events"
+
+        host = kwargs.get('host')
+        if '://' not in host:
+            host = 'https://' + host
+            print('Protocol not detected, prepending "https://"')
+
+        path = kwargs.get('path')
+
+        endpoint = host + path
 
         all_object_classes = [
             State, Municipality, District, PostalCode, Locality, BNumber,
