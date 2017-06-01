@@ -8,6 +8,7 @@ import uuid
 
 from django import forms
 from django.contrib import admin
+from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_extensions import admin as admin_extensions
@@ -51,50 +52,47 @@ class AbstractModel(models.Model):
         return [cls.type_name()] + cls.alias_names()
 
 
-class SumiffiikIDField(models.UUIDField):
-    def __init__(self, **kwargs):
-        kwargs.setdefault('verbose_name', _('Sumiffiik ID'))
-        kwargs.setdefault('default', uuid.uuid4)
-        kwargs.setdefault('db_index', True)
 
-        kwargs.setdefault('null', False)
-        kwargs.setdefault('blank', False)
+def _random_sumiffiik():
+    return '{{{}}}'.format(uuid.uuid4())
+
+class SumiffiikIDField(models.CharField):
+    '''Field for storing a Sumiffiik, which is a UUID wrapped in {}. We
+    could use a UUID field, but MS SQL doesn't support those directly,
+    so they offer little value.
+
+    '''
+
+    def __init__(self, verbose_name=_('Sumiffiik ID'),
+                 max_length=38,
+                 default=_random_sumiffiik,
+                 db_index=True,
+                 null=False, blank=False,
+                 **kwargs):
+
+        for k, v in list(locals().items()):
+            if k not in ('self', 'kwargs') and k[0] != '_':
+                kwargs.setdefault(k, v)
 
         super().__init__(**kwargs)
 
     def get_db_prep_value(self, value, *args, **kwargs):
-        if not isinstance(value, str):
-            pass
-        elif value.startswith('{') and value.endswith('}'):
-            value = value[1:-1]
-        elif value == '[n/a]':
+        if value == '[n/a]':
             return None
+        else:
+            value = '{{{}}}'.format(uuid.UUID(value.strip('{}')))
 
         return super().get_db_prep_value(value, *args, **kwargs)
 
-    def formfield(self, **kwargs):
-        # Passing max_length to forms.CharField means that the value's length
-        # will be validated twice. This is considered acceptable since we want
-        # the value in the form field (to pass into widget for example).
-        defaults = {
-            'widget': SumiffiikIDInput(attrs={'maxlength': 38})
-        }
-        defaults.update(kwargs)
-        return super().formfield(**defaults)
-
-
-class SumiffiikIDInput(admin.widgets.AdminTextInputWidget):
-    def render(self, name, value, attrs=None):
-        if value is not None:
-            value = '{{{}}}'.format(uuid.UUID(value.strip('{}')))
-
-        return super().render(name, value, attrs)
-
 
 class SumiffiikDomainField(models.CharField):
-    def __init__(self, **kwargs):
-        kwargs.setdefault('verbose_name', _('Sumiffiik Domain'))
-        kwargs.setdefault('max_length', 64)
+    def __init__(self, verbose_name=_('Sumiffiik Domain'),
+                 max_length=64,
+                 validators=[validators.URLValidator()],
+                 **kwargs):
+        for k, v in list(locals().items()):
+            if k not in ('self', 'kwargs') and k[0] != '_':
+                kwargs.setdefault(k, v)
 
         super().__init__(**kwargs)
 
@@ -106,6 +104,16 @@ class SumiffiikDomainField(models.CharField):
     def default(self, val):
         pass
 
+    def formfield(self, **kwargs):
+        # Passing max_length to forms.CharField means that the value's length
+        # will be validated twice. This is considered acceptable since we want
+        # the value in the form field (to pass into widget for example).
+        defaults = {
+            'widget': forms.URLField,
+        }
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
 
 class FormBase(forms.ModelForm):
     class Meta:
@@ -115,11 +123,14 @@ class FormBase(forms.ModelForm):
         }
 
     def clean_sumiffiik(self):
-        sumiffiik = self.cleaned_data['sumiffiik']
+        sumiffiik = str(self.cleaned_data['sumiffiik'])
         try:
-            return uuid.UUID(sumiffiik.strip('{}'))
+            return '{{{}}}'.format(
+                uuid.UUID(sumiffiik.strip('{}')),
+            )
         except ValueError:
-            raise forms.ValidationError
+            raise forms.ValidationError(_('Enter a valid Sumiffiik, such as {%s}'),
+                                        params=str(uuid.uuid4()))
 
 
 class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
