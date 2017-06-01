@@ -22,13 +22,12 @@ class Event(models.Model):
         super(Event, self).save(*args, **kwargs)
 
     @staticmethod
-    def create(item):
+    def create(item, saveItem=True):
         if hasattr(item, 'registrations'):
             for r in item.registrations.all():
                 Event.create(r)
         else:
-            item.calculate_checksum()
-            print(item.type_name()+"    "+item.checksum)
+            item.calculate_checksum(saveItem)
             event = Event(
                 updated_type=item.type_name(),
                 updated_registration=item.checksum

@@ -12,6 +12,7 @@ from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from .events import Event
 from ..util import json_serialize_object
 
 
@@ -211,6 +212,10 @@ class TemporalModelBase(models.base.ModelBase):
 
             @transaction.atomic(savepoint=False)
             def save(self, *args, **kwargs):
+
+                if self.pk is None:
+                    Event.create(self, False)
+
                 now = timezone.now()
 
                 if self.registration_from > now:
@@ -236,7 +241,7 @@ class TemporalModelBase(models.base.ModelBase):
                 obj = serializers.serialize('python_with_identity', [self])
                 return dict(obj[0]['fields'])
 
-            def calculate_checksum(self):
+            def calculate_checksum(self, save=True):
                 if self.checksum is None:
                     input = json.dumps(
                         self.fields,
@@ -246,7 +251,8 @@ class TemporalModelBase(models.base.ModelBase):
                     digester = hashlib.sha256()
                     digester.update(input)
                     self.checksum = digester.hexdigest()
-                    self.save()
+                    if save:
+                        self.save()
 
             def format(self):
                 fields = self.fields
