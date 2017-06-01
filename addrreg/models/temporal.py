@@ -141,7 +141,8 @@ class TemporalModelBase(models.base.ModelBase):
             def natural_key(self):
                 return {
                     'uuid': self.objectID,
-                    'domain': 'address_register'
+                    'domain': "https://data.gl/gladdreg/%s/1/rest/" %
+                              self.type_name()
                 }
 
         regattrs = attrs.copy()
@@ -268,7 +269,8 @@ class TemporalModelBase(models.base.ModelBase):
                     'registrationTo': self.registration_to,
                     'entity': {
                         'uuid': self.object.objectID,
-                        'domain': 'adresseregister'
+                        'domain': 'https://data.gl/gladdreg/' +
+                                  self.type_name() + "/1/rest/"
                     },
                     'effects': [{
                         'effectFrom': self.valid_from or self.registration_from,
