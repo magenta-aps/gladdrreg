@@ -16,6 +16,41 @@ from . import base, temporal, events
 admin.site.disable_action('delete_selected')
 
 
+class MunicipalityValidatingForm(base.FormBase):
+    def clean_location(self):
+        location = self.cleaned_data['location']
+        municipality = (self.cleaned_data.get('municipality') or
+                        self.instance.municipality)
+
+        if location and location.municipality != municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to Locality in different municipality!'))
+
+        return location
+
+    def clean_b_number(self):
+        b_number = self.cleaned_data['b_number']
+        municipality = (self.cleaned_data.get('municipality') or
+                        self.instance.municipality)
+
+        if b_number and b_number.municipality != municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
+
+        return b_number
+
+    def clean_road(self):
+        road = self.cleaned_data['road']
+        municipality = (self.cleaned_data.get('municipality') or
+                        self.instance.municipality)
+
+        if road.municipality != municipality:
+            raise forms.ValidationError(
+                _('Cannot refer to B-Number in different municipality!'))
+
+        return road
+
+
 class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
     class Meta(object):
         verbose_name = _('State')
@@ -260,6 +295,8 @@ class LocalityAdmin(base.AdminBase):
         'name',
         'type',
         'locality_state',
+        'state',
+        'active',
     )
 
     list_filter = (
@@ -321,13 +358,18 @@ class BNumber(base.AbstractModel,
         return ['bnr']
 
 
+
 @admin.register(BNumber)
 class BNumberAdmin(base.AdminBase):
+    form = MunicipalityValidatingForm
+
     list_display = (
         'code',
         'name',
         'municipality',
         'location',
+        'state',
+        'active',
     )
     search_fields = ('=code', 'name', 'municipality', 'location')
 
@@ -381,27 +423,9 @@ class Road(base.AbstractModel,
         return self.name
 
 
-class RoadAdminForm(base.FormBase):
-    def clean_b_number(self):
-        b_number = self.cleaned_data['b_number']
-        municipality = self.cleaned_data.get('municipality',
-                                             self.instance.municipality)
-
-        if b_number and b_number.municipality != municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-    def clean_road(self):
-        road = self.cleaned_data['road']
-
-        if road.municipality != self.instance.municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-
 @admin.register(Road)
 class RoadAdmin(base.AdminBase):
-    form = RoadAdminForm
+    form = MunicipalityValidatingForm
 
     list_display = ('name', 'location', 'code', 'state', 'active')
     list_filter = (
@@ -484,27 +508,13 @@ class Address(base.AbstractModel,
             return _('{0.road}').format(self)
 
 
-class AddressAdminForm(base.FormBase):
-    def clean_b_number(self):
-        b_number = self.cleaned_data['b_number']
-        municipality = self.cleaned_data.get('municipality',
-                                             self.instance.municipality)
-
-        if b_number and b_number.municipality != municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-    def clean_road(self):
-        road = self.cleaned_data['road']
-
-        if road.municipality != self.instance.municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-
 @admin.register(Address)
 class AddressAdmin(base.AdminBase):
-    form = AddressAdminForm
+    form = MunicipalityValidatingForm
+
+    related_search_fields = {
+       'b_number': ('code', 'name', 'nickname'),
+    }
 
     list_display = (
         'road',
@@ -513,6 +523,8 @@ class AddressAdmin(base.AdminBase):
         'room',
         'location',
         'municipality',
+        'state',
+        'active',
     )
 
     readonly_fields = ('location',)
