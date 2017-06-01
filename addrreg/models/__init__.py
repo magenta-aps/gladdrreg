@@ -8,6 +8,7 @@ import enumfields
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.core import exceptions
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,39 +18,25 @@ admin.site.disable_action('delete_selected')
 
 
 class MunicipalityValidatingForm(base.FormBase):
-    def clean_location(self):
-        location = self.cleaned_data['location']
-        municipality = (self.cleaned_data.get('municipality') or
-                        self.instance.municipality)
+    def clean(self):
+        cleaned_data = super().clean()
 
-        if location and location.municipality != municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to Locality in different municipality!'))
+        municipalities = {
+            key: getattr(val, 'municipality', val)
+            for key, val in cleaned_data.items()
+            if hasattr(val, 'municipality') or key == 'municipality'
+        }
 
-        return location
+        if len(set(municipalities.values())) > 1:
+            for field, municipality in municipalities.items():
+                self.add_error(field,
+                               forms.ValidationError(
+                                   _('Fields cannot be in different '
+                                     'municipalities; this one is in “%s”!'),
+                                   params=municipality,
+                               ))
 
-    def clean_b_number(self):
-        b_number = self.cleaned_data['b_number']
-        municipality = (self.cleaned_data.get('municipality') or
-                        self.instance.municipality)
-
-        if b_number and b_number.municipality != municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-        return b_number
-
-    def clean_road(self):
-        road = self.cleaned_data['road']
-        municipality = (self.cleaned_data.get('municipality') or
-                        self.instance.municipality)
-
-        if road.municipality != municipality:
-            raise forms.ValidationError(
-                _('Cannot refer to B-Number in different municipality!'))
-
-        return road
-
+        return cleaned_data
 
 class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
     class Meta(object):
