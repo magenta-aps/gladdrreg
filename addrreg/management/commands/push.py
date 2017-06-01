@@ -30,6 +30,8 @@ class Command(base.BaseCommand):
 
         endpoint = host + path
 
+        print("Pushing to %s" % endpoint)
+
         all_object_classes = [
             State, Municipality, District, PostalCode, Locality, BNumber,
             Road, Address
