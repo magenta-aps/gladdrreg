@@ -10,19 +10,15 @@ System Requirements
 -------------------
 
 * Python 3.5 or later
-* (Optional) `Virtualenvwrapper`_
- .. _`Virtualenvwrapper`: http://virtualenvwrapper.readthedocs.io/en/latest/install.html
+* python3-venv (Ubuntu only)
 
 Quick Setup
 -----------
-First create a python virtual environment linked to the project directory. If you install the optional `Virtualenvwrapper`_ above see `here`_ for an easy guide to using it.
-
-.. _`here`: http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
-  
 
 The central entry point to this managing this application is the
 ``manage.py`` script, which both downloads and configures the
-application environment, and runs the application itself.
+application environment, including its Python virtual environment, and
+runs the application itself.
 
 To build the application, run the following commands in a shell::
 
