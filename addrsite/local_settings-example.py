@@ -4,7 +4,8 @@
 
 # Ensure that we keep the secret key used in production secret!
 # manage.py generates a secret key automatically
-#SECRET_KEY = '...'
+
+# SECRET_KEY = '...'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -18,4 +19,5 @@ DATABASES = {
 }
 
 # You can restrict the allowed host names to certain settings
-#ALLOWED_HOSTS = 'gladdrreg.example.com'
+
+# ALLOWED_HOSTS = 'gladdrreg.example.com'

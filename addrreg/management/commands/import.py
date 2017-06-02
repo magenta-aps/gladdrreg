@@ -207,13 +207,10 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
                     else:
                         print(msg)
 
-            i = 0
-
             if sheet.title == 'state':
                 # HACK: work around the fact that the first state refers
                 # to the second state, by importing them in reverse order
-                for i, row in \
-                        enumerate(reversed(list(itertools.islice(rows, 2))), 1):
+                for row in reversed(list(itertools.islice(rows, 2))):
                     save(row)
                     bar.next()
 
@@ -226,7 +223,7 @@ def import_spreadsheet(fp, verbose=False, raise_on_error=False):
             # typically be preparing the next while waiting for the
             # current one to save in the database
             with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
-                for i, f in enumerate(e.map(save, rows), i + 1):
+                for f in e.map(save, rows):
                     bar.next()
     finally:
         bar.finish()

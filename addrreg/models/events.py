@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from django.db import models, transaction
 
+
 class Event(models.Model):
     created = models.DateTimeField(
         auto_now=True

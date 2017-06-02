@@ -52,9 +52,9 @@ class AbstractModel(models.Model):
         return [cls.type_name()] + cls.alias_names()
 
 
-
 def _random_sumiffiik():
     return '{{{}}}'.format(uuid.uuid4())
+
 
 class SumiffiikIDField(models.CharField):
     '''Field for storing a Sumiffiik, which is a UUID wrapped in {}. We
@@ -86,6 +86,7 @@ class SumiffiikIDField(models.CharField):
 
 
 class SumiffiikDomainField(models.CharField):
+
     def __init__(self, verbose_name=_('Sumiffiik Domain'),
                  max_length=64,
                  validators=[validators.URLValidator()],
@@ -116,6 +117,7 @@ class SumiffiikDomainField(models.CharField):
 
 
 class FormBase(forms.ModelForm):
+
     class Meta:
         widgets = {
             'note': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
@@ -129,8 +131,10 @@ class FormBase(forms.ModelForm):
                 uuid.UUID(sumiffiik.strip('{}')),
             )
         except ValueError:
-            raise forms.ValidationError(_('Enter a valid Sumiffiik, such as {%s}'),
-                                        params=str(uuid.uuid4()))
+            raise forms.ValidationError(
+                _('Enter a valid Sumiffiik, such as {%s}'),
+                params=str(uuid.uuid4()),
+            )
 
 
 class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):

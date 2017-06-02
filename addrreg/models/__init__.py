@@ -18,6 +18,7 @@ admin.site.disable_action('delete_selected')
 
 
 class MunicipalityValidatingForm(base.FormBase):
+
     def clean(self):
         cleaned_data = super().clean()
 
@@ -38,7 +39,9 @@ class MunicipalityValidatingForm(base.FormBase):
 
         return cleaned_data
 
+
 class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('State')
         verbose_name_plural = _('States')
@@ -118,6 +121,7 @@ class LocalityState(enumfields.IntEnum):
 
 class Municipality(base.AbstractModel,
                    metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('Municipality')
         verbose_name_plural = _('Municipalities')
@@ -155,6 +159,7 @@ class MunicipalityAdmin(base.AdminBase):
 
 class District(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('District')
         verbose_name_plural = _('Districts')
@@ -195,6 +200,7 @@ class DistrictAdmin(base.AdminBase):
 
 class PostalCode(base.AbstractModel,
                  metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('Postal Code')
         verbose_name_plural = _('Postal Codes')
@@ -238,6 +244,7 @@ class PostalCodeAdmin(base.AdminBase):
 
 class Locality(base.AbstractModel,
                metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('Locality')
         verbose_name_plural = _('Localities')
@@ -287,11 +294,11 @@ class LocalityAdmin(base.AdminBase):
     )
 
     list_filter = (
-                      'municipality',
-                      'district',
-                      'type',
-                      'locality_state',
-                  ) + base.AdminBase.list_filter
+        'municipality',
+        'district',
+        'type',
+        'locality_state',
+    ) + base.AdminBase.list_filter
 
     superuser_only = True
 
@@ -312,6 +319,7 @@ class LocalityAdmin(base.AdminBase):
 
 class BNumber(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('B-Number')
         verbose_name_plural = _('B-Numbers')
@@ -345,7 +353,6 @@ class BNumber(base.AbstractModel,
         return ['bnr']
 
 
-
 @admin.register(BNumber)
 class BNumberAdmin(base.AdminBase):
     form = MunicipalityValidatingForm
@@ -361,9 +368,9 @@ class BNumberAdmin(base.AdminBase):
     search_fields = ('=code', 'name', 'municipality', 'location')
 
     list_filter = (
-                      'location',
-                      'municipality',
-                  ) + base.AdminBase.list_filter
+        'location',
+        'municipality',
+    ) + base.AdminBase.list_filter
 
     fieldsets = (
         (_('Info'), {
@@ -382,6 +389,7 @@ class BNumberAdmin(base.AdminBase):
 
 class Road(base.AbstractModel,
            metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('Road')
         verbose_name_plural = _('Roads')
@@ -450,6 +458,7 @@ class RoadAdmin(base.AdminBase):
 
 class Address(base.AbstractModel,
               metaclass=temporal.TemporalModelBase):
+
     class Meta(object):
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
@@ -500,7 +509,7 @@ class AddressAdmin(base.AdminBase):
     form = MunicipalityValidatingForm
 
     related_search_fields = {
-       'b_number': ('code', 'name', 'nickname'),
+        'b_number': ('code', 'name', 'nickname'),
     }
 
     list_display = (
@@ -545,6 +554,7 @@ class AddressAdmin(base.AdminBase):
 
 
 class MunicipalityRights(models.Model):
+
     class Meta:
         verbose_name = _('Municipality Rights')
         verbose_name_plural = _('Municipality Rights')

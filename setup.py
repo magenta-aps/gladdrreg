@@ -12,17 +12,17 @@ with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 requires = [
-        "django>=1.10, <1.11",
-        "django-enumfields>=0.9.0",
-        "django_extensions>=1.7.8",
-        "django-modeladmin-reorder>=0.2",
-        "django-jsonview>=1.0.0",
-        "openpyxl>=2.4",
-        "eventlet>=0.21",
-        "babel>=2.4.0",
-        "requests>=2.17.3",
-        "progress>=1.3",
-        "python-dateutil>=2.6.0"
+    "django>=1.10, <1.11",
+    "django-enumfields>=0.9.0",
+    "django_extensions>=1.7.8",
+    "django-modeladmin-reorder>=0.2",
+    "django-jsonview>=1.0.0",
+    "openpyxl>=2.4",
+    "eventlet>=0.21",
+    "babel>=2.4.0",
+    "requests>=2.17.3",
+    "progress>=1.3",
+    "python-dateutil>=2.6.0"
 ]
 
 if sys.platform != 'win32':

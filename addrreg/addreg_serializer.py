@@ -3,6 +3,7 @@ from django.utils.encoding import is_protected_type
 
 
 class Serializer(python.Serializer):
+
     def handle_fk_field(self, obj, field):
         if hasattr(field.remote_field.model, 'natural_key'):
             related = getattr(obj, field.name)

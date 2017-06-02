@@ -34,6 +34,7 @@ DUMMY_DOMAIN = 'http://localhost'
 
 
 class CodeStyleTests(test.SimpleTestCase):
+
     @property
     def rootdir(self):
         return os.path.dirname(os.path.dirname(__file__))
@@ -134,8 +135,8 @@ class CreationTests(test.TransactionTestCase):
             municipality=mun,
             state=self.state,
             house_number='42Z',
-            floor='XX',
-            room='42',
+            floor='13',
+            room='mf',
             b_number=b,
             road=road,
             sumiffiik_domain=DUMMY_DOMAIN,
@@ -144,8 +145,8 @@ class CreationTests(test.TransactionTestCase):
 
         self.assertEquals(self.addr.b_number.municipality.name, 'Aarhus')
         self.assertEquals(self.addr.b_number.municipality.name, 'Aarhus')
-        self.assertEquals(six.text_type(self.addr),
-                          '42Z Hans Hartvig Seedorffs Stræde')
+        self.assertEquals(str(self.addr),
+                          '42Z Hans Hartvig Seedorffs Stræde, 13, mf')
 
     @unittest.expectedFailure
     def test_create_duplicate_municipality_fails(self):
@@ -435,6 +436,7 @@ class VerifyImport(test.SimpleTestCase):
 
 @unittest.skipIf(not selenium, 'selenium not installed')
 class RightsTests(test.LiveServerTestCase):
+
     @classmethod
     def setUpClass(cls):
         from selenium import webdriver

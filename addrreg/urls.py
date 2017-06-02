@@ -23,8 +23,11 @@ from django.contrib import admin
 
 from . import views
 
-uuidpattern="%s{8}-%s{4}-%s{4}-%s{4}-%s{12}" % tuple("[0-9a-f]" for x in range(
-    0,5))
+uuidpattern = (
+    "%s{8}-%s{4}-%s{4}-%s{4}-%s{12}" % tuple(
+        "[0-9a-f]" for x in range(0, 5)
+    )
+)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls), name='admin'),

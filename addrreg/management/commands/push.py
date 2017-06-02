@@ -6,6 +6,7 @@ import requests
 
 from django.core.management import base
 
+
 class Command(base.BaseCommand):
     help = 'Issue a push to the Datafordeler'
 
@@ -36,7 +37,7 @@ class Command(base.BaseCommand):
             State, Municipality, District, PostalCode, Locality, BNumber,
             Road, Address
         ]
-        type_map = {cls.type_name() : cls for cls in all_object_classes}
+        type_map = {cls.type_name(): cls for cls in all_object_classes}
 
         qs = Event.objects.filter(
             receipt_obtained__isnull=True,
@@ -66,9 +67,9 @@ class Command(base.BaseCommand):
             r = requests.post(
                 endpoint,
                 data=dump_json(message_body),
-                headers={'Content-Type':'application/json'},
+                headers={'Content-Type': 'application/json'},
                 verify=False
             )
             i += 1
-            print("%.1f%%" % (100*i/count), end='\r')
+            print("%.1f%%" % (100 * i / count), end='\r')
         print("Done! ")

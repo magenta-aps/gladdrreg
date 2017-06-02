@@ -47,7 +47,7 @@ class GetNewEventsView(JsonView):
         new_events = events.Event.objects.filter(
             receipt_obtained__isnull=True,
         )
-        data= {
+        data = {
             'events': [self.format(event) for event in new_events.all()]
         }
         return data

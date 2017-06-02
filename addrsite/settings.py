@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Ensure that we keep the secret key used in production secret!
 _SECRET_KEY_FILE = os.path.join(BASE_DIR, '.secret-key')
 with open(_SECRET_KEY_FILE) as fp:
-        SECRET_KEY = fp.read().strip()
+    SECRET_KEY = fp.read().strip()
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-	'admin_reorder',
+    'admin_reorder',
 ]
 
 if sys.platform == 'win32':
@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-	'admin_reorder.middleware.ModelAdminReorder',
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'addrsite.urls'
@@ -104,21 +104,21 @@ DATABASES = {
 
 ADMIN_REORDER = (
     {'app': 'addrreg', 'models': (
-		'addrreg.Address',
-		'addrreg.BNumber',
-		'addrreg.Road',
-		'addrreg.District',
-		'addrreg.Locality',
-		'addrreg.Municipality',
-		'addrreg.PostalCode',
-		'addrreg.State',
-	)},
+        'addrreg.Address',
+        'addrreg.BNumber',
+        'addrreg.Road',
+        'addrreg.District',
+        'addrreg.Locality',
+        'addrreg.Municipality',
+        'addrreg.PostalCode',
+        'addrreg.State',
+    )},
 
     # Reorder app models
     {'app': 'auth', 'models': (
-		'auth.User',
-		'addrreg.MunicipalityRights',
-	)},
+        'auth.User',
+        'addrreg.MunicipalityRights',
+    )},
 )
 
 # Password validation

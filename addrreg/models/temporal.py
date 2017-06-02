@@ -115,7 +115,6 @@ class TemporalModelBase(models.base.ModelBase):
                     **self.__get_field_dict(exclude=('id',))
                 )
 
-
             def format(self, timestamp=None):
                 registrations = self.registrations
                 if timestamp is not None:
@@ -273,7 +272,8 @@ class TemporalModelBase(models.base.ModelBase):
                                   self.type_name() + "/1/rest/"
                     },
                     'effects': [{
-                        'effectFrom': self.valid_from or self.registration_from,
+                        'effectFrom': (self.valid_from or
+                                       self.registration_from),
                         'effectTo': self.valid_to or self.registration_to,
                         'dataItems': [
                             fields
