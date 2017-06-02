@@ -34,17 +34,22 @@ You can now run the application, like so::
 
   $ python3 ./manage.py runserver
 
-This will result in an application running without any data available.
-Please note that the databases is *SQLite* by default, which is rather
-slow.
+This will result in an application running without any data available,
+or any users.
+Please note that the default database engine is the somewhat slow
+*SQLite*.
 
 You can prime the database with a dump of addresses in Greenland::
 
   $ python3 ./manage.py import
 
 Depending on your computer and database, this can take up to 30
-minutes, although it shouldn't take more than five with in a reasonably
+minutes, although it shouldn't take more than five with a reasonably
 fast setup.
+
+To create an initial super-user, use::
+
+  $ python3 ./manage.py createsuperuser
 
 If you want to customise the setup, put your settings in a file called
 ``local_settings.py`` within the ``addrsite`` directory within this
@@ -56,3 +61,23 @@ settings.
 
 .. _`Django reference documentation`:
    https://docs.djangoproject.com/en/1.10/ref/settings/
+
+Gotchas
+-------
+
+Localisation
+    The UI is fully localised to English and Danish, and uses
+    whichever language your browser requests. Your milage may vary
+    with other languages; Django speaks many languages, but
+    unfortunately Greenlandic is not among them. Patches welcome!
+
+Access control
+    Django operates with two levels of privilege relevant to this
+    application: *staff* and *superuser* rights. Staff grants you
+    access to the administrative interface, i.e. the application
+    itself. Superusers may edit all objects; other users may only edit
+    objects on certain municipalities, granted by “Municipality
+    Rights” in the UI.
+
+    Please note that users without staff rights cannot log in, and
+    that users default to not having them.
