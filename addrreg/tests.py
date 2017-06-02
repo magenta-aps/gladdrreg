@@ -437,6 +437,8 @@ class VerifyImport(test.SimpleTestCase):
 @unittest.skipIf(not selenium, 'selenium not installed')
 class RightsTests(test.LiveServerTestCase):
 
+    maxDiff = 1000
+
     @classmethod
     def setUpClass(cls):
         from selenium import webdriver
@@ -537,16 +539,16 @@ class RightsTests(test.LiveServerTestCase):
         self.login(user)
 
         self.browser.get(self.live_server_url + '/admin')
-        try:
-            module = self.browser.find_element_by_css_selector(
-                'div.app-addrreg.module'
+
+        return {
+            module.find_element_by_tag_name('caption').text: [
+                header.text
+                for header in module.find_elements_by_css_selector('th')
+            ]
+            for module in self.browser.find_elements_by_css_selector(
+                    '.module[class^=app-]'
             )
-        except selenium.common.exceptions.NoSuchElementException:
-            return None
-
-        headers = module.find_elements_by_css_selector('th')
-
-        return [header.text for header in headers]
+        }
 
     def test_user_memberships(self):
         with self.subTest('UserA'):
@@ -569,25 +571,38 @@ class RightsTests(test.LiveServerTestCase):
 
     def test_module_list(self):
         user_modules = {
-            'root': [
-                'Addresses',
-                'B-Numbers',
-                'Districts',
-                'Localities',
-                'Municipalities',
-                'Municipality Rights',
-                'Postal Codes',
-                'Roads',
-                'States',
-            ],
+            'root': {
+                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
+                    'Addresses',
+                    'B-Numbers',
+                    'Roads',
+                    'Districts',
+                    'Localities',
+                    'Municipalities',
+                    'Postal Codes',
+                    'States',
+                ],
+                'AUTHENTICATION AND AUTHORIZATION': [
+                    'Users',
+                    'Municipality Rights',
+                ],
+            },
 
-            'UserA': [
-                'Addresses', 'B-Numbers', 'Roads',
-            ],
-            'UserB': [
-                'Addresses', 'B-Numbers', 'Roads',
-            ],
-            'UserC': None,
+            'UserA': {
+                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
+                    'Addresses',
+                    'B-Numbers',
+                    'Roads',
+                ],
+            },
+            'UserB': {
+                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
+                    'Addresses',
+                    'B-Numbers',
+                    'Roads',
+                ],
+            },
+            'UserC': {},
         }
 
         for user, modules in user_modules.items():
