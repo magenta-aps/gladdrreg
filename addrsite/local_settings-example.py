@@ -2,10 +2,14 @@
 # Example settings overrides
 #
 
-SECRET_KEY = '...'
+# Ensure that we keep the secret key used in production secret!
+# manage.py generates a secret key automatically
+#SECRET_KEY = '...'
 
-DEBUG = False
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
+# Example PostgreSQL setup
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -13,4 +17,5 @@ DATABASES = {
     },
 }
 
-ALLOWED_HOSTS = 'gladdrreg.example.com'
+# You can restrict the allowed host names to certain settings
+#ALLOWED_HOSTS = 'gladdrreg.example.com'
