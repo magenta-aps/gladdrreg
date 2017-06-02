@@ -30,6 +30,10 @@ _SECRET_KEY_FILE = os.path.join(BASE_DIR, '.secret-key')
 with open(_SECRET_KEY_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
