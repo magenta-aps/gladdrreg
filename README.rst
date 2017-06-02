@@ -10,9 +10,15 @@ System Requirements
 -------------------
 
 * Python 3.5 or later
+* (Optional) `Virtualenvwrapper`_
+ .. _`Virtualenvwrapper`: http://virtualenvwrapper.readthedocs.io/en/latest/install.html
 
 Quick Setup
 -----------
+First create a python virtual environment linked to the project directory. If you install the optional `Virtualenvwrapper`_ above see `here`_ for an easy guide to using it.
+
+.. _`here`: http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
+  
 
 The central entry point to this managing this application is the
 ``manage.py`` script, which both downloads and configures the
