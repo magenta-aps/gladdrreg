@@ -25,6 +25,16 @@ class ForeignKey(models.ForeignKey):
         super().__init__(to=to, verbose_name=verbose_name, **kwargs)
 
 
+def _default_state():
+    # avoid import cycle by using a local import
+    from .. import models
+
+    try:
+        return models.State.objects.get(code=0)
+    except models.State.DoesNotExist:
+        return None
+
+
 class AbstractModel(models.Model):
     """
     Abstract BaseModel class specifying a unique object.
@@ -35,9 +45,10 @@ class AbstractModel(models.Model):
 
     state = models.ForeignKey('addrreg.State', models.PROTECT,
                               verbose_name=_('State'), db_index=True,
-                              related_name='+')
+                              related_name='+',
+                              default=_default_state)
     active = models.BooleanField(_('Active'), default=True)
-    note = models.CharField(_('Notes'), null=True, max_length=255)
+    note = models.CharField(_('Notes'), blank=True, null=True, max_length=255)
 
     @classmethod
     def type_name(cls):
@@ -89,6 +100,7 @@ class SumiffiikDomainField(models.CharField):
 
     def __init__(self, verbose_name=_('Sumiffiik Domain'),
                  max_length=64,
+                 default='https://data.gl/najugaq/road/v1',
                  validators=[validators.URLValidator()],
                  **kwargs):
         for k, v in list(locals().items()):
@@ -96,14 +108,6 @@ class SumiffiikDomainField(models.CharField):
                 kwargs.setdefault(k, v)
 
         super().__init__(**kwargs)
-
-    @property
-    def default(self):
-        return None
-
-    @default.setter
-    def default(self, val):
-        pass
 
     def formfield(self, **kwargs):
         # Passing max_length to forms.CharField means that the value's length

@@ -483,12 +483,11 @@ class RightsTests(test.LiveServerTestCase):
             'root', 'root@example.com', 'password',
         )
 
-        self.state = models.State.objects.create(
-            id=0,
-            state_id=0,
-            name='Good',
-            code=1,
-        )
+        models.State.objects.create(id=0, state_id=0, name='Bad', code=0)
+        models.State.objects.create(id=1, state_id=1, name='Halfways', code=1)
+        models.State.objects.create(id=2, state_id=2, name='Good', code=2)
+
+        self.state = models.State.objects.get(name='Good')
 
         self.users = {}
 
@@ -505,6 +504,14 @@ class RightsTests(test.LiveServerTestCase):
                     state=self.state, sumiffiik_domain=DUMMY_DOMAIN,
                 )
 
+                for i in range(3):
+                    suffix = '{}{}'.format(l, i)
+                    loc = models.Locality.objects.create(
+                        name='Location' + suffix, abbrev=suffix, code=i,
+                        sumiffiik_domain=DUMMY_DOMAIN, type=i + 1,
+                        municipality=mun,
+                    )
+
                 rights = models.MunicipalityRights.objects.create(
                     municipality=mun,
                 )
@@ -515,11 +522,48 @@ class RightsTests(test.LiveServerTestCase):
 
         self.browser.delete_all_cookies()
 
-    def login(self, user):
+    def fill_in_form(self, **kwargs):
+        for field, value in kwargs.items():
+            e = self.browser.find_element_by_id("id_" + field)
+
+            if (e.tag_name == 'input' and
+                    e.get_attribute('type') in ('text', 'password')):
+                e.send_keys(
+                    value,
+                )
+            elif e.tag_name == 'select':
+                options = e.find_elements_by_tag_name('option')
+
+                for option in options:
+                    if option.text.strip() == value:
+                        option.click()
+                        break
+                else:
+                    self.fail('{} not one of {}'.format(
+                        value, [o.text for o in options]),
+                    )
+
+            else:
+                self.fail('unhandled input element: ' +
+                          e.get_attribute('outerHTML'))
+
+        submit = self.browser.find_element_by_css_selector(
+            "input[type=submit]",
+        )
+        submit.click()
+
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
         from selenium.webdriver.common.by import By
 
+        WebDriverWait(self.browser, 1).until(
+            EC.staleness_of(submit),
+        )
+
+        # wait for next page load
+        self.browser.find_element_by_id("content")
+
+    def login(self, user):
         # logout
         self.browser.delete_all_cookies()
         self.browser.get(self.live_server_url + '/admin/logout/')
@@ -534,24 +578,7 @@ class RightsTests(test.LiveServerTestCase):
         self.assertTrue(self.client.login(username=user, password='password'),
                         'login failed - invalid credentials!')
 
-        self.browser.find_element_by_id("id_username").send_keys(
-            user,
-        )
-        self.browser.find_element_by_id("id_password").send_keys(
-            'password',
-        )
-
-        submit = self.browser.find_element_by_css_selector(
-            "input[type=submit]",
-        )
-        submit.click()
-
-        WebDriverWait(self.browser, 1).until(
-            EC.staleness_of(submit),
-        )
-
-        # wait for next page load
-        self.browser.find_element_by_id("content")
+        self.fill_in_form(username=user, password='password')
 
         self.assertEquals(self.live_server_url + '/admin/',
                           self.browser.current_url,
@@ -590,6 +617,21 @@ class RightsTests(test.LiveServerTestCase):
             )
 
         self.assertFalse(self.users['UserC'].rights.exists())
+
+    def test_create_road(self):
+        self.login('UserA')
+
+        url = self.live_server_url + '/admin/addrreg/road/add/'
+        self.browser.get(url)
+
+        sumiffiik = str(uuid.uuid4())
+
+        self.fill_in_form(name='TheRoad', code=42,
+                          location='LocationA0 (Town)')
+
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+
+        road = models.Road.objects.get(code=42)
 
     def test_module_list(self):
         user_modules = {

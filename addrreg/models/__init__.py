@@ -130,7 +130,9 @@ class Municipality(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField(null=True)
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/municipality/v1',
+    )
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True)
 
@@ -168,7 +170,9 @@ class District(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/district/v1',
+    )
 
     code = models.PositiveSmallIntegerField(_('Code'),
                                             db_index=True, null=True)
@@ -209,7 +213,9 @@ class PostalCode(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/postalcode/v1',
+    )
 
     # aka postnummer
     code = models.PositiveSmallIntegerField(_('Number'),
@@ -253,7 +259,9 @@ class Locality(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/locality/v1',
+    )
 
     code = models.PositiveSmallIntegerField(_('Code'),
                                             db_index=True, null=True)
@@ -327,14 +335,18 @@ class BNumber(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/number/v1',
+    )
 
-    code = models.CharField(_('Code'), db_index=True, null=True, max_length=8)
+    code = models.CharField(_('B-Number'),
+                            db_index=True, null=True, max_length=8)
 
     # aka kaldenavn
     name = models.CharField(_('Name'), max_length=60, null=True)
     # aka blokbetegnelse
-    nickname = models.CharField(_('Nickname'), max_length=60, null=True)
+    nickname = models.CharField(_('Nickname'), max_length=60,
+                                blank=True, null=True)
 
     location = base.ForeignKey(Locality, verbose_name=_('Locality'),
                                null=False)
@@ -398,18 +410,21 @@ class Road(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/road/v1',
+    )
 
     code = models.PositiveIntegerField(_('Code'), db_index=True)
     name = models.CharField(_('Name'), db_index=True, max_length=34)
 
     shortname = models.CharField(_('Abbreviated Name'), max_length=20,
                                  help_text=_('20 character maximum'),
-                                 null=True)
+                                 blank=True, null=True)
 
     alternate_name = models.CharField(_('Alternate Name'), max_length=34,
-                                      null=True)
-    cpr_name = models.CharField(_('CPR Name'), max_length=34, null=True)
+                                      blank=True, null=True)
+    cpr_name = models.CharField(_('CPR Name'), max_length=34,
+                                blank=True, null=True)
 
     location = base.ForeignKey(Locality, _('Locality'))
     municipality = base.ForeignKey(Municipality, _('Municipality'))
@@ -467,7 +482,9 @@ class Address(base.AbstractModel,
         default_permissions = ()
 
     sumiffiik = base.SumiffiikIDField()
-    sumiffiik_domain = base.SumiffiikDomainField()
+    sumiffiik_domain = base.SumiffiikDomainField(
+        default='https://data.gl/najugaq/address/v1',
+    )
 
     # aka husnummer
     house_number = models.CharField(_('House Number'), max_length=6,

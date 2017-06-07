@@ -130,6 +130,11 @@ VALUE_MAPS = {
         99973: models.LocalityState.ABANDONED,
     },
     'state_id': dict([(None, 99991)] + [(i, 99990 + i) for i in range(7)]),
+    'sumiffiik_domain': {
+        'https://data.gl/naujat/{}/v1'.format(title):
+        'https://data.gl/najugaq/{}/v1'.format(title)
+        for title in SPREADSHEET_MAPPINGS
+    },
 }
 
 
