@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-01 14:51+0200\n"
+"POT-Creation-Date: 2017-06-07 15:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: da\n"
@@ -17,249 +17,255 @@ msgstr "Administrationsforside"
 msgid "Greenlandic Address Reference Register"
 msgstr "Adresseopslagsregistret"
 
-#: addrreg/models/__init__.py:34
+#: addrreg/models/__init__.py:35
 #, python-format
 msgid "Fields cannot be in different municipalities; this one is in “%s”!"
 msgstr "Disse felter kan ikke tilhøre forskellige kommuner; dette tilhører “%s”!"
 
-#: addrreg/models/__init__.py:43 addrreg/models/__init__.py:50
-#: addrreg/models/base.py:36 addrreg/models/base.py:134
+#: addrreg/models/__init__.py:46 addrreg/models/__init__.py:53
+#: addrreg/models/base.py:47 addrreg/models/base.py:150
 msgid "State"
 msgstr "Tilstand"
 
-#: addrreg/models/__init__.py:44
+#: addrreg/models/__init__.py:47
 msgid "States"
 msgstr "Tilstande"
 
-#: addrreg/models/__init__.py:53 addrreg/models/__init__.py:131
-#: addrreg/models/__init__.py:168 addrreg/models/__init__.py:251
-#: addrreg/models/__init__.py:324 addrreg/models/__init__.py:395
+#: addrreg/models/__init__.py:56 addrreg/models/__init__.py:137
+#: addrreg/models/__init__.py:177 addrreg/models/__init__.py:266
+#: addrreg/models/__init__.py:417
 msgid "Code"
 msgstr "Kode"
 
-#: addrreg/models/__init__.py:55 addrreg/models/__init__.py:134
-#: addrreg/models/__init__.py:172 addrreg/models/__init__.py:256
-#: addrreg/models/__init__.py:327 addrreg/models/__init__.py:396
+#: addrreg/models/__init__.py:58 addrreg/models/__init__.py:140
+#: addrreg/models/__init__.py:181 addrreg/models/__init__.py:271
+#: addrreg/models/__init__.py:346 addrreg/models/__init__.py:418
 msgid "Name"
 msgstr "Navn"
 
-#: addrreg/models/__init__.py:56
+#: addrreg/models/__init__.py:59
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: addrreg/models/__init__.py:90
+#: addrreg/models/__init__.py:93
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: addrreg/models/__init__.py:91
+#: addrreg/models/__init__.py:94
 msgid "Town"
 msgstr "By"
 
-#: addrreg/models/__init__.py:92
+#: addrreg/models/__init__.py:95
 msgid "Settlement"
 msgstr "Bygd"
 
-#: addrreg/models/__init__.py:93
+#: addrreg/models/__init__.py:96
 msgid "Mine"
 msgstr "Minestation"
 
-#: addrreg/models/__init__.py:94
+#: addrreg/models/__init__.py:97
 msgid "Station"
 msgstr "Station"
 
-#: addrreg/models/__init__.py:95
+#: addrreg/models/__init__.py:98
 msgid "Airport"
 msgstr "Lufthavn"
 
-#: addrreg/models/__init__.py:96
+#: addrreg/models/__init__.py:99
 msgid "Farm"
 msgstr "Fårehold"
 
-#: addrreg/models/__init__.py:97
+#: addrreg/models/__init__.py:100
 msgid "Development"
 msgstr "Byudvikling"
 
-#: addrreg/models/__init__.py:114
+#: addrreg/models/__init__.py:117
 msgid "Projected"
 msgstr "Under etablering"
 
-#: addrreg/models/__init__.py:115 addrreg/models/base.py:38
+#: addrreg/models/__init__.py:118 addrreg/models/base.py:50
 msgid "Active"
 msgstr "Aktiv"
 
-#: addrreg/models/__init__.py:116
+#: addrreg/models/__init__.py:119
 msgid "Abandoned"
 msgstr "Nedlagt"
 
-#: addrreg/models/__init__.py:122 addrreg/models/__init__.py:266
-#: addrreg/models/__init__.py:333 addrreg/models/__init__.py:407
-#: addrreg/models/__init__.py:475 addrreg/models/__init__.py:556
+#: addrreg/models/__init__.py:126 addrreg/models/__init__.py:281
+#: addrreg/models/__init__.py:353 addrreg/models/__init__.py:430
+#: addrreg/models/__init__.py:501 addrreg/models/__init__.py:583
 msgid "Municipality"
 msgstr "Kommune"
 
-#: addrreg/models/__init__.py:123
+#: addrreg/models/__init__.py:127
 msgid "Municipalities"
 msgstr "Kommuner"
 
-#: addrreg/models/__init__.py:133 addrreg/models/__init__.py:171
-#: addrreg/models/__init__.py:254
+#: addrreg/models/__init__.py:139 addrreg/models/__init__.py:180
+#: addrreg/models/__init__.py:269
 msgid "Abbreviation"
 msgstr "Forkortelse"
 
-#: addrreg/models/__init__.py:145 addrreg/models/__init__.py:185
-#: addrreg/models/__init__.py:228 addrreg/models/__init__.py:299
-#: addrreg/models/__init__.py:369 addrreg/models/__init__.py:434
-#: addrreg/models/__init__.py:531
+#: addrreg/models/__init__.py:151 addrreg/models/__init__.py:194
+#: addrreg/models/__init__.py:240 addrreg/models/__init__.py:314
+#: addrreg/models/__init__.py:388 addrreg/models/__init__.py:457
+#: addrreg/models/__init__.py:557
 msgid "Info"
 msgstr "Info"
 
-#: addrreg/models/__init__.py:149 addrreg/models/__init__.py:189
-#: addrreg/models/__init__.py:232 addrreg/models/__init__.py:303
-#: addrreg/models/__init__.py:373 addrreg/models/__init__.py:441
-#: addrreg/models/__init__.py:537
+#: addrreg/models/__init__.py:155 addrreg/models/__init__.py:198
+#: addrreg/models/__init__.py:244 addrreg/models/__init__.py:318
+#: addrreg/models/__init__.py:392 addrreg/models/__init__.py:464
+#: addrreg/models/__init__.py:563
 msgid "Geography"
 msgstr "Geografi"
 
-#: addrreg/models/__init__.py:159 addrreg/models/__init__.py:268
+#: addrreg/models/__init__.py:166 addrreg/models/__init__.py:283
 msgid "District"
 msgstr "Distrikt"
 
-#: addrreg/models/__init__.py:160
+#: addrreg/models/__init__.py:167
 msgid "Districts"
 msgstr "Distrikter"
 
-#: addrreg/models/__init__.py:199 addrreg/models/__init__.py:270
+#: addrreg/models/__init__.py:209 addrreg/models/__init__.py:285
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: addrreg/models/__init__.py:200
+#: addrreg/models/__init__.py:210
 msgid "Postal Codes"
 msgstr "Postnumre"
 
-#: addrreg/models/__init__.py:209
+#: addrreg/models/__init__.py:221
 msgid "Number"
 msgstr "Nummer"
 
-#: addrreg/models/__init__.py:212
+#: addrreg/models/__init__.py:224
 msgid "City"
 msgstr "By"
 
 #. Translators: Human-readable description of a PostalCode
-#: addrreg/models/__init__.py:216
+#: addrreg/models/__init__.py:228
 #, python-brace-format
 msgid "{0.code} {0.name}"
 msgstr "{0.code} {0.name}"
 
-#: addrreg/models/__init__.py:242 addrreg/models/__init__.py:331
-#: addrreg/models/__init__.py:406 addrreg/models/__init__.py:480
+#: addrreg/models/__init__.py:255 addrreg/models/__init__.py:351
+#: addrreg/models/__init__.py:429 addrreg/models/__init__.py:506
 msgid "Locality"
 msgstr "Lokalitet"
 
-#: addrreg/models/__init__.py:243
+#: addrreg/models/__init__.py:256
 msgid "Localities"
 msgstr "Lokaliteter"
 
-#: addrreg/models/__init__.py:259
+#: addrreg/models/__init__.py:274
 msgid "Type"
 msgstr "Type"
 
-#: addrreg/models/__init__.py:263
+#: addrreg/models/__init__.py:278
 msgid "Locality State"
 msgstr "Lokalitetstilstand"
 
 #. Translators: Human-readable description of a Locality
-#: addrreg/models/__init__.py:275
+#: addrreg/models/__init__.py:290
 #, python-brace-format
 msgid "{0.name} ({0.type.label})"
 msgstr "{0.name} ({0.type.label})"
 
-#: addrreg/models/__init__.py:316 addrreg/models/__init__.py:473
+#: addrreg/models/__init__.py:332 addrreg/models/__init__.py:342
+#: addrreg/models/__init__.py:499
 msgid "B-Number"
 msgstr "B-nummer"
 
-#: addrreg/models/__init__.py:317
+#: addrreg/models/__init__.py:333
 msgid "B-Numbers"
 msgstr "B-numre"
 
-#: addrreg/models/__init__.py:329
+#: addrreg/models/__init__.py:348
 msgid "Nickname"
 msgstr "Kaldenavn"
 
-#: addrreg/models/__init__.py:386 addrreg/models/__init__.py:474
+#: addrreg/models/__init__.py:406 addrreg/models/__init__.py:500
 msgid "Road"
 msgstr "Vej"
 
-#: addrreg/models/__init__.py:387
+#: addrreg/models/__init__.py:407
 msgid "Roads"
 msgstr "Veje"
 
-#: addrreg/models/__init__.py:398
+#: addrreg/models/__init__.py:420
 msgid "Abbreviated Name"
 msgstr "Forkortet navn"
 
-#: addrreg/models/__init__.py:399
+#: addrreg/models/__init__.py:421
 msgid "20 character maximum"
 msgstr "Højst 20 tegn"
 
-#: addrreg/models/__init__.py:402
+#: addrreg/models/__init__.py:424
 msgid "Alternate Name"
 msgstr "Andet navn"
 
-#: addrreg/models/__init__.py:404
+#: addrreg/models/__init__.py:426
 msgid "CPR Name"
 msgstr "CPR-navn"
 
-#: addrreg/models/__init__.py:454
+#: addrreg/models/__init__.py:478
 msgid "Address"
 msgstr "Adresse"
 
-#: addrreg/models/__init__.py:455
+#: addrreg/models/__init__.py:479
 msgid "Addresses"
 msgstr "Adresser"
 
-#: addrreg/models/__init__.py:464
+#: addrreg/models/__init__.py:490
 msgid "House Number"
 msgstr "Husnummer"
 
-#: addrreg/models/__init__.py:467
+#: addrreg/models/__init__.py:493
 msgid "Floor"
 msgstr "Etage"
 
-#: addrreg/models/__init__.py:470
+#: addrreg/models/__init__.py:496
 msgid "Room"
 msgstr "Dør"
 
-#: addrreg/models/__init__.py:493
+#: addrreg/models/__init__.py:519
 #, python-brace-format
 msgid "{0.house_number} {0.road}"
 msgstr "{0.house_number} {0.road}"
 
-#: addrreg/models/__init__.py:495
+#: addrreg/models/__init__.py:521
 #, python-brace-format
 msgid "{0.road}"
 msgstr "{0.road}"
 
-#: addrreg/models/__init__.py:549 addrreg/models/__init__.py:550
+#: addrreg/models/__init__.py:576 addrreg/models/__init__.py:577
 msgid "Municipality Rights"
 msgstr "Kommunerettigheder"
 
-#: addrreg/models/__init__.py:561
+#: addrreg/models/__init__.py:588
 msgid "Users"
 msgstr "Brugere"
 
-#: addrreg/models/base.py:39
+#: addrreg/models/base.py:51
 msgid "Notes"
 msgstr "Noter"
 
-#: addrreg/models/base.py:56
+#: addrreg/models/base.py:77
 msgid "Sumiffiik ID"
 msgstr "Sumiffiik-ID"
 
-#: addrreg/models/base.py:96
+#: addrreg/models/base.py:101
 msgid "Sumiffiik Domain"
 msgstr "Sumiffiikdomæne"
 
-#: addrreg/models/temporal.py:34 addrreg/models/temporal.py:184
+#: addrreg/models/base.py:139
+#, python-format
+msgid "Enter a valid Sumiffiik, such as {%s}"
+msgstr "Indtast et gyldigt Sumiffiik, såsom {%s}"
+
+#: addrreg/models/temporal.py:34 addrreg/models/temporal.py:183
 msgid "Object ID"
 msgstr "Objekt-ID"
 
