@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 
 import contextlib
 import datetime
+import functools
 import io
 import os
 import sys
@@ -444,10 +445,21 @@ class RightsTests(test.LiveServerTestCase):
         from selenium import webdriver
         from selenium.common import exceptions
 
-        driver = getattr(webdriver, os.environ.get('BROWSER', 'Firefox'))
+        driver_name = os.environ.get('BROWSER', 'Firefox')
+        driver = getattr(webdriver, driver_name)
 
         if not driver:
             raise unittest.SkipTest('$BROWSER unset or invalid')
+
+        if driver_name == 'Safari':
+            preview_app = '/Applications/Safari Technology Preview.app'
+            if os.path.isdir(preview_app):
+                driver = functools.partial(
+                    driver,
+                    executable_path=os.path.join(
+                        preview_app, 'Contents/MacOS/safaridriver',
+                    )
+                )
 
         try:
             cls.browser = driver()
@@ -504,7 +516,9 @@ class RightsTests(test.LiveServerTestCase):
         self.browser.delete_all_cookies()
 
     def login(self, user):
-        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
 
         # logout
         self.browser.delete_all_cookies()
@@ -526,7 +540,15 @@ class RightsTests(test.LiveServerTestCase):
         self.browser.find_element_by_id("id_password").send_keys(
             'password',
         )
-        self.browser.find_element_by_css_selector("input[type=submit]").click()
+
+        submit = self.browser.find_element_by_css_selector(
+            "input[type=submit]",
+        )
+        submit.click()
+
+        WebDriverWait(self.browser, 1).until(
+            EC.staleness_of(submit),
+        )
 
         # wait for next page load
         self.browser.find_element_by_id("content")
@@ -541,8 +563,8 @@ class RightsTests(test.LiveServerTestCase):
         self.browser.get(self.live_server_url + '/admin')
 
         return {
-            module.find_element_by_tag_name('caption').text: [
-                header.text
+            module.find_element_by_tag_name('caption').text.strip().lower(): [
+                header.text.lower()
                 for header in module.find_elements_by_css_selector('th')
             ]
             for module in self.browser.find_elements_by_css_selector(
@@ -572,34 +594,34 @@ class RightsTests(test.LiveServerTestCase):
     def test_module_list(self):
         user_modules = {
             'root': {
-                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
-                    'Addresses',
-                    'B-Numbers',
-                    'Roads',
-                    'Districts',
-                    'Localities',
-                    'Municipalities',
-                    'Postal Codes',
-                    'States',
+                'greenlandic address reference register': [
+                    'addresses',
+                    'b-numbers',
+                    'roads',
+                    'districts',
+                    'localities',
+                    'municipalities',
+                    'postal codes',
+                    'states',
                 ],
-                'AUTHENTICATION AND AUTHORIZATION': [
-                    'Users',
-                    'Municipality Rights',
+                'authentication and authorization': [
+                    'users',
+                    'municipality rights',
                 ],
             },
 
             'UserA': {
-                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
-                    'Addresses',
-                    'B-Numbers',
-                    'Roads',
+                'greenlandic address reference register': [
+                    'addresses',
+                    'b-numbers',
+                    'roads',
                 ],
             },
             'UserB': {
-                'GREENLANDIC ADDRESS REFERENCE REGISTER': [
-                    'Addresses',
-                    'B-Numbers',
-                    'Roads',
+                'greenlandic address reference register': [
+                    'addresses',
+                    'b-numbers',
+                    'roads',
                 ],
             },
             'UserC': {},

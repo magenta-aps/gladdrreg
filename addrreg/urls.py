@@ -36,5 +36,5 @@ urlpatterns = [
     url(r"^receipt/(?P<eventID>%s)?$" % uuidpattern, views.Receipt.as_view()),
     url(r'^listChecksums/?$', views.ListChecksumView.as_view()),
     url(r'^get/(?P<type>[a-z]+)/(?P<checksums>[0-9a-f;]+)$',
-        views.GetRegistrationsView.as_view(), name='getRegistrations')
+        views.GetRegistrationsView.as_view(), name='getRegistrations'),
 ]
