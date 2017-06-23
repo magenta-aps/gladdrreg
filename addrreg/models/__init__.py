@@ -430,7 +430,7 @@ class Road(base.AbstractModel,
     municipality = base.ForeignKey(Municipality, _('Municipality'))
 
     def __str__(self):
-        return self.name
+        return self.name+" ("+str(self.code)+")"
 
 
 @admin.register(Road)

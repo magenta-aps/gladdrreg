@@ -7,3 +7,5 @@ __pycache__/
 /static
 /addrsite/local_settings.py
 /*.egg-info
+
+/.vscode/
