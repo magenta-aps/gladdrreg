@@ -343,9 +343,9 @@ class BNumber(base.AbstractModel,
                             db_index=True, null=True, max_length=8)
 
     # aka kaldenavn
-    name = models.CharField(_('Name'), max_length=60, null=True)
+    b_type = models.CharField(_('B-Type'), max_length=60, null=True, blank=True)
     # aka blokbetegnelse
-    nickname = models.CharField(_('Nickname'), max_length=60,
+    b_callname = models.CharField(_('B-Nickname'), max_length=60,
                                 blank=True, null=True)
 
     location = base.ForeignKey(Locality, verbose_name=_('Locality'),
@@ -355,8 +355,8 @@ class BNumber(base.AbstractModel,
 
     def __str__(self):
         parts = [self.code]
-        if self.name:
-            parts += [' (', self.name, ')']
+        if self.b_callname:
+            parts += [' (', self.b_callname, ')']
 
         return ''.join(parts)
 
@@ -371,13 +371,13 @@ class BNumberAdmin(base.AdminBase):
 
     list_display = (
         'code',
-        'name',
+        'b_type',
         'municipality',
         'location',
         'state',
         'active',
     )
-    search_fields = ('=code', 'name', 'municipality', 'location')
+    search_fields = ('=code', 'b_type', 'municipality', 'location')
 
     list_filter = (
         'location',
@@ -386,7 +386,7 @@ class BNumberAdmin(base.AdminBase):
 
     fieldsets = (
         (_('Info'), {
-            'fields': ('code', 'name', 'nickname'),
+            'fields': ('code', 'b_callname', 'b_type'),
             'classes': ('wide',),
         }),
         (_('Geography'), {
@@ -526,7 +526,7 @@ class AddressAdmin(base.AdminBase):
     form = MunicipalityValidatingForm
 
     related_search_fields = {
-        'b_number': ('code', 'name', 'nickname'),
+        'b_number': ('code', 'b_type', 'b_callname'),
     }
 
     list_display = (
