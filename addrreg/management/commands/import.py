@@ -23,20 +23,20 @@ SPREADSHEET_MAPPINGS = {
         None: models.Municipality,
         'UID': 'id',
         'state': 'state_id',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
     'district': {
         None: models.District,
         'UID': 'id',
         'state': 'state_id',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
     'postalcode': {
         None: models.PostalCode,
         'UID': 'id',
         'state': 'state_id',
         'postalarea': 'name',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
     'locality': {
         None: models.Locality,
@@ -47,19 +47,19 @@ SPREADSHEET_MAPPINGS = {
         'districtID': 'district_id',
         'typecodeID': 'type',
         'statecodeID': 'locality_state',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
     'bnumber': {
         None: models.BNumber,
         'UID': 'id',
         'StateID': 'state_id',
         'Code': 'code',
-        'bcallName': 'nickname',
-        'bunitName': 'name',
+        'bcallName': 'b_callname',
+        'bunitName': 'b_type',
         'LocalityID': 'location_id',
         'MunicipalityID': 'municipality_id',
         'Note': 'note',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
     'road': {
         None: models.Road,
@@ -69,7 +69,7 @@ SPREADSHEET_MAPPINGS = {
         'nameCPR': 'cpr_name',
         'locationID': 'location_id',
         'municipalityID': 'municipality_id',
-        'sumiffiik_id': 'sumiffiik',
+        'sumiiffik_id': 'sumiiffik',
         'name_alt': 'alternate_name',
     },
     'address': {
@@ -81,7 +81,7 @@ SPREADSHEET_MAPPINGS = {
         'bnumberID': 'b_number_id',
         'roadID': 'road_id',
         'MunicipalityID': 'municipality_id',
-        'sumiffiik_ID': 'sumiffiik',
+        'sumiiffik_ID': 'sumiiffik',
     },
 }
 
@@ -130,7 +130,7 @@ VALUE_MAPS = {
         99973: models.LocalityState.ABANDONED,
     },
     'state_id': dict([(None, 99991)] + [(i, 99990 + i) for i in range(7)]),
-    'sumiffiik_domain': {
+    'sumiiffik_domain': {
         'https://data.gl/naujat/{}/v1'.format(title):
         'https://data.gl/najugaq/{}/v1'.format(title)
         for title in SPREADSHEET_MAPPINGS
