@@ -63,20 +63,20 @@ class AbstractModel(models.Model):
         return [cls.type_name()] + cls.alias_names()
 
 
-def _random_sumiffiik():
+def _random_sumiiffik():
     return '{{{}}}'.format(uuid.uuid4())
 
 
-class SumiffiikIDField(models.CharField):
-    '''Field for storing a Sumiffiik, which is a UUID wrapped in {}. We
+class SumiiffikIDField(models.CharField):
+    '''Field for storing a Sumiiffik, which is a UUID wrapped in {}. We
     could use a UUID field, but MS SQL doesn't support those directly,
     so they offer little value.
 
     '''
 
-    def __init__(self, verbose_name=_('Sumiffiik ID'),
+    def __init__(self, verbose_name=_('Sumiiffik ID'),
                  max_length=38,
-                 default=_random_sumiffiik,
+                 default=_random_sumiiffik,
                  db_index=True,
                  null=False, blank=False,
                  **kwargs):
@@ -96,9 +96,9 @@ class SumiffiikIDField(models.CharField):
         return super().get_db_prep_value(value, *args, **kwargs)
 
 
-class SumiffiikDomainField(models.CharField):
+class SumiiffikDomainField(models.CharField):
 
-    def __init__(self, verbose_name=_('Sumiffiik Domain'),
+    def __init__(self, verbose_name=_('Sumiiffik Domain'),
                  max_length=64,
                  default='https://data.gl/najugaq/road/v1',
                  validators=[validators.URLValidator()],
@@ -128,15 +128,15 @@ class FormBase(forms.ModelForm):
             'last_changed': forms.Textarea(attrs={'cols': 80, 'rows': 4}),
         }
 
-    def clean_sumiffiik(self):
-        sumiffiik = str(self.cleaned_data['sumiffiik'])
+    def clean_sumiiffik(self):
+        sumiiffik = str(self.cleaned_data['sumiiffik'])
         try:
             return '{{{}}}'.format(
-                uuid.UUID(sumiffiik.strip('{}')),
+                uuid.UUID(sumiiffik.strip('{}')),
             )
         except ValueError:
             raise forms.ValidationError(
-                _('Enter a valid Sumiffiik, such as {%s}'),
+                _('Enter a valid Sumiiffik, such as {%s}'),
                 params=str(uuid.uuid4()),
             )
 

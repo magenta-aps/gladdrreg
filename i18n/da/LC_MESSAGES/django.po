@@ -253,17 +253,17 @@ msgid "Notes"
 msgstr "Noter"
 
 #: addrreg/models/base.py:77
-msgid "Sumiffiik ID"
-msgstr "Sumiffiik-ID"
+msgid "Sumiiffik ID"
+msgstr "Sumiiffik-ID"
 
 #: addrreg/models/base.py:101
-msgid "Sumiffiik Domain"
-msgstr "Sumiffiikdomæne"
+msgid "Sumiiffik Domain"
+msgstr "Sumiiffikdomæne"
 
 #: addrreg/models/base.py:139
 #, python-format
-msgid "Enter a valid Sumiffiik, such as {%s}"
-msgstr "Indtast et gyldigt Sumiffiik, såsom {%s}"
+msgid "Enter a valid Sumiiffik, such as {%s}"
+msgstr "Indtast et gyldigt Sumiiffik, såsom {%s}"
 
 #: addrreg/models/temporal.py:34 addrreg/models/temporal.py:183
 msgid "Object ID"
