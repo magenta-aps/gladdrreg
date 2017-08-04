@@ -350,7 +350,7 @@ class BNumber(base.AbstractModel,
 
     location = base.ForeignKey(Locality, verbose_name=_('Locality'),
                                null=False)
-    municipality = base.ForeignKey(Municipality, _('Municipality'),
+    municipality = base.ForeignKey(Municipality, verbose_name=_('Municipality'),
                                    null=False)
 
     def __str__(self):
@@ -377,7 +377,7 @@ class BNumberAdmin(base.AdminBase):
         'state',
         'active',
     )
-    search_fields = ('=code', 'b_type', 'municipality', 'location')
+    search_fields = ('=code', 'b_type', 'municipality__name', 'location__name')
 
     list_filter = (
         'location',
