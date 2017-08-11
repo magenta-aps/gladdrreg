@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Access denied' %}{% endblock %}
+
+{% block extrahead %}
+    <meta http-equiv="REFRESH" content="{{ delay }};url={% url 'admin:index' %}">
+{% endblock %}
+
+{% block content %}
+
+<h2>{% trans 'Access denied' %}</h2>
+
+<p>
+  {% blocktrans %}
+  We're sorry, but you don't have access to <code>{{ path }}</code>.
+  You'll be redirected to the main page in {{ delay }} seconds.
+  {% endblocktrans %}
+</p>
+
+{% endblock %}

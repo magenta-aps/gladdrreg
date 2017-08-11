@@ -21,3 +21,5 @@ from django.conf import urls
 urlpatterns = [
     urls.url(r'^', urls.include('addrreg.urls')),
 ]
+
+handler403 = 'addrreg.views.access_denied_handler'

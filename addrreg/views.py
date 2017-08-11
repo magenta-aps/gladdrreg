@@ -1,8 +1,9 @@
 from __future__ import absolute_import, unicode_literals, print_function
 
+from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
@@ -140,3 +141,17 @@ class GetRegistrationsView(JsonView):
 
         print(items)
         return items
+
+
+def access_denied_handler(request):
+    response = render_to_response(
+        'access_denied.html',
+        dict(
+            admin.site.each_context(request),
+            path=request.path,
+            delay=15,
+        ),
+    )
+    response.status_code = 403
+
+    return response
