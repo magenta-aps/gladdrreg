@@ -147,6 +147,12 @@ class Municipality(base.AbstractModel,
 class MunicipalityAdmin(base.AdminBase):
     list_display = ('name', 'abbrev', 'code', 'state', 'active')
 
+    search_fields = (
+        '=code',
+        'name',
+        '=abbrev',
+    )
+
     fieldsets = (
         (_('Info'), {
             'fields': ('name', 'abbrev', 'code'),
