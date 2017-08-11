@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-07 15:03+0200\n"
+"POT-Creation-Date: 2017-08-11 11:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: da\n"
@@ -20,7 +20,8 @@ msgstr "Adresseopslagsregistret"
 #: addrreg/models/__init__.py:35
 #, python-format
 msgid "Fields cannot be in different municipalities; this one is in “%s”!"
-msgstr "Disse felter kan ikke tilhøre forskellige kommuner; dette tilhører “%s”!"
+msgstr ""
+"Disse felter kan ikke tilhøre forskellige kommuner; dette tilhører “%s”!"
 
 #: addrreg/models/__init__.py:46 addrreg/models/__init__.py:53
 #: addrreg/models/base.py:47 addrreg/models/base.py:150
@@ -39,7 +40,7 @@ msgstr "Kode"
 
 #: addrreg/models/__init__.py:58 addrreg/models/__init__.py:140
 #: addrreg/models/__init__.py:181 addrreg/models/__init__.py:271
-#: addrreg/models/__init__.py:346 addrreg/models/__init__.py:418
+#: addrreg/models/__init__.py:418
 msgid "Name"
 msgstr "Navn"
 
@@ -182,9 +183,13 @@ msgstr "B-nummer"
 msgid "B-Numbers"
 msgstr "B-numre"
 
+#: addrreg/models/__init__.py:346
+msgid "B-Type"
+msgstr "B-Type"
+
 #: addrreg/models/__init__.py:348
-msgid "Nickname"
-msgstr "Kaldenavn"
+msgid "B-Nickname"
+msgstr "B-Kaldenavn"
 
 #: addrreg/models/__init__.py:406 addrreg/models/__init__.py:500
 msgid "Road"
@@ -268,6 +273,22 @@ msgstr "Indtast et gyldigt Sumiiffik, såsom {%s}"
 #: addrreg/models/temporal.py:34 addrreg/models/temporal.py:183
 msgid "Object ID"
 msgstr "Objekt-ID"
+
+#: addrreg/templates/access_denied.html:4
+#: addrreg/templates/access_denied.html:12
+msgid "Access denied"
+msgstr "Ingen adgang"
+
+#: addrreg/templates/access_denied.html:15
+#, python-format
+msgid ""
+"\n"
+"  We're sorry, but you don't have access to <code>%(path)s</code>.\n"
+"  You'll be redirected to the main page in %(delay)s seconds.\n"
+"  "
+msgstr ""
+"Du har beklageligvis ikke adgang til <code>%(path)s</code>.\n"
+"Du videresendes til forsiden om %(delay)s sekunder.\n"
 
 #~ msgid "Cannot refer to Locality in different municipality!"
 #~ msgstr "Kan ikke henvise til lokalitet i anden kommune"

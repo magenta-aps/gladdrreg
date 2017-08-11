@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-07 15:03+0200\n"
+"POT-Creation-Date: 2017-08-11 11:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 
 #: addrreg/models/__init__.py:58 addrreg/models/__init__.py:140
 #: addrreg/models/__init__.py:181 addrreg/models/__init__.py:271
-#: addrreg/models/__init__.py:346 addrreg/models/__init__.py:418
+#: addrreg/models/__init__.py:418
 msgid "Name"
 msgstr ""
 
@@ -184,8 +184,12 @@ msgstr ""
 msgid "B-Numbers"
 msgstr ""
 
+#: addrreg/models/__init__.py:346
+msgid "B-Type"
+msgstr ""
+
 #: addrreg/models/__init__.py:348
-msgid "Nickname"
+msgid "B-Nickname"
 msgstr ""
 
 #: addrreg/models/__init__.py:406 addrreg/models/__init__.py:500
@@ -269,4 +273,18 @@ msgstr ""
 
 #: addrreg/models/temporal.py:34 addrreg/models/temporal.py:183
 msgid "Object ID"
+msgstr ""
+
+#: addrreg/templates/access_denied.html:4
+#: addrreg/templates/access_denied.html:12
+msgid "Access denied"
+msgstr ""
+
+#: addrreg/templates/access_denied.html:15
+#, python-format
+msgid ""
+"\n"
+"  We're sorry, but you don't have access to <code>%(path)s</code>.\n"
+"  You'll be redirected to the main page in %(delay)s seconds.\n"
+"  "
 msgstr ""
