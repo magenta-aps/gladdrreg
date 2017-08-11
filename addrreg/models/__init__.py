@@ -403,8 +403,8 @@ class BNumberAdmin(base.AdminBase):
     )
 
     list_filter = (
-        'location',
         'municipality',
+        'location',
     ) + base.AdminBase.list_filter
 
     fieldsets = (
@@ -566,8 +566,8 @@ class AddressAdmin(base.AdminBase):
     readonly_fields = ('location',)
 
     list_filter = (
-        'road__location',
         'municipality',
+        'road__location',
     ) + base.AdminBase.list_filter
 
     search_fields = (
