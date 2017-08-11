@@ -188,7 +188,12 @@ class District(base.AbstractModel,
 class DistrictAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
 
-    search_fields = ('=code', 'name', '=abbrev')
+    search_fields = (
+        '=code',
+        'name',
+        '=abbrev',
+        'municipality__name',
+    )
 
     fieldsets = (
         (_('Info'), {
@@ -308,6 +313,13 @@ class LocalityAdmin(base.AdminBase):
         'locality_state',
     ) + base.AdminBase.list_filter
 
+    search_fields = (
+        '=code',
+        'name',
+        '=abbrev',
+        'municipality__name',
+    )
+
     superuser_only = True
 
     fieldsets = (
@@ -377,7 +389,13 @@ class BNumberAdmin(base.AdminBase):
         'state',
         'active',
     )
-    search_fields = ('=code', 'b_type', 'municipality__name', 'location__name')
+
+    search_fields = (
+        '=code',
+        'b_type',
+        'municipality__name',
+        'location__name',
+    )
 
     list_filter = (
         'location',
