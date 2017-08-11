@@ -198,6 +198,15 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
 
         return queryset.filter(self.get_related_filter(remote_model, request))
 
+    def get_queryset(self, request):
+        user = request.user
+        qs = super().get_queryset(request)
+
+        if not user.is_superuser and hasattr(self.model, 'municipality'):
+            qs = qs.filter(municipality__rights__users=user)
+
+        return qs
+
     def get_search_results(self, request, queryset, search_term):
         user = request.user
 
