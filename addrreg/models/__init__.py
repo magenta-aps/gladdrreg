@@ -297,8 +297,7 @@ class Locality(base.AbstractModel,
                                   null=True, blank=True)
 
     def __str__(self):
-        # Translators: Human-readable description of a Locality
-        return _('{0.name} ({0.type.label})').format(self)
+        return self.name
 
 
 @admin.register(Locality)
@@ -567,7 +566,7 @@ class AddressAdmin(base.AdminBase):
     readonly_fields = ('location',)
 
     list_filter = (
-        'road__location__name',
+        'road__location',
         'municipality',
     ) + base.AdminBase.list_filter
 
