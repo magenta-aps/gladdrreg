@@ -145,7 +145,7 @@ class Municipality(base.AbstractModel,
 
 @admin.register(Municipality)
 class MunicipalityAdmin(base.AdminBase):
-    list_display = ('abbrev', 'name', 'state', 'active')
+    list_display = ('name', 'abbrev', 'code', 'state', 'active')
 
     fieldsets = (
         (_('Info'), {
