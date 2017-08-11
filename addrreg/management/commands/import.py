@@ -132,7 +132,7 @@ VALUE_MAPS = {
     'state_id': dict([(None, 99991)] + [(i, 99990 + i) for i in range(7)]),
     'sumiiffik_domain': {
         'https://data.gl/naujat/{}/v1'.format(title):
-        'https://data.gl/najugaq/{}/v1'.format(title)
+        'https://data.gl/najugaq/{}'.format(title)
         for title in SPREADSHEET_MAPPINGS
     },
 }

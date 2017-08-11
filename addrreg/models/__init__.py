@@ -131,7 +131,7 @@ class Municipality(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField(null=True)
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/municipality/v1',
+        default='https://data.gl/najugaq/municipality',
     )
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True)
@@ -171,7 +171,7 @@ class District(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/district/v1',
+        default='https://data.gl/najugaq/district',
     )
 
     code = models.PositiveSmallIntegerField(_('Code'),
@@ -219,7 +219,7 @@ class PostalCode(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/postalcode/v1',
+        default='https://data.gl/najugaq/postalcode',
     )
 
     # aka postnummer
@@ -265,7 +265,7 @@ class Locality(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/locality/v1',
+        default='https://data.gl/najugaq/locality',
     )
 
     code = models.PositiveSmallIntegerField(_('Code'),
@@ -307,8 +307,8 @@ class LocalityAdmin(base.AdminBase):
     )
 
     list_filter = (
-        'municipality',
-        'district',
+        ('municipality', admin.RelatedOnlyFieldListFilter),
+        ('district', admin.RelatedOnlyFieldListFilter),
         'type',
         'locality_state',
     ) + base.AdminBase.list_filter
@@ -348,7 +348,7 @@ class BNumber(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/number/v1',
+        default='https://data.gl/najugaq/number',
     )
 
     code = models.CharField(_('B-Number'),
@@ -429,7 +429,7 @@ class Road(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/road/v1',
+        default='https://data.gl/najugaq/road',
     )
 
     code = models.PositiveIntegerField(_('Code'), db_index=True)
@@ -501,7 +501,7 @@ class Address(base.AbstractModel,
 
     sumiiffik = base.SumiiffikIDField()
     sumiiffik_domain = base.SumiiffikDomainField(
-        default='https://data.gl/najugaq/address/v1',
+        default='https://data.gl/najugaq/address',
     )
 
     # aka husnummer
