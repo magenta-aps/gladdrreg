@@ -12,11 +12,12 @@ with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 requires = [
-    "django>=1.10, <1.11",
+    "django>=1.11",
     "django-enumfields>=0.9.0",
     "django_extensions>=1.7.8",
     "django-modeladmin-reorder>=0.2",
     "django-jsonview>=1.0.0",
+    "django-sqlserver>=1.11",
     "openpyxl>=2.4",
     "eventlet>=0.21",
     "babel>=2.4.0",
@@ -29,11 +30,10 @@ if sys.platform != 'win32':
     requires += [
         "psycopg2>=2.7"
         if platform.python_implementation() != 'PyPy'
-        else "psycopg2cffi>=2.7"
+        else "psycopg2cffi>=2.7.6"
     ]
 else:
     requires += [
-        'django-mssql>=1.8',
         "pypiwin32",
         'django-windows-tools',
     ]
