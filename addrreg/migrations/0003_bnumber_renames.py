@@ -9,6 +9,8 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    replaces = [('addrreg', '0003_auto_20170623_1542')]
+
     dependencies = [
         ('addrreg', '0002_fix_defaults'),
     ]
