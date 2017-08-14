@@ -389,10 +389,15 @@ class BNumberAdmin(base.AdminBase):
     list_display = (
         'code',
         'b_type',
+        'id',
         'municipality',
         'location',
         'state',
         'active',
+    )
+
+    readonly_fields = (
+        'id',
     )
 
     search_fields = (
@@ -409,7 +414,7 @@ class BNumberAdmin(base.AdminBase):
 
     fieldsets = (
         (_('Info'), {
-            'fields': ('code', 'b_callname', 'b_type'),
+            'fields': ('code', 'b_callname', 'b_type', 'id'),
             'classes': ('wide',),
         }),
         (_('Geography'), {
@@ -591,6 +596,13 @@ class AddressAdmin(base.AdminBase):
             'classes': ('wide',),
         }),
     ) + base.AdminBase._fieldsets
+
+    def get_help_text(self, field_name, model_name):
+        if field_name == 'b_number':
+            return _('Either enter a B-Number to search for to the left, or '
+                     'an ID to the right')
+        else:
+            return super().get_help_text(field_name, model_name)
 
 
 class MunicipalityRights(models.Model):
