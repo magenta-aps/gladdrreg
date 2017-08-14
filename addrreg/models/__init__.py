@@ -8,7 +8,6 @@ import enumfields
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.core import exceptions
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,7 +17,6 @@ admin.site.disable_action('delete_selected')
 
 
 class MunicipalityValidatingForm(base.FormBase):
-
     def clean(self):
         cleaned_data = super().clean()
 
@@ -360,14 +358,16 @@ class BNumber(base.AbstractModel,
                             db_index=True, null=True, max_length=8)
 
     # aka kaldenavn
-    b_type = models.CharField(_('B-Type'), max_length=60, null=True, blank=True)
+    b_type = models.CharField(_('B-Type'), max_length=60,
+                              null=True, blank=True)
     # aka blokbetegnelse
     b_callname = models.CharField(_('B-Nickname'), max_length=60,
-                                blank=True, null=True)
+                                  blank=True, null=True)
 
     location = base.ForeignKey(Locality, verbose_name=_('Locality'),
                                null=False)
-    municipality = base.ForeignKey(Municipality, verbose_name=_('Municipality'),
+    municipality = base.ForeignKey(Municipality,
+                                   verbose_name=_('Municipality'),
                                    null=False)
 
     def __str__(self):

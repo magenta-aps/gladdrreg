@@ -12,7 +12,9 @@ class NoAdminNTEventLogHandler(logging.handlers.NTEventLogHandler):
                  add_to_registry=False):
         logging.Handler.__init__(self)
         try:
-            import win32evtlogutil, win32evtlog
+            import win32evtlogutil
+            import win32evtlog
+
             self.appname = appname
             self._welu = win32evtlogutil
             if not dllname:
@@ -25,13 +27,13 @@ class NoAdminNTEventLogHandler(logging.handlers.NTEventLogHandler):
                 self._welu.AddSourceToRegistry(appname, dllname, logtype)
             self.deftype = win32evtlog.EVENTLOG_ERROR_TYPE
             self.typemap = {
-                logging.DEBUG   : win32evtlog.EVENTLOG_INFORMATION_TYPE,
-                logging.INFO    : win32evtlog.EVENTLOG_INFORMATION_TYPE,
-                logging.WARNING : win32evtlog.EVENTLOG_WARNING_TYPE,
-                logging.ERROR   : win32evtlog.EVENTLOG_ERROR_TYPE,
+                logging.DEBUG:    win32evtlog.EVENTLOG_INFORMATION_TYPE,
+                logging.INFO:     win32evtlog.EVENTLOG_INFORMATION_TYPE,
+                logging.WARNING:  win32evtlog.EVENTLOG_WARNING_TYPE,
+                logging.ERROR:    win32evtlog.EVENTLOG_ERROR_TYPE,
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
-         }
+            }
         except ImportError:
-            print("The Python Win32 extensions for NT (service, event "\
-                        "logging) appear not to be available.")
+            print("The Python Win32 extensions for NT (service, event "
+                  "logging) appear not to be available.")
             self._welu = None

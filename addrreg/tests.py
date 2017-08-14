@@ -7,7 +7,6 @@ import datetime
 import functools
 import io
 import os
-import sys
 import unittest
 import uuid
 
@@ -19,7 +18,7 @@ import pytz
 from django import apps, db, test
 from django.conf import settings
 from django.core import exceptions
-from django.utils import six, translation
+from django.utils import translation
 
 # Create your tests here.
 from . import models
@@ -126,8 +125,8 @@ class CreationTests(test.TransactionTestCase):
             location=locality,
             state=self.state,
             code='42',
-            name='The Block',
-            nickname='BS221B',
+            b_callname='The Block',
+            b_type='BS221B',
             sumiiffik_domain=DUMMY_DOMAIN,
         )
         b.save()
@@ -147,7 +146,7 @@ class CreationTests(test.TransactionTestCase):
         self.assertEquals(self.addr.b_number.municipality.name, 'Aarhus')
         self.assertEquals(self.addr.b_number.municipality.name, 'Aarhus')
         self.assertEquals(str(self.addr),
-                          '42Z Hans Hartvig Seedorffs Stræde, 13, mf')
+                          '42Z Hans Hartvig Seedorffs Stræde (1337), 13, mf')
 
     @unittest.expectedFailure
     def test_create_duplicate_municipality_fails(self):
@@ -506,7 +505,7 @@ class RightsTests(test.LiveServerTestCase):
 
                 for i in range(3):
                     suffix = '{}{}'.format(l, i)
-                    loc = models.Locality.objects.create(
+                    models.Locality.objects.create(
                         name='Location' + suffix, abbrev=suffix, code=i,
                         sumiiffik_domain=DUMMY_DOMAIN, type=i + 1,
                         municipality=mun,
@@ -527,7 +526,7 @@ class RightsTests(test.LiveServerTestCase):
             e = self.browser.find_element_by_id("id_" + field)
 
             if (e.tag_name == 'input' and
-                    e.get_attribute('type') in ('text', 'password')):
+                    e.get_attribute('type') in ('text', 'password', 'number')):
                 e.send_keys(
                     value,
                 )
@@ -624,14 +623,12 @@ class RightsTests(test.LiveServerTestCase):
         url = self.live_server_url + '/admin/addrreg/road/add/'
         self.browser.get(url)
 
-        sumiiffik = str(uuid.uuid4())
-
         self.fill_in_form(name='TheRoad', code=42,
-                          location='LocationA0 (Town)')
+                          location='LocationA0')
 
         self.assertNotEquals(url, self.browser.current_url, 'addition failed')
 
-        road = models.Road.objects.get(code=42)
+        models.Road.objects.get(code=42)
 
     def test_module_list(self):
         user_modules = {
