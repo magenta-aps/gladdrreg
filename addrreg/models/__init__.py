@@ -374,6 +374,7 @@ class BNumber(base.AbstractModel,
         parts = [self.code]
         if self.b_callname:
             parts += [' (', self.b_callname, ')']
+        parts += [' (', self.location.name, ')']
 
         return ''.join(parts)
 
@@ -554,7 +555,7 @@ class AddressAdmin(base.AdminBase):
     form = MunicipalityValidatingForm
 
     related_search_fields = {
-        'b_number': ('code', 'b_type', 'b_callname'),
+        'b_number': ('code', 'b_type', 'b_callname', 'location__name'),
     }
 
     list_display = (
