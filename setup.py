@@ -67,6 +67,8 @@ setuptools.setup(
     keywords='django greenland dafo',
     packages=setuptools.find_packages(exclude=['contrib', 'docs', 'tests']),
 
+    python_requires='>3.5',
+
     install_requires=requires,
     extras_require={
         # 'dev': ['check-manifest'],
