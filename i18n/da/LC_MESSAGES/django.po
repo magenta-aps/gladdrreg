@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-11 11:54+0200\n"
+"POT-Creation-Date: 2017-08-14 06:21-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: da\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addrreg/admin.py:17
+#: addrreg/admin.py:24
 msgid "Administration Overview"
 msgstr "Administrationsforside"
 
@@ -33,14 +33,14 @@ msgid "States"
 msgstr "Tilstande"
 
 #: addrreg/models/__init__.py:56 addrreg/models/__init__.py:137
-#: addrreg/models/__init__.py:177 addrreg/models/__init__.py:266
-#: addrreg/models/__init__.py:417
+#: addrreg/models/__init__.py:183 addrreg/models/__init__.py:277
+#: addrreg/models/__init__.py:445
 msgid "Code"
 msgstr "Kode"
 
 #: addrreg/models/__init__.py:58 addrreg/models/__init__.py:140
-#: addrreg/models/__init__.py:181 addrreg/models/__init__.py:271
-#: addrreg/models/__init__.py:418
+#: addrreg/models/__init__.py:187 addrreg/models/__init__.py:282
+#: addrreg/models/__init__.py:446
 msgid "Name"
 msgstr "Navn"
 
@@ -92,9 +92,9 @@ msgstr "Aktiv"
 msgid "Abandoned"
 msgstr "Nedlagt"
 
-#: addrreg/models/__init__.py:126 addrreg/models/__init__.py:281
-#: addrreg/models/__init__.py:353 addrreg/models/__init__.py:430
-#: addrreg/models/__init__.py:501 addrreg/models/__init__.py:583
+#: addrreg/models/__init__.py:126 addrreg/models/__init__.py:292
+#: addrreg/models/__init__.py:370 addrreg/models/__init__.py:458
+#: addrreg/models/__init__.py:529 addrreg/models/__init__.py:618
 msgid "Municipality"
 msgstr "Kommune"
 
@@ -102,154 +102,154 @@ msgstr "Kommune"
 msgid "Municipalities"
 msgstr "Kommuner"
 
-#: addrreg/models/__init__.py:139 addrreg/models/__init__.py:180
-#: addrreg/models/__init__.py:269
+#: addrreg/models/__init__.py:139 addrreg/models/__init__.py:186
+#: addrreg/models/__init__.py:280
 msgid "Abbreviation"
 msgstr "Forkortelse"
 
-#: addrreg/models/__init__.py:151 addrreg/models/__init__.py:194
-#: addrreg/models/__init__.py:240 addrreg/models/__init__.py:314
-#: addrreg/models/__init__.py:388 addrreg/models/__init__.py:457
-#: addrreg/models/__init__.py:557
+#: addrreg/models/__init__.py:157 addrreg/models/__init__.py:205
+#: addrreg/models/__init__.py:251 addrreg/models/__init__.py:331
+#: addrreg/models/__init__.py:416 addrreg/models/__init__.py:485
+#: addrreg/models/__init__.py:585
 msgid "Info"
 msgstr "Info"
 
-#: addrreg/models/__init__.py:155 addrreg/models/__init__.py:198
-#: addrreg/models/__init__.py:244 addrreg/models/__init__.py:318
-#: addrreg/models/__init__.py:392 addrreg/models/__init__.py:464
-#: addrreg/models/__init__.py:563
+#: addrreg/models/__init__.py:161 addrreg/models/__init__.py:209
+#: addrreg/models/__init__.py:255 addrreg/models/__init__.py:335
+#: addrreg/models/__init__.py:420 addrreg/models/__init__.py:492
+#: addrreg/models/__init__.py:591
 msgid "Geography"
 msgstr "Geografi"
 
-#: addrreg/models/__init__.py:166 addrreg/models/__init__.py:283
+#: addrreg/models/__init__.py:172 addrreg/models/__init__.py:294
 msgid "District"
 msgstr "Distrikt"
 
-#: addrreg/models/__init__.py:167
+#: addrreg/models/__init__.py:173
 msgid "Districts"
 msgstr "Distrikter"
 
-#: addrreg/models/__init__.py:209 addrreg/models/__init__.py:285
+#: addrreg/models/__init__.py:220 addrreg/models/__init__.py:296
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: addrreg/models/__init__.py:210
+#: addrreg/models/__init__.py:221
 msgid "Postal Codes"
 msgstr "Postnumre"
 
-#: addrreg/models/__init__.py:221
+#: addrreg/models/__init__.py:232
 msgid "Number"
 msgstr "Nummer"
 
-#: addrreg/models/__init__.py:224
+#: addrreg/models/__init__.py:235
 msgid "City"
 msgstr "By"
 
 #. Translators: Human-readable description of a PostalCode
-#: addrreg/models/__init__.py:228
+#: addrreg/models/__init__.py:239
 #, python-brace-format
 msgid "{0.code} {0.name}"
 msgstr "{0.code} {0.name}"
 
-#: addrreg/models/__init__.py:255 addrreg/models/__init__.py:351
-#: addrreg/models/__init__.py:429 addrreg/models/__init__.py:506
+#: addrreg/models/__init__.py:266 addrreg/models/__init__.py:368
+#: addrreg/models/__init__.py:457 addrreg/models/__init__.py:534
 msgid "Locality"
 msgstr "Lokalitet"
 
-#: addrreg/models/__init__.py:256
+#: addrreg/models/__init__.py:267
 msgid "Localities"
 msgstr "Lokaliteter"
 
-#: addrreg/models/__init__.py:274
+#: addrreg/models/__init__.py:285
 msgid "Type"
 msgstr "Type"
 
-#: addrreg/models/__init__.py:278
+#: addrreg/models/__init__.py:289
 msgid "Locality State"
 msgstr "Lokalitetstilstand"
 
-#. Translators: Human-readable description of a Locality
-#: addrreg/models/__init__.py:290
-#, python-brace-format
-msgid "{0.name} ({0.type.label})"
-msgstr "{0.name} ({0.type.label})"
-
-#: addrreg/models/__init__.py:332 addrreg/models/__init__.py:342
-#: addrreg/models/__init__.py:499
+#: addrreg/models/__init__.py:349 addrreg/models/__init__.py:359
+#: addrreg/models/__init__.py:527
 msgid "B-Number"
 msgstr "B-nummer"
 
-#: addrreg/models/__init__.py:333
+#: addrreg/models/__init__.py:350
 msgid "B-Numbers"
 msgstr "B-numre"
 
-#: addrreg/models/__init__.py:346
+#: addrreg/models/__init__.py:363
 msgid "B-Type"
 msgstr "B-Type"
 
-#: addrreg/models/__init__.py:348
+#: addrreg/models/__init__.py:365
 msgid "B-Nickname"
 msgstr "B-Kaldenavn"
 
-#: addrreg/models/__init__.py:406 addrreg/models/__init__.py:500
+#: addrreg/models/__init__.py:434 addrreg/models/__init__.py:528
 msgid "Road"
 msgstr "Vej"
 
-#: addrreg/models/__init__.py:407
+#: addrreg/models/__init__.py:435
 msgid "Roads"
 msgstr "Veje"
 
-#: addrreg/models/__init__.py:420
+#: addrreg/models/__init__.py:448
 msgid "Abbreviated Name"
 msgstr "Forkortet navn"
 
-#: addrreg/models/__init__.py:421
+#: addrreg/models/__init__.py:449
 msgid "20 character maximum"
 msgstr "Højst 20 tegn"
 
-#: addrreg/models/__init__.py:424
+#: addrreg/models/__init__.py:452
 msgid "Alternate Name"
 msgstr "Andet navn"
 
-#: addrreg/models/__init__.py:426
+#: addrreg/models/__init__.py:454
 msgid "CPR Name"
 msgstr "CPR-navn"
 
-#: addrreg/models/__init__.py:478
+#: addrreg/models/__init__.py:506
 msgid "Address"
 msgstr "Adresse"
 
-#: addrreg/models/__init__.py:479
+#: addrreg/models/__init__.py:507
 msgid "Addresses"
 msgstr "Adresser"
 
-#: addrreg/models/__init__.py:490
+#: addrreg/models/__init__.py:518
 msgid "House Number"
 msgstr "Husnummer"
 
-#: addrreg/models/__init__.py:493
+#: addrreg/models/__init__.py:521
 msgid "Floor"
 msgstr "Etage"
 
-#: addrreg/models/__init__.py:496
+#: addrreg/models/__init__.py:524
 msgid "Room"
 msgstr "Dør"
 
-#: addrreg/models/__init__.py:519
+#: addrreg/models/__init__.py:547
 #, python-brace-format
 msgid "{0.house_number} {0.road}"
 msgstr "{0.house_number} {0.road}"
 
-#: addrreg/models/__init__.py:521
+#: addrreg/models/__init__.py:549
 #, python-brace-format
 msgid "{0.road}"
 msgstr "{0.road}"
 
-#: addrreg/models/__init__.py:576 addrreg/models/__init__.py:577
+#: addrreg/models/__init__.py:602
+msgid ""
+"Either enter a B-Number to search for to the left, or an ID to the right"
+msgstr ""
+"Søg enten efter et B-Number til venstre, eller indtast et ID til højre"
+
+#: addrreg/models/__init__.py:611 addrreg/models/__init__.py:612
 msgid "Municipality Rights"
 msgstr "Kommunerettigheder"
 
-#: addrreg/models/__init__.py:588
+#: addrreg/models/__init__.py:623
 msgid "Users"
 msgstr "Brugere"
 
@@ -289,6 +289,9 @@ msgid ""
 msgstr ""
 "Du har beklageligvis ikke adgang til <code>%(path)s</code>.\n"
 "Du videresendes til forsiden om %(delay)s sekunder.\n"
+
+#~ msgid "{0.name} ({0.type.label})"
+#~ msgstr "{0.name} ({0.type.label})"
 
 #~ msgid "Cannot refer to Locality in different municipality!"
 #~ msgstr "Kan ikke henvise til lokalitet i anden kommune"
