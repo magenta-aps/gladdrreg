@@ -61,6 +61,19 @@ settings.
 Gotchas
 -------
 
+Time zones
+    The application uses UTC by default, but you can select another by
+    adding the following to ``addrsite/local_settings.py``::
+
+      TIME_ZONE = 'Amerika/Godthab'
+
+    The value above is an example, and the time zone covering most
+    areas of Greenland. `Other possible values`_ include
+    ``Europe/Copenhagen`` or ``Etc/UTC`` — which is our default.
+
+.. _`Other possible values`:
+   https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
 Localisation
     The UI is fully localised to English and Danish, and uses
     whichever language your browser requests. Your milage may vary

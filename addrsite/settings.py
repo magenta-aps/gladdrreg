@@ -149,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'da'
 
-TIME_ZONE = 'Europe/Copenhagen'
+TIME_ZONE = 'Etc/UTC'
 
 USE_I18N = True
 

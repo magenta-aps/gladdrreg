@@ -18,6 +18,14 @@ DATABASES = {
     },
 }
 
+#
+# Set the time zone for the UI.
+#
+# The value below is an example, other possible values include
+# 'Europe/Copenhagen'. We default to UTC.
+#
+TIME_ZONE = 'Amerika/Godthab'
+
 # You can restrict the allowed host names to certain settings
 
 # ALLOWED_HOSTS = 'gladdrreg.example.com'
