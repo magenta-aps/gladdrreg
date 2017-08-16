@@ -32,11 +32,16 @@ class TemporalModelBase(models.base.ModelBase):
                                         default=uuid.uuid4,
                                         editable=False,
                                         verbose_name=_('Object ID'))
-            valid_from = models.DateTimeField(null=True, editable=False)
-            valid_to = models.DateTimeField(null=True, editable=False)
+            valid_from = models.DateTimeField(null=True, editable=False,
+                                              verbose_name=_('Valid From'))
+            valid_to = models.DateTimeField(null=True, editable=False,
+                                              verbose_name=_('Valid To'))
 
-            registration_from = models.DateTimeField(db_index=True,
-                                                     editable=False)
+            registration_from = models.DateTimeField(
+                db_index=True,
+                editable=False,
+                verbose_name=_('Registration Time'),
+            )
 
             @property
             def registrations(self):
@@ -177,27 +182,38 @@ class TemporalModelBase(models.base.ModelBase):
                 abstract = True
 
             object = models.ForeignKey(modelcls, models.SET_NULL, null=True,
-                                       related_name='registrations')
+                                       related_name='registrations',
+                                       verbose_name=_('Object'))
             objectID = models.UUIDField(unique=True, db_index=True,
                                         editable=False,
                                         verbose_name=_('Object ID'))
 
-            valid_from = models.DateTimeField(null=True, editable=False)
-            valid_to = models.DateTimeField(null=True, editable=False)
+            valid_from = models.DateTimeField(null=True, editable=False,
+                                              verbose_name=_('Valid From'))
+            valid_to = models.DateTimeField(null=True, editable=False,
+                                              verbose_name=_('Valid To'))
 
             registration_user = models.ForeignKey(
                 settings.AUTH_USER_MODEL, models.PROTECT,
                 null=True,
                 db_index=True,
+                verbose_name=_('Actor'),
             )
-            registration_from = models.DateTimeField(db_index=True,
-                                                     editable=False)
-            registration_to = models.DateTimeField(db_index=True,
-                                                   null=True,
-                                                   editable=False)
+            registration_from = models.DateTimeField(
+                db_index=True,
+                editable=False,
+                verbose_name=_('Registration From'),
+            )
+            registration_to = models.DateTimeField(
+                db_index=True,
+                null=True,
+                editable=False,
+                verbose_name=_('Registration From'),
+            )
 
             checksum = models.CharField(db_index=True, null=True,
-                                        editable=False, max_length=64)
+                                        editable=False, max_length=64,
+                                        verbose_name=_('Checksum'))
 
             modelclass = modelcls
 
@@ -288,6 +304,9 @@ class TemporalModelBase(models.base.ModelBase):
             ]
 
             db_table = modelcls._meta.db_table + str('_registrations')
+
+            verbose_name = _('{} Registration').format(modelcls._meta.verbose_name)
+            verbose_name_plural = _('{} Registrations').format(modelcls._meta.verbose_name)
 
         regattrs['__qualname__'] += 'Registrations'
         regattrs['Meta'] = Meta
