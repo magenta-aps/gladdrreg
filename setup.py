@@ -40,7 +40,7 @@ else:
 
 setuptools.setup(
     name='gladdrreg',
-    version='0.0.1',
+    version='0.1.0',
 
     description='Address Resolution Register of Greenland',
     long_description=long_description,
