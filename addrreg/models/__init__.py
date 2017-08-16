@@ -628,5 +628,8 @@ class MunicipalityRights(models.Model):
     def __str__(self):
         return self.municipality.name
 
-
-admin.site.register(MunicipalityRights)
+@admin.register(MunicipalityRights)
+class MunicipalityRightsAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': forms.CheckboxSelectMultiple},
+    }
