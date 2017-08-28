@@ -5,6 +5,7 @@ __pycache__/
 /db.sqlite3
 /out
 /static
+/web.config
 /addrsite/local_settings.py
 /*.egg-info
 
