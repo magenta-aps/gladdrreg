@@ -138,7 +138,31 @@ VALUE_MAPS = {
 }
 
 
-def import_spreadsheet(fp, verbose=False, raise_on_error=False):
+def import_spreadsheet(fp, verbose=False, raise_on_error=False,
+                       interactive=True):
+    object_count = sum(
+        v[None].objects.count()
+        for v in SPREADSHEET_MAPPINGS.values()
+    )
+    registration_count = sum(
+        v[None].Registrations.objects.count()
+        for v in SPREADSHEET_MAPPINGS.values()
+        if getattr(v[None], 'Registrations', None)
+    )
+
+    message = """
+You have requested an import into the database even though it has {}
+objects and {} registrations. This may overwrite or conflict with
+any pre-existing entries.
+Are you sure you want to do this?
+
+   Type 'yes' to continue, or 'no' to cancel:
+""".strip('\n').format(object_count, registration_count)
+
+    if (interactive and object_count + registration_count and
+            input(message + ' ') != 'yes'):
+        raise CommandError("Import cancelled.")
+
     wb = openpyxl.load_workbook(fp, read_only=True, data_only=True)
 
     total = sum(sheet.max_row - 1 for sheet in wb
@@ -238,6 +262,11 @@ class Command(base.BaseCommand):
     help = 'Import the given spreadsheet into the database'
 
     def add_arguments(self, parser):
+        parser.add_argument(
+            '--noinput', '--no-input',
+            action='store_false', dest='interactive', default=True,
+            help="Do NOT prompt the user for input of any kind.",
+        )
         parser.add_argument('--failfast', action='store_true',
                             help='stop on first error')
         parser.add_argument('path', type=str, nargs='?',
@@ -247,4 +276,9 @@ class Command(base.BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open(kwargs['path'], 'rb') as fp:
-            import_spreadsheet(fp, kwargs['verbosity'] > 0, kwargs['failfast'])
+            import_spreadsheet(
+                fp=fp,
+                verbose=kwargs['verbosity'] > 0,
+                raise_on_error=kwargs['failfast'],
+                interactive=kwargs['interactive'],
+            )
