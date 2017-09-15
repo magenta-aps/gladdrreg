@@ -145,7 +145,7 @@ class TemporalModelBase(models.base.ModelBase):
             def natural_key(self):
                 return {
                     'uuid': self.objectID,
-                    'domain': "https://data.gl/gladdreg/%s/1/rest/" %
+                    'domaene': "https://data.gl/gladdreg/%s/1/rest/" %
                               self.type_name()
                 }
 
@@ -280,18 +280,18 @@ class TemporalModelBase(models.base.ModelBase):
 
                 return {
                     'checksum': self.checksum,
-                    'registrationFrom': self.registration_from,
-                    'registrationTo': self.registration_to,
+                    'registreringFra': self.registration_from,
+                    'registreringTil': self.registration_to,
                     'entity': {
                         'uuid': self.object.objectID,
-                        'domain': 'https://data.gl/gladdreg/' +
-                                  self.type_name() + "/1/rest/"
+                        'domaene': 'https://data.gl/gladdreg/' +
+                                    self.type_name() + "/1/rest/"
                     },
-                    'effects': [{
-                        'effectFrom': (self.valid_from or
-                                       self.registration_from),
-                        'effectTo': self.valid_to or self.registration_to,
-                        'dataItems': [
+                    'virkninger': [{
+                        'virkningFra': (self.valid_from or
+                                        self.registration_from),
+                        'virkningTil': self.valid_to or self.registration_to,
+                        'data': [
                             fields
                         ]
                     }]

@@ -58,8 +58,8 @@ class GetNewEventsView(JsonView):
 class Receipt(View):
 
     def post(self, request, eventID, *args, **kwargs):
-        print(request.body.decode('utf-8'))
-        receipt = json.loads(request.body.decode('utf-8'))
+        text = request.body.decode(request.encoding or 'utf-8')
+        receipt = json.loads(text)
         try:
             event = events.Event.objects.get(eventID=eventID)
         except events.Event.DoesNotExist:
@@ -139,7 +139,6 @@ class GetRegistrationsView(JsonView):
             except object_class.Registrations.DoesNotExist:
                 pass
 
-        print(items)
         return items
 
 
