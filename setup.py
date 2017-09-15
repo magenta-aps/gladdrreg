@@ -22,6 +22,7 @@ requires = [
     "eventlet~=0.21.0",
     "babel~=2.4.0",
     "requests~=2.17.3",
+    "grequests~=0.3.0",
     "progress>=1.3",
     "python-dateutil~=2.6.0"
 ]

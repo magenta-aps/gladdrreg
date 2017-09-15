@@ -2,7 +2,8 @@ from ...models import *
 from ...models.events import *
 
 from jsonview.decorators import _dump_json as dump_json
-import requests
+import grequests
+import progress.bar
 
 from django.core.management import base
 
@@ -10,43 +11,51 @@ from django.core.management import base
 class Command(base.BaseCommand):
     help = 'Issue a push to the Datafordeler'
 
+    OBJECT_CLASSES = (
+        State, Municipality, District, PostalCode, Locality, BNumber,
+        Road, Address
+    )
+
     def add_arguments(self, parser):
         parser.add_argument(
-            '--host', action='store', default='https://localhost',
+            '--host', default='https://localhost',
             help=u"Destination server to push to (e.g. https://data.gl)"
         )
         parser.add_argument(
-            '--path', action='store', default='/odata/gapi/Events',
+            '--path', default='/odata/gapi/Events',
             help=u"Destination server path to push to"
         )
+        parser.add_argument(
+            '--full', action='store_true',
+            help=u"Do a full synchronisation"
+        )
+        parser.add_argument(
+            '--parallel', type=int, default=1,
+            help=u"amount of requests to perform in parallel"
+        )
+        parser.add_argument(
+            '--only', nargs='+',
+            choices=sorted(cls.type_name() for cls in self.OBJECT_CLASSES),
+            help=u"only send the given types"
+        )
 
-    def handle(self, *args, **kwargs):
-
-        host = kwargs.get('host')
+    def handle(self, host, path, full, parallel, only, **kwargs):
         if '://' not in host:
             host = 'https://' + host
             print('Protocol not detected, prepending "https://"')
-
-        path = kwargs.get('path')
 
         endpoint = host + path
 
         print("Pushing to %s" % endpoint)
 
-        all_object_classes = [
-            State, Municipality, District, PostalCode, Locality, BNumber,
-            Road, Address
-        ]
-        type_map = {cls.type_name(): cls for cls in all_object_classes}
+        type_map = {
+            cls.type_name(): cls
+            for cls in self.OBJECT_CLASSES
+            if not only or cls.type_name() in only
+        }
+        session = grequests.Session()
 
-        qs = Event.objects.filter(
-            receipt_obtained__isnull=True,
-            updated_type__in=type_map.keys()
-        )
-        count = qs.count()
-
-        i = 0
-        for event in qs:
+        def post_event(event):
             cls = type_map[event.updated_type]
             item = cls.Registrations.objects.get(
                 checksum=event.updated_registration
@@ -64,12 +73,39 @@ class Command(base.BaseCommand):
                     },
                 }
             }
-            r = requests.post(
+
+            return grequests.post(
                 endpoint,
                 data=dump_json(message_body),
+                session=session,
                 headers={'Content-Type': 'application/json'},
                 verify=False
             )
-            i += 1
-            print("%.1f%%" % (100 * i / count), end='\r')
-        print("Done! ")
+
+        def fail(r, exc):
+            raise exc
+
+        qs = Event.objects.filter(
+            updated_type__in=type_map.keys()
+        )
+
+        if not full:
+            qs = qs.filter(
+                receipt_obtained__isnull=True,
+            )
+
+        if not qs:
+            print('Nothing new.')
+            return
+
+        with progress.bar.Bar(max=qs.count(),
+                              suffix='%(index).0f of %(max).0f - '
+                              '%(elapsed_td)s / %(eta_td)s') as bar:
+
+            for r in grequests.imap(
+                    map(post_event, qs),
+                    size=parallel,
+                    exception_handler=fail,
+            ):
+                bar.next()
+                r.raise_for_status()
