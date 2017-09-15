@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='address',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/address/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/address/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='addressregistrations',
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='addressregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/address/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/address/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='bnumber',
@@ -68,7 +68,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='bnumber',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/number/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/number/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='bnumberregistrations',
@@ -93,7 +93,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='bnumberregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/number/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/number/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='district',
@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='district',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/district/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/district/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='districtregistrations',
@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='districtregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/district/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/district/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='locality',
@@ -138,7 +138,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='locality',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/locality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/locality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='localityregistrations',
@@ -153,7 +153,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='localityregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/locality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/locality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='municipality',
@@ -168,7 +168,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='municipality',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/municipality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/municipality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='municipalityregistrations',
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='municipalityregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/municipality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/municipality/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='postalcode',
@@ -198,7 +198,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='postalcode',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/postalcode/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/postalcode/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='postalcoderegistrations',
@@ -213,7 +213,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='postalcoderegistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/postalcode/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/postalcode/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='road',
@@ -243,7 +243,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='road',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/road/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/road/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='roadregistrations',
@@ -273,7 +273,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='roadregistrations',
             name='sumiiffik_domain',
-            field=addrreg.models.base.SumiiffikDomainField(default='https://data.gl/najugaq/road/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
+            field=addrreg.models.base.SumiffiikDomainField(default='https://data.gl/najugaq/road/v1', max_length=64, validators=[django.core.validators.URLValidator()], verbose_name='Sumiiffik Domain'),
         ),
         migrations.AlterField(
             model_name='state',

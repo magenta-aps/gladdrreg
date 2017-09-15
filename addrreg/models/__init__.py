@@ -127,8 +127,8 @@ class Municipality(base.AbstractModel,
         ordering = ('abbrev',)
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField(null=True)
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField(null=True)
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/municipality',
     )
 
@@ -157,7 +157,7 @@ class MunicipalityAdmin(base.AdminBase):
             'classes': ('wide',),
         }),
         (_('Geography'), {
-            'fields': ('sumiiffik', 'sumiiffik_domain'),
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
             'classes': ('wide',),
         }),
     ) + base.AdminBase._fieldsets
@@ -173,8 +173,8 @@ class District(base.AbstractModel,
         ordering = ('abbrev',)
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/district',
     )
 
@@ -205,7 +205,7 @@ class DistrictAdmin(base.AdminBase):
             'classes': ('wide',),
         }),
         (_('Geography'), {
-            'fields': ('sumiiffik', 'sumiiffik_domain'),
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
             'classes': ('wide',),
         }),
     ) + base.AdminBase._fieldsets
@@ -221,8 +221,8 @@ class PostalCode(base.AbstractModel,
         ordering = ('code',)
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/postalcode',
     )
 
@@ -251,7 +251,7 @@ class PostalCodeAdmin(base.AdminBase):
             'classes': ('wide',),
         }),
         (_('Geography'), {
-            'fields': ('sumiiffik', 'sumiiffik_domain'),
+            'fields': ('sumiffiik', 'sumiffiik_domain'),
             'classes': ('wide',),
         }),
     ) + base.AdminBase._fieldsets
@@ -267,8 +267,8 @@ class Locality(base.AbstractModel,
         ordering = ('abbrev',)
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/locality',
     )
 
@@ -333,7 +333,7 @@ class LocalityAdmin(base.AdminBase):
         (_('Geography'), {
             'fields': (
                 'municipality', 'district', 'postal_code',
-                'sumiiffik', 'sumiiffik_domain',
+                'sumiffiik', 'sumiffiik_domain',
             ),
             'classes': ('wide',),
         }),
@@ -349,8 +349,8 @@ class BNumber(base.AbstractModel,
 
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/number',
     )
 
@@ -421,7 +421,7 @@ class BNumberAdmin(base.AdminBase):
         (_('Geography'), {
             'fields': (
                 'municipality', 'location',
-                'sumiiffik', 'sumiiffik_domain',
+                'sumiffiik', 'sumiffiik_domain',
             ),
             'classes': ('wide',),
         }),
@@ -438,8 +438,8 @@ class Road(base.AbstractModel,
         ordering = ('name',)
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/road',
     )
 
@@ -492,7 +492,7 @@ class RoadAdmin(base.AdminBase):
         }),
         (_('Geography'), {
             'fields': (
-                'sumiiffik', 'sumiiffik_domain',
+                'sumiffiik', 'sumiffiik_domain',
                 'location', 'municipality',
             ),
             'classes': ('wide',),
@@ -510,8 +510,8 @@ class Address(base.AbstractModel,
         ordering = 'road',
         default_permissions = ()
 
-    sumiiffik = base.SumiiffikIDField()
-    sumiiffik_domain = base.SumiiffikDomainField(
+    sumiffiik = base.SumiffiikIDField()
+    sumiffiik_domain = base.SumiffiikDomainField(
         default='https://data.gl/najugaq/address',
     )
 
@@ -591,7 +591,7 @@ class AddressAdmin(base.AdminBase):
         }),
         (_('Geography'), {
             'fields': (
-                'sumiiffik', 'sumiiffik_domain',
+                'sumiffiik', 'sumiffiik_domain',
                 'location', 'municipality',
             ),
             'classes': ('wide',),

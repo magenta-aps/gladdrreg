@@ -88,14 +88,14 @@ class CreationTests(test.TransactionTestCase):
             name='Aarhus',
             code=20,
             state=self.state,
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
 
         locality = models.Locality.objects.create(
             state=self.state,
             name='Somewhere',
             code=42,
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
 
         road = models.Road(
@@ -108,7 +108,7 @@ class CreationTests(test.TransactionTestCase):
             # this translation is quite likely horribly wrong
             alternate_name='H. H. Seedorffs aqqusineq amitsoq',
             cpr_name='Hans Hartvig Seedorff\'s Street',
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
         road.save()
 
@@ -116,7 +116,7 @@ class CreationTests(test.TransactionTestCase):
             state=self.state,
             code=8000,
             name='Aarhus C',
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
         pc.save()
 
@@ -127,7 +127,7 @@ class CreationTests(test.TransactionTestCase):
             code='42',
             b_callname='The Block',
             b_type='BS221B',
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
         b.save()
 
@@ -139,7 +139,7 @@ class CreationTests(test.TransactionTestCase):
             room='mf',
             b_number=b,
             road=road,
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
         self.addr.save()
 
@@ -155,7 +155,7 @@ class CreationTests(test.TransactionTestCase):
             name='Aarhus',
             code=20,
             state=self.state,
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
         )
 
         self.assertRaises(
@@ -163,7 +163,7 @@ class CreationTests(test.TransactionTestCase):
             models.Municipality.objects.create,
             name='Aarhus',
             code=20,
-            sumiiffik_domain=DUMMY_DOMAIN,
+            sumiffiik_domain=DUMMY_DOMAIN,
             state=self.state,
         )
 
@@ -193,7 +193,7 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
                 state=self.state,
-                sumiiffik_domain=DUMMY_DOMAIN,
+                sumiffiik_domain=DUMMY_DOMAIN,
             )
         munid = mun.objectID
         self.assertEquals(mun.id, 1)
@@ -276,7 +276,7 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
                 state=self.state,
-                sumiiffik_domain=DUMMY_DOMAIN,
+                sumiffiik_domain=DUMMY_DOMAIN,
             )
 
         models.Municipality._maybe_intercept = fail
@@ -306,7 +306,7 @@ class TemporalTests(test.TransactionTestCase):
         try:
             self.assertRaises(MyException, models.Municipality.objects.create,
                               name='Aarhus', code=20, state=self.state,
-                              sumiiffik_domain=DUMMY_DOMAIN)
+                              sumiffiik_domain=DUMMY_DOMAIN)
         finally:
             del models.Municipality._maybe_intercept
 
@@ -322,7 +322,7 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
                 state=self.state,
-                sumiiffik_domain=DUMMY_DOMAIN,
+                sumiffiik_domain=DUMMY_DOMAIN,
             )
 
         with freezegun.freeze_time('2001-01-01'):
@@ -341,7 +341,7 @@ class TemporalTests(test.TransactionTestCase):
                 name='Aarhus',
                 code=20,
                 state=self.state,
-                sumiiffik_domain=DUMMY_DOMAIN,
+                sumiffiik_domain=DUMMY_DOMAIN,
             )
         munid = mun.objectID
 
@@ -365,7 +365,7 @@ class TemporalTests(test.TransactionTestCase):
                 code=20,
                 objectID=munid,
                 state=self.state,
-                sumiiffik_domain=DUMMY_DOMAIN,
+                sumiffiik_domain=DUMMY_DOMAIN,
             )
 
         self.assertEquals(self._getregistrations(), [
@@ -500,14 +500,14 @@ class RightsTests(test.LiveServerTestCase):
             if l < 'C':
                 mun = models.Municipality.objects.create(
                     name='City ' + l, abbrev=l, code=ord(l),
-                    state=self.state, sumiiffik_domain=DUMMY_DOMAIN,
+                    state=self.state, sumiffiik_domain=DUMMY_DOMAIN,
                 )
 
                 for i in range(3):
                     suffix = '{}{}'.format(l, i)
                     models.Locality.objects.create(
                         name='Location' + suffix, abbrev=suffix, code=i,
-                        sumiiffik_domain=DUMMY_DOMAIN, type=i + 1,
+                        sumiffiik_domain=DUMMY_DOMAIN, type=i + 1,
                         municipality=mun,
                     )
 

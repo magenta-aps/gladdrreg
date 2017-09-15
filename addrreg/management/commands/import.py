@@ -23,20 +23,23 @@ SPREADSHEET_MAPPINGS = {
         None: models.Municipality,
         'UID': 'id',
         'state': 'state_id',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
     'district': {
         None: models.District,
         'UID': 'id',
         'state': 'state_id',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
     'postalcode': {
         None: models.PostalCode,
         'UID': 'id',
         'state': 'state_id',
         'postalarea': 'name',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
     'locality': {
         None: models.Locality,
@@ -47,7 +50,8 @@ SPREADSHEET_MAPPINGS = {
         'districtID': 'district_id',
         'typecodeID': 'type',
         'statecodeID': 'locality_state',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
     'bnumber': {
         None: models.BNumber,
@@ -59,7 +63,8 @@ SPREADSHEET_MAPPINGS = {
         'LocalityID': 'location_id',
         'MunicipalityID': 'municipality_id',
         'Note': 'note',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
     'road': {
         None: models.Road,
@@ -69,7 +74,8 @@ SPREADSHEET_MAPPINGS = {
         'nameCPR': 'cpr_name',
         'locationID': 'location_id',
         'municipalityID': 'municipality_id',
-        'sumiiffik_id': 'sumiiffik',
+        'sumiiffik_id': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
         'name_alt': 'alternate_name',
     },
     'address': {
@@ -81,7 +87,8 @@ SPREADSHEET_MAPPINGS = {
         'bnumberID': 'b_number_id',
         'roadID': 'road_id',
         'MunicipalityID': 'municipality_id',
-        'sumiiffik_ID': 'sumiiffik',
+        'sumiiffik_ID': 'sumiffiik',
+        'sumiiffik_domain': 'sumiffiik_domain',
     },
 }
 
@@ -130,7 +137,7 @@ VALUE_MAPS = {
         99973: models.LocalityState.ABANDONED,
     },
     'state_id': dict([(None, 99991)] + [(i, 99990 + i) for i in range(7)]),
-    'sumiiffik_domain': {
+    'sumiffiik_domain': {
         'https://data.gl/naujat/{}/v1'.format(title):
         'https://data.gl/najugaq/{}'.format(title)
         for title in SPREADSHEET_MAPPINGS

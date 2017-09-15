@@ -270,16 +270,16 @@ msgid "Notes"
 msgstr ""
 
 #: addrreg/models/base.py:77
-msgid "Sumiiffik ID"
+msgid "Sumiffiik ID"
 msgstr ""
 
 #: addrreg/models/base.py:101
-msgid "Sumiiffik Domain"
+msgid "Sumiffiik Domain"
 msgstr ""
 
 #: addrreg/models/base.py:139
 #, python-format
-msgid "Enter a valid Sumiiffik, such as {%s}"
+msgid "Enter a valid Sumiffiik, such as {%s}"
 msgstr ""
 
 #: addrreg/models/temporal.py:34 addrreg/models/temporal.py:189
