@@ -427,9 +427,11 @@ class RightsTests(test.LiveServerTestCase):
     def setUpClass(cls):
         from selenium import webdriver
         from selenium.common import exceptions
-        from pyvirtualdisplay import Display
-        cls.display = Display(visible=0, size=(800, 600))
-        cls.display.start()
+        # If no display is found, try to create one
+        if not os.environ.get('DISPLAY'):
+            from pyvirtualdisplay import Display
+            cls.display = Display(visible=0, size=(800, 600))
+            cls.display.start()
 
         driver_name = os.environ.get('BROWSER', 'Firefox')
         driver = getattr(webdriver, driver_name)
@@ -459,7 +461,9 @@ class RightsTests(test.LiveServerTestCase):
         super().tearDownClass()
 
         cls.browser.quit()
-        cls.display.stop()
+        # If a Xvfb display is running, clean it up
+        if cls.display:
+            cls.display.stop()
 
     def setUp(self):
         super().setUp()
