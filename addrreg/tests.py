@@ -149,24 +149,6 @@ class CreationTests(test.TransactionTestCase):
         self.assertEquals(str(self.addr),
                           '42Z Hans Hartvig Seedorffs Stræde (1337), 13, mf')
 
-    def test_create_duplicate_municipality_fails(self):
-        """Test that creating two municipalities with the same code fails."""
-        models.Municipality.objects.create(
-            name='Aarhus',
-            code=20,
-            state=self.state,
-            sumiffiik_domain=DUMMY_DOMAIN,
-        )
-
-        self.assertRaises(
-            db.IntegrityError,
-            models.Municipality.objects.create,
-            name='Aarhus',
-            code=20,
-            sumiffiik_domain=DUMMY_DOMAIN,
-            state=self.state,
-        )
-
 
 class TemporalTests(test.TransactionTestCase):
     reset_sequences = True
