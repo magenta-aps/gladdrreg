@@ -132,7 +132,9 @@ class Municipality(base.AbstractModel,
         default='https://data.gl/najugaq/municipality',
     )
 
-    code = models.PositiveSmallIntegerField(_('Code'), db_index=True)
+    code = models.PositiveSmallIntegerField(
+        _('Code'), db_index=True, unique=True
+    )
 
     abbrev = models.CharField(_('Abbreviation'), max_length=4, db_index=True)
     name = models.CharField(_('Name'), max_length=60, db_index=True)
@@ -627,6 +629,7 @@ class MunicipalityRights(models.Model):
 
     def __str__(self):
         return self.municipality.name
+
 
 @admin.register(MunicipalityRights)
 class MunicipalityRightsAdmin(admin.ModelAdmin):

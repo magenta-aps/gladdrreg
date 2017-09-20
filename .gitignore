@@ -8,5 +8,5 @@ __pycache__/
 /web.config
 /addrsite/local_settings.py
 /*.egg-info
-
+/geckodriver.log
 /.vscode/
