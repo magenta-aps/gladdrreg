@@ -427,6 +427,9 @@ class RightsTests(test.LiveServerTestCase):
     def setUpClass(cls):
         from selenium import webdriver
         from selenium.common import exceptions
+        from pyvirtualdisplay import Display
+        cls.display = Display(visible=0, size=(800, 600))
+        cls.display.start()
 
         driver_name = os.environ.get('BROWSER', 'Firefox')
         driver = getattr(webdriver, driver_name)
@@ -456,6 +459,7 @@ class RightsTests(test.LiveServerTestCase):
         super().tearDownClass()
 
         cls.browser.quit()
+        cls.display.stop()
 
     def setUp(self):
         super().setUp()

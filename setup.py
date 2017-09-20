@@ -29,6 +29,7 @@ requires = [
     "freezegun==0.3.9",
     "pycodestyle==2.3.1",
     "selenium==3.4.0",
+    "PyVirtualDisplay==0.2.1",
 ]
 
 if sys.platform != 'win32':
