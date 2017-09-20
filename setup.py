@@ -24,7 +24,11 @@ requires = [
     "requests~=2.17.3",
     "grequests~=0.3.0",
     "progress>=1.3",
-    "python-dateutil~=2.6.0"
+    "python-dateutil~=2.6.0",
+    # Testing requirements
+    "freezegun==0.3.9",
+    "pycodestyle==2.3.1",
+    "selenium==3.4.0",
 ]
 
 if sys.platform != 'win32':

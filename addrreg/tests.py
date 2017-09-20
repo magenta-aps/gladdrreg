@@ -19,6 +19,7 @@ from django import apps, db, test
 from django.conf import settings
 from django.core import exceptions
 from django.utils import translation
+from django.test import tag
 
 # Create your tests here.
 from . import models
@@ -148,25 +149,6 @@ class CreationTests(test.TransactionTestCase):
         self.assertEquals(str(self.addr),
                           '42Z Hans Hartvig Seedorffs Stræde (1337), 13, mf')
 
-    @unittest.expectedFailure
-    def test_create_duplicate_municipality_fails(self):
-        """Test that creating two municipalities with the same code fails."""
-        models.Municipality.objects.create(
-            name='Aarhus',
-            code=20,
-            state=self.state,
-            sumiffiik_domain=DUMMY_DOMAIN,
-        )
-
-        self.assertRaises(
-            db.IntegrityError,
-            models.Municipality.objects.create,
-            name='Aarhus',
-            code=20,
-            sumiffiik_domain=DUMMY_DOMAIN,
-            state=self.state,
-        )
-
 
 class TemporalTests(test.TransactionTestCase):
     reset_sequences = True
@@ -195,8 +177,9 @@ class TemporalTests(test.TransactionTestCase):
                 state=self.state,
                 sumiffiik_domain=DUMMY_DOMAIN,
             )
+
         munid = mun.objectID
-        self.assertEquals(mun.id, 1)
+        self.assertEquals(models.Municipality.objects.count(), 1)
 
         self.assertEquals(
             self._getregistrations(),
@@ -434,6 +417,7 @@ class VerifyImport(test.SimpleTestCase):
             self.assertEquals(t['code'], e.value)
 
 
+@tag('selenium')
 @unittest.skipIf(not selenium, 'selenium not installed')
 class RightsTests(test.LiveServerTestCase):
 

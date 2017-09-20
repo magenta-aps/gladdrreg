@@ -628,6 +628,7 @@ class MunicipalityRights(models.Model):
     def __str__(self):
         return self.municipality.name
 
+
 @admin.register(MunicipalityRights)
 class MunicipalityRightsAdmin(admin.ModelAdmin):
     formfield_overrides = {

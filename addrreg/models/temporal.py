@@ -35,7 +35,7 @@ class TemporalModelBase(models.base.ModelBase):
             valid_from = models.DateTimeField(null=True, editable=False,
                                               verbose_name=_('Valid From'))
             valid_to = models.DateTimeField(null=True, editable=False,
-                                              verbose_name=_('Valid To'))
+                                            verbose_name=_('Valid To'))
 
             registration_from = models.DateTimeField(
                 db_index=True,
@@ -146,7 +146,7 @@ class TemporalModelBase(models.base.ModelBase):
                 return {
                     'uuid': self.objectID,
                     'domaene': "https://data.gl/gladdreg/%s/1/rest/" %
-                              self.type_name()
+                               self.type_name()
                 }
 
         regattrs = attrs.copy()
@@ -191,7 +191,7 @@ class TemporalModelBase(models.base.ModelBase):
             valid_from = models.DateTimeField(null=True, editable=False,
                                               verbose_name=_('Valid From'))
             valid_to = models.DateTimeField(null=True, editable=False,
-                                              verbose_name=_('Valid To'))
+                                            verbose_name=_('Valid To'))
 
             registration_user = models.ForeignKey(
                 settings.AUTH_USER_MODEL, models.PROTECT,
@@ -285,7 +285,7 @@ class TemporalModelBase(models.base.ModelBase):
                     'entity': {
                         'uuid': self.object.objectID,
                         'domaene': 'https://data.gl/gladdreg/' +
-                                    self.type_name() + "/1/rest/"
+                                   self.type_name() + "/1/rest/"
                     },
                     'virkninger': [{
                         'virkningFra': (self.valid_from or
@@ -305,8 +305,12 @@ class TemporalModelBase(models.base.ModelBase):
 
             db_table = modelcls._meta.db_table + str('_registrations')
 
-            verbose_name = _('{} Registration').format(modelcls._meta.verbose_name)
-            verbose_name_plural = _('{} Registrations').format(modelcls._meta.verbose_name)
+            verbose_name = _('{} Registration').format(
+                modelcls._meta.verbose_name
+            )
+            verbose_name_plural = _('{} Registrations').format(
+                modelcls._meta.verbose_name
+            )
 
         regattrs['__qualname__'] += 'Registrations'
         regattrs['Meta'] = Meta
