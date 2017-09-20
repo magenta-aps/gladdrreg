@@ -462,7 +462,7 @@ class RightsTests(test.LiveServerTestCase):
 
         cls.browser.quit()
         # If a Xvfb display is running, clean it up
-        if cls.display:
+        if hasattr(cls, 'display') and cls.display:
             cls.display.stop()
 
     def setUp(self):
@@ -614,12 +614,9 @@ class RightsTests(test.LiveServerTestCase):
 
         url = self.live_server_url + '/admin/addrreg/road/add/'
         self.browser.get(url)
-
         self.fill_in_form(name='TheRoad', code=42,
                           location='LocationA0')
-
         self.assertNotEquals(url, self.browser.current_url, 'addition failed')
-
         models.Road.objects.get(code=42)
 
     def test_module_list(self):
