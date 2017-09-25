@@ -513,6 +513,15 @@ class RightsTests(test.LiveServerTestCase):
 
         self.browser.delete_all_cookies()
 
+    def await_staleness(self, element):
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+        WebDriverWait(self.browser, 1).until(
+            EC.staleness_of(element),
+        )
+        self.browser.find_element_by_id("content")
+
     def fill_in_form(self, **kwargs):
         for field, value in kwargs.items():
             e = self.browser.find_element_by_id("id_" + field)
@@ -545,17 +554,7 @@ class RightsTests(test.LiveServerTestCase):
             "input[type=submit]",
         )
         submit.click()
-
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.webdriver.common.by import By
-
-        WebDriverWait(self.browser, 1).until(
-            EC.staleness_of(submit),
-        )
-
-        # wait for next page load
-        self.browser.find_element_by_id("content")
+        self.await_staleness(submit)
 
     def login(self, user, password='password'):
         # logout
@@ -666,6 +665,7 @@ class RightsTests(test.LiveServerTestCase):
                 )
 
     def test_create_superuser(self):
+        # XXX: Potentiel D/E fejl, grundet manglede informations indtastning
         self.login('root')
 
         url = self.live_server_url + '/admin/auth/user/add/'
@@ -686,6 +686,7 @@ class RightsTests(test.LiveServerTestCase):
         # self.assertEqual(user.email, email)
 
     def test_create_user(self):
+        # XXX: Potentiel D/E fejl, grundet manglede informations indtastning
         self.login('root')
 
         url = self.live_server_url + '/admin/auth/user/add/'
@@ -734,3 +735,124 @@ class RightsTests(test.LiveServerTestCase):
         # Check it
         rights = models.MunicipalityRights.objects.get(municipality=mun)
         self.assertIn(user, rights.users.all())
+
+    def test_frontpage(self):
+        usernames = ['root', 'UserA', 'UserB', 'UserC']
+
+        for username in usernames:
+            with self.subTest(username):
+                self.login(username)
+                self.browser.get(self.live_server_url + '/admin')
+
+                title = self.browser.find_element_by_id('site-name').text.strip().lower()
+                self.assertIn('greenlandic address reference register',
+                              title)
+
+                user_tools = self.browser.find_element_by_id('user-tools').text.strip().lower()
+                self.assertIn("welcome", user_tools)
+                self.assertIn(username.lower(), user_tools)
+                self.assertIn("change password", user_tools)
+                self.assertIn("log out", user_tools)
+
+        # Content for root, UserA and UserB is covered by test_module_list
+        with self.subTest('UserC'):
+            self.login('UserC')
+            self.browser.get(self.live_server_url + '/admin')
+
+            content = self.browser.find_element_by_id('content-main').text.strip().lower()
+            self.assertIn("you don't have permission to edit anything.", content)
+
+    def test_user_change_password(self):
+        self.login('UserA')
+
+        url = self.live_server_url + '/admin/password_change/'
+        self.browser.get(url)
+        
+        bad_password = '1234567890'
+        new_password = 'Kartoffel12'
+        self.fill_in_form(old_password='password',
+                          new_password1=bad_password,
+                          new_password2=bad_password)
+        self.assertEquals(url, self.browser.current_url,
+                          'updated using bad password')
+
+        self.fill_in_form(old_password='password',
+                          new_password1=bad_password,
+                          new_password2=new_password)
+        self.assertEquals(url, self.browser.current_url,
+                          'updated using mismatched passwords')
+
+        self.fill_in_form(old_password='pazzw0rd',
+                          new_password1=bad_password,
+                          new_password2=new_password)
+        self.assertEquals(url, self.browser.current_url,
+                          'updated using invalid old password')
+ 
+        self.fill_in_form(old_password='password',
+                          new_password1=new_password,
+                          new_password2=new_password)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'did not update password')
+        self.assertEqual(self.browser.current_url, 
+                         self.live_server_url + '/admin/password_change/done/')
+
+        # Log out, and try to log in using new password
+        self.login('UserA', new_password)
+
+    def test_admin_change_password(self):
+        # UserA wants a new password
+        username = 'UserA'
+        email = username + '@example.com'
+        new_password = 'Kartoffel12'
+        user = self.user_model.objects.get(username=username)
+
+        # Root will change it
+        self.login('root')
+
+        url = self.live_server_url + '/admin/auth/user/'
+        self.browser.get(url)
+
+        # Search for the email
+        searchbar = self.browser.find_element_by_id("searchbar")
+        searchbar.send_keys(email)
+        searchbar.submit()
+        self.await_staleness(searchbar)
+
+        # Pick the first (and only) result, then click it
+        results = self.browser.find_element_by_id('result_list')\
+                              .find_element_by_tag_name('tbody')\
+                              .find_elements_by_class_name("field-username")
+        self.assertEqual(len(results), 1)
+        result = results[0]
+        self.assertEqual(result.text, username)
+        link = result.find_element_by_tag_name('a')
+        link.click()
+        self.await_staleness(link)
+
+        # wait for next page load
+        self.assertIn(
+            '/admin/auth/user/' + str(user.pk) + '/change/',
+            self.browser.current_url,
+        )
+
+        # Go to password reset page
+        password_link = self.browser.find_element_by_id('id_password')\
+                              .find_element_by_xpath('..')\
+                              .find_element_by_class_name("help")\
+                              .find_element_by_tag_name("a")
+        password_link.click()
+        self.await_staleness(password_link)
+        self.assertIn(
+            '/admin/auth/user/' + str(user.pk) + '/password/',
+            self.browser.current_url,
+        )
+
+        # Fill it in
+        saved_url = self.browser.current_url
+        self.fill_in_form(password1=new_password,
+                          password2=new_password)
+        self.assertNotEquals(saved_url, self.browser.current_url,
+                             'password update failed')
+        
+        # Log out, and try to log in using new password
+        self.login('UserA', new_password)
