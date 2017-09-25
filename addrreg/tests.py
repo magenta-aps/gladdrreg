@@ -533,9 +533,12 @@ class RightsTests(test.LiveServerTestCase):
                     self.fail('{} not one of {}'.format(
                         value, [o.text for o in options]),
                     )
-
+            elif (e.tag_name == 'input' and
+                    e.get_attribute('type') == 'checkbox'):
+                if value != e.is_selected():
+                    e.click()
             else:
-                self.fail('unhandled input element: ' +
+                self.fail('unhandled input element (' + e.tag_name + '): ' +
                           e.get_attribute('outerHTML'))
 
         submit = self.browser.find_element_by_css_selector(
@@ -554,7 +557,7 @@ class RightsTests(test.LiveServerTestCase):
         # wait for next page load
         self.browser.find_element_by_id("content")
 
-    def login(self, user):
+    def login(self, user, password='password'):
         # logout
         self.browser.delete_all_cookies()
         self.browser.get(self.live_server_url + '/admin/logout/')
@@ -566,10 +569,10 @@ class RightsTests(test.LiveServerTestCase):
 
         # sanitity check the credentials
         self.client.logout()
-        self.assertTrue(self.client.login(username=user, password='password'),
+        self.assertTrue(self.client.login(username=user, password=password),
                         'login failed - invalid credentials!')
 
-        self.fill_in_form(username=user, password='password')
+        self.fill_in_form(username=user, password=password)
 
         self.assertEquals(self.live_server_url + '/admin/',
                           self.browser.current_url,
@@ -661,3 +664,73 @@ class RightsTests(test.LiveServerTestCase):
                     modules,
                     self.get_user_modules(user, 'addrreg'),
                 )
+
+    def test_create_superuser(self):
+        self.login('root')
+
+        url = self.live_server_url + '/admin/auth/user/add/'
+        self.browser.get(url)
+        username='Suppe.Urt@styrelsen.gl'
+        password='temmelighemmelig'
+        email='Suppe.Urt@styrelsen.gl'
+        self.fill_in_form(username=username,
+                          password1=password,
+                          password2=password,
+                          is_staff=True,
+                          is_superuser=True)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        user = self.user_model.objects.get(username=username)
+        self.assertEqual(user.username, username)
+        # NOTE: Email cannot be set with the current form, it has to be done
+        #       via. editing
+        # self.assertEqual(user.email, email)
+
+    def test_create_user(self):
+        self.login('root')
+
+        url = self.live_server_url + '/admin/auth/user/add/'
+        self.browser.get(url)
+        username='Karl.Toffelsen@kommunen.gl'
+        first_name = 'Karl'
+        last_name = 'Toffelsen'
+        password='Kartoffel'
+        email='Karl.Toffelsen@kommunen.gl'
+        self.fill_in_form(username=username,
+                          password1=password,
+                          password2=password,
+                          is_staff=True,
+                          is_superuser=False)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        user = self.user_model.objects.get(username=username)
+        self.assertEqual(user.username, username)
+        # NOTE: Email, first_name and last_name cannot be set with the current
+        #       form, it has to be done via. editing
+        # self.assertEqual(user.email, email)
+        # self.assertEqual(user.first_name, first_name)
+        # self.assertEqual(user.last_name, last_name)
+        url = self.live_server_url + '/admin/addrreg/municipalityrights/add/'
+        self.browser.get(url)
+
+        # We need to find the key to the 'user' element in the form.
+        # We cannot simply use 'id_users_{{user.pk}}' as the HTML IDs are for
+        # the many-to-many table?
+        parent_element = self.browser.find_element_by_id("id_users")
+        filtered_children = parent_element.find_elements_by_xpath(
+            '//input[@value="' + str(user.pk) + '"]'
+        )
+        self.assertEqual(len(filtered_children), 1)
+        users_id = filtered_children[0].get_attribute('id').lstrip('id_')
+
+        mun=models.Municipality.objects.get(name='City A')
+        # Remove old rights objects
+        self.assertEqual(models.MunicipalityRights.objects.count(), 2)
+        models.MunicipalityRights.objects.get(municipality=mun).delete()
+        self.assertEqual(models.MunicipalityRights.objects.count(), 1)
+        # Fill in the form, and generate one
+        self.fill_in_form(**{'municipality': 'City A',
+                             users_id: True})
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        self.assertEqual(models.MunicipalityRights.objects.count(), 2)
+        # Check it
+        rights = models.MunicipalityRights.objects.get(municipality=mun)
+        self.assertIn(user, rights.users.all())
