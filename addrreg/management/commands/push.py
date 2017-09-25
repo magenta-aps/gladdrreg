@@ -55,13 +55,16 @@ class Command(base.BaseCommand):
         }
         session = grequests.Session()
 
-        def post_event(event):
+        def get_post_data(event):
             cls = type_map[event.updated_type]
             item = cls.Registrations.objects.get(
                 checksum=event.updated_registration
             )
 
-            message_body = {
+            if kwargs.get('verbosity', 0) > 1:
+                print(dump_json(item.format()))
+
+            return {
                 "beskedVersion": "1.0",
                 "eventID": event.eventID,
                 "beskedData": {
@@ -74,9 +77,10 @@ class Command(base.BaseCommand):
                 }
             }
 
+        def post_message(message):
             return grequests.post(
                 endpoint,
-                data=dump_json(message_body),
+                data=dump_json(message),
                 session=session,
                 headers={'Content-Type': 'application/json'},
                 verify=False
@@ -103,7 +107,7 @@ class Command(base.BaseCommand):
                               '%(elapsed_td)s / %(eta_td)s') as bar:
 
             for r in grequests.imap(
-                    map(post_event, qs),
+                    map(post_message, map(get_post_data, qs)),
                     size=parallel,
                     exception_handler=fail,
             ):
