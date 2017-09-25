@@ -529,6 +529,7 @@ class RightsTests(test.LiveServerTestCase):
 
             if (e.tag_name == 'input' and
                     e.get_attribute('type') in ('text', 'password', 'number')):
+                e.clear()
                 e.send_keys(
                     value,
                 )
@@ -544,7 +545,7 @@ class RightsTests(test.LiveServerTestCase):
                         value, [o.text for o in options]),
                     )
             elif (e.tag_name == 'input' and
-                    e.get_attribute('type') == 'checkbox'):
+                    e.get_attribute('type') in ('checkbox', 'radio')):
                 if value != e.is_selected():
                     e.click()
             else:
@@ -557,7 +558,7 @@ class RightsTests(test.LiveServerTestCase):
         submit.click()
         self.await_staleness(submit)
 
-    def login(self, user, password='password'):
+    def login(self, user, password='password', expected=True):
         # logout
         self.browser.delete_all_cookies()
         self.browser.get(self.live_server_url + '/admin/logout/')
@@ -569,14 +570,20 @@ class RightsTests(test.LiveServerTestCase):
 
         # sanitity check the credentials
         self.client.logout()
-        self.assertTrue(self.client.login(username=user, password=password),
-                        'login failed - invalid credentials!')
+        login_status = self.client.login(username=user, password=password)
+
+        self.assertEqual(login_status, expected,
+                         'Unexpected login status (credentials)!')
 
         self.fill_in_form(username=user, password=password)
-
-        self.assertEquals(self.live_server_url + '/admin/',
-                          self.browser.current_url,
-                          'login failed')
+        if expected:
+            self.assertEquals(self.live_server_url + '/admin/',
+                              self.browser.current_url,
+                              'login failed')
+        else:
+            self.assertNotEquals(self.live_server_url + '/admin/',
+                                 self.browser.current_url,
+                                 'login successful')
 
     def get_user_modules(self, user, app):
         self.login(user)
@@ -620,7 +627,10 @@ class RightsTests(test.LiveServerTestCase):
         self.fill_in_form(name='TheRoad', code=42,
                           location='LocationA0')
         self.assertNotEquals(url, self.browser.current_url, 'addition failed')
-        models.Road.objects.get(code=42)
+        road = models.Road.objects.get(code=42)
+        self.assertEqual(road.name, 'TheRoad')
+        self.assertEqual(road.location,
+                         models.Locality.objects.get(name='LocationA0'))
 
     def test_module_list(self):
         user_modules = {
@@ -860,4 +870,96 @@ class RightsTests(test.LiveServerTestCase):
                              'password update failed')
 
         # Log out, and try to log in using new password
-        self.login('UserA', new_password)
+        self.login(username, new_password)
+
+    def test_admin_set_user_inactive(self):
+        # UserA has to be set inactive
+        username = 'UserA'
+        email = username + '@example.com'
+        new_password = 'Kartoffel12'
+        user = self.user_model.objects.get(username=username)
+
+        # Root will change it
+        self.login('root')
+
+        url = self.live_server_url + '/admin/auth/user/'
+        self.browser.get(url)
+
+        # Search for the email
+        searchbar = self.browser.find_element_by_id("searchbar")
+        searchbar.send_keys(email)
+        searchbar.submit()
+        self.await_staleness(searchbar)
+
+        # Pick the first (and only) result, then click it
+        results = self.browser.find_element_by_id('result_list')\
+                              .find_element_by_tag_name('tbody')\
+                              .find_elements_by_class_name("field-username")
+        self.assertEqual(len(results), 1)
+        result = results[0]
+        self.assertEqual(result.text, username)
+        link = result.find_element_by_tag_name('a')
+        link.click()
+        self.await_staleness(link)
+
+        # wait for next page load
+        self.assertIn(
+            '/admin/auth/user/' + str(user.pk) + '/change/',
+            self.browser.current_url,
+        )
+
+        # Fill it in
+        saved_url = self.browser.current_url
+        self.fill_in_form(is_active=False)
+        self.assertNotEquals(saved_url, self.browser.current_url,
+                             'is_active update failed')
+
+        # Log out, and try to log in using new password
+        # We expect a login failure
+        self.login(username, new_password, False)
+
+    def test_state_change(self):
+        self.login('root')
+
+        bad_state = models.State.objects.get(name='Bad')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/state/' + str(bad_state.pk) + '/change/')
+
+        # Test setting name
+        self.browser.get(url)
+        self.fill_in_form(name="Horrible")
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+        bad_state.refresh_from_db()
+        self.assertEqual(bad_state.name, "Horrible")
+
+        # Test setting code
+        self.browser.get(url)
+        self.fill_in_form(code=42)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+        bad_state.refresh_from_db()
+        self.assertEqual(bad_state.code, 42)
+
+    def test_create_municipality(self):
+        # Information has been provided
+        mun_code = 42
+        mun_name = 'Grove'
+        mun_abbr = 'Gr'
+
+        self.login('root')
+
+        url = self.live_server_url + '/admin/addrreg/municipality/add/'
+        self.browser.get(url)
+
+        self.fill_in_form(**{'name': mun_name,
+                             'abbrev': mun_abbr,
+                             'code': mun_code,
+                             'state_' + str(self.state.pk): True})
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+
+        mun = models.Municipality.objects.get(name='Grove')
+        self.assertEqual(mun.code, mun_code)
+        self.assertEqual(mun.abbrev, mun_abbr)
+        self.assertEqual(mun.state, self.state)
