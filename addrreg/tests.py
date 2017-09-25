@@ -54,6 +54,7 @@ class CodeStyleTests(test.SimpleTestCase):
                 if fn[0] != '.' and fn.endswith('.py'):
                     yield os.path.join(dirpath, fn)
 
+    @tag('pep8')
     def test_pep8(self):
         pep8style = pycodestyle.StyleGuide()
         pep8style.init_report(pycodestyle.StandardReport)
@@ -670,9 +671,9 @@ class RightsTests(test.LiveServerTestCase):
 
         url = self.live_server_url + '/admin/auth/user/add/'
         self.browser.get(url)
-        username='Suppe.Urt@styrelsen.gl'
-        password='temmelighemmelig'
-        email='Suppe.Urt@styrelsen.gl'
+        username = 'Suppe.Urt@styrelsen.gl'
+        password = 'temmelighemmelig'
+        email = 'Suppe.Urt@styrelsen.gl'
         self.fill_in_form(username=username,
                           password1=password,
                           password2=password,
@@ -691,11 +692,11 @@ class RightsTests(test.LiveServerTestCase):
 
         url = self.live_server_url + '/admin/auth/user/add/'
         self.browser.get(url)
-        username='Karl.Toffelsen@kommunen.gl'
+        username = 'Karl.Toffelsen@kommunen.gl'
         first_name = 'Karl'
         last_name = 'Toffelsen'
-        password='Kartoffel'
-        email='Karl.Toffelsen@kommunen.gl'
+        password = 'Kartoffel'
+        email = 'Karl.Toffelsen@kommunen.gl'
         self.fill_in_form(username=username,
                           password1=password,
                           password2=password,
@@ -722,7 +723,7 @@ class RightsTests(test.LiveServerTestCase):
         self.assertEqual(len(filtered_children), 1)
         users_id = filtered_children[0].get_attribute('id').lstrip('id_')
 
-        mun=models.Municipality.objects.get(name='City A')
+        mun = models.Municipality.objects.get(name='City A')
         # Remove old rights objects
         self.assertEqual(models.MunicipalityRights.objects.count(), 2)
         models.MunicipalityRights.objects.get(municipality=mun).delete()
@@ -736,6 +737,9 @@ class RightsTests(test.LiveServerTestCase):
         rights = models.MunicipalityRights.objects.get(municipality=mun)
         self.assertIn(user, rights.users.all())
 
+    def element_text(self, elem_id):
+        return self.browser.find_element_by_id(elem_id).text.strip().lower()
+
     def test_frontpage(self):
         usernames = ['root', 'UserA', 'UserB', 'UserC']
 
@@ -744,11 +748,11 @@ class RightsTests(test.LiveServerTestCase):
                 self.login(username)
                 self.browser.get(self.live_server_url + '/admin')
 
-                title = self.browser.find_element_by_id('site-name').text.strip().lower()
+                title = self.element_text('site-name')
                 self.assertIn('greenlandic address reference register',
                               title)
 
-                user_tools = self.browser.find_element_by_id('user-tools').text.strip().lower()
+                user_tools = self.element_text('user-tools')
                 self.assertIn("welcome", user_tools)
                 self.assertIn(username.lower(), user_tools)
                 self.assertIn("change password", user_tools)
@@ -759,15 +763,16 @@ class RightsTests(test.LiveServerTestCase):
             self.login('UserC')
             self.browser.get(self.live_server_url + '/admin')
 
-            content = self.browser.find_element_by_id('content-main').text.strip().lower()
-            self.assertIn("you don't have permission to edit anything.", content)
+            content = self.element_text('content-main')
+            self.assertIn("you don't have permission to edit anything.",
+                          content)
 
     def test_user_change_password(self):
         self.login('UserA')
 
         url = self.live_server_url + '/admin/password_change/'
         self.browser.get(url)
-        
+
         bad_password = '1234567890'
         new_password = 'Kartoffel12'
         self.fill_in_form(old_password='password',
@@ -787,13 +792,13 @@ class RightsTests(test.LiveServerTestCase):
                           new_password2=new_password)
         self.assertEquals(url, self.browser.current_url,
                           'updated using invalid old password')
- 
+
         self.fill_in_form(old_password='password',
                           new_password1=new_password,
                           new_password2=new_password)
         self.assertNotEquals(url, self.browser.current_url,
                              'did not update password')
-        self.assertEqual(self.browser.current_url, 
+        self.assertEqual(self.browser.current_url,
                          self.live_server_url + '/admin/password_change/done/')
 
         # Log out, and try to log in using new password
@@ -837,9 +842,9 @@ class RightsTests(test.LiveServerTestCase):
 
         # Go to password reset page
         password_link = self.browser.find_element_by_id('id_password')\
-                              .find_element_by_xpath('..')\
-                              .find_element_by_class_name("help")\
-                              .find_element_by_tag_name("a")
+                                    .find_element_by_xpath('..')\
+                                    .find_element_by_class_name("help")\
+                                    .find_element_by_tag_name("a")
         password_link.click()
         self.await_staleness(password_link)
         self.assertIn(
@@ -853,6 +858,6 @@ class RightsTests(test.LiveServerTestCase):
                           password2=new_password)
         self.assertNotEquals(saved_url, self.browser.current_url,
                              'password update failed')
-        
+
         # Log out, and try to log in using new password
         self.login('UserA', new_password)
