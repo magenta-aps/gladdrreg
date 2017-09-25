@@ -146,7 +146,7 @@ VALUE_MAPS = {
 
 
 def import_spreadsheet(fp, verbose=False, raise_on_error=False,
-                       interactive=True):
+                       interactive=True, parallel=1):
     object_count = sum(
         v[None].objects.count()
         for v in SPREADSHEET_MAPPINGS.values()
@@ -250,15 +250,10 @@ Are you sure you want to do this?
                     save(row)
                     bar.next()
 
-            if db.connection.vendor == 'sqlite':
-                pool_size = 1
-            else:
-                pool_size = 3
-
             # executing two saves concurrently ensures that we'll
             # typically be preparing the next while waiting for the
             # current one to save in the database
-            with concurrent.futures.ThreadPoolExecutor(pool_size) as e:
+            with concurrent.futures.ThreadPoolExecutor(parallel) as e:
                 for f in e.map(save, rows):
                     bar.next()
     finally:
@@ -276,6 +271,11 @@ class Command(base.BaseCommand):
         )
         parser.add_argument('--failfast', action='store_true',
                             help='stop on first error')
+        parser.add_argument(
+            '--parallel', type=int,
+            default=1 if db.connection.vendor == 'sqlite' else 4,
+            help=u"amount of requests to perform in parallel"
+        )
         parser.add_argument('path', type=str, nargs='?',
                             default='fixtures/'
                                     'Adropslagdata_20170510_datatotal.xlsx',
@@ -288,4 +288,5 @@ class Command(base.BaseCommand):
                 verbose=kwargs['verbosity'] > 0,
                 raise_on_error=kwargs['failfast'],
                 interactive=kwargs['interactive'],
+                parallel=kwargs['parallel'],
             )
