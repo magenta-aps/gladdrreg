@@ -963,3 +963,31 @@ class RightsTests(test.LiveServerTestCase):
         self.assertEqual(mun.code, mun_code)
         self.assertEqual(mun.abbrev, mun_abbr)
         self.assertEqual(mun.state, self.state)
+
+    def test_change_municipality(self):
+        # Information has been provided
+        mun_name = 'City A'
+        mun_abbr = 'A'
+        mun_code = ord('A')
+        mun = models.Municipality.objects.get(name=mun_name)
+
+        mun_new_name = 'Grove'
+
+        self.login('root')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/municipality/' + str(mun.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.fill_in_form(name=mun_new_name)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        new_mun = models.Municipality.objects.get(name=mun_new_name)
+        self.assertEqual(mun.pk, new_mun.pk)
+        self.assertEqual(mun.code, new_mun.code)
+        self.assertEqual(mun.abbrev, new_mun.abbrev)
+        self.assertEqual(mun.state, new_mun.state)
+        self.assertEqual(mun.sumiffiik, new_mun.sumiffiik)
+        self.assertEqual(new_mun.name, mun_new_name)
