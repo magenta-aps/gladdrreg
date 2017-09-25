@@ -83,7 +83,6 @@ class Command(base.BaseCommand):
                 data=dump_json(message),
                 session=session,
                 headers={'Content-Type': 'application/json'},
-                verify=False
             )
 
         def fail(r, exc):
