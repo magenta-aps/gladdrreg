@@ -34,12 +34,17 @@ class Command(base.BaseCommand):
             help=u"amount of requests to perform in parallel"
         )
         parser.add_argument(
-            '--only', nargs='+',
+            '-I', '--include', action='append',
             choices=sorted(cls.type_name() for cls in self.OBJECT_CLASSES),
-            help=u"only send the given types"
+            help=u"include only the given types"
+        )
+        parser.add_argument(
+            '-X', '--exclude', action='append',
+            choices=sorted(cls.type_name() for cls in self.OBJECT_CLASSES),
+            help=u"exclude the given types"
         )
 
-    def handle(self, host, path, full, parallel, only, **kwargs):
+    def handle(self, host, path, full, parallel, include, exclude, **kwargs):
         if '://' not in host:
             host = 'https://' + host
             print('Protocol not detected, prepending "https://"')
@@ -51,8 +56,10 @@ class Command(base.BaseCommand):
         type_map = {
             cls.type_name(): cls
             for cls in self.OBJECT_CLASSES
-            if not only or cls.type_name() in only
+            if (not include or cls.type_name() in include)
+            and (not exclude or cls.type_name() not in exclude)
         }
+
         session = grequests.Session()
 
         def get_post_data(event):
