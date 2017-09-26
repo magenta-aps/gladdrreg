@@ -619,19 +619,6 @@ class RightsTests(test.LiveServerTestCase):
 
         self.assertFalse(self.users['UserC'].rights.exists())
 
-    def test_create_road(self):
-        self.login('UserA')
-
-        url = self.live_server_url + '/admin/addrreg/road/add/'
-        self.browser.get(url)
-        self.fill_in_form(name='TheRoad', code=42,
-                          location='LocationA0')
-        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
-        road = models.Road.objects.get(code=42)
-        self.assertEqual(road.name, 'TheRoad')
-        self.assertEqual(road.location,
-                         models.Locality.objects.get(name='LocationA0'))
-
     def test_module_list(self):
         user_modules = {
             'root': {
@@ -1182,3 +1169,51 @@ class RightsTests(test.LiveServerTestCase):
 
         road.refresh_from_db()
         self.assertEqual(road.municipality, to_mun)
+
+    def test_create_road(self):
+        # Information has been provided
+        road_name = 'TheRoad'
+        road_code = 42
+
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        self.login('UserA')
+
+        url = self.live_server_url + '/admin/addrreg/road/add/'
+        self.browser.get(url)
+        self.fill_in_form(name=road_name,
+                          code=road_code,
+                          location=locality_name)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        road = models.Road.objects.get(code=road_code)
+        self.assertEqual(road.name, road_name)
+        self.assertEqual(road.location, locality)
+
+    def test_create_b_number(self):
+        # Information has been provided
+        bnumber_callname = 'The rabbithole'
+        bnumber_code = 42
+        bnumber_type = 'BS221B'
+
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        mun_name = 'City A'
+        mun = models.Municipality.objects.get(name=mun_name)
+
+        self.login('UserA')
+
+        url = self.live_server_url + '/admin/addrreg/bnumber/add/'
+        self.browser.get(url)
+        self.fill_in_form(b_callname=bnumber_callname,
+                          code=bnumber_code,
+                          b_type=bnumber_type,
+                          location=locality_name,
+                          municipality=mun_name)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        bnum = models.BNumber.objects.get(code=bnumber_code)
+        self.assertEqual(bnum.b_callname, bnumber_callname)
+        self.assertEqual(bnum.b_type, bnumber_type)
+        self.assertEqual(bnum.location, locality)
+        self.assertEqual(bnum.municipality, mun)
