@@ -967,8 +967,6 @@ class RightsTests(test.LiveServerTestCase):
     def test_change_municipality(self):
         # Information has been provided
         mun_name = 'City A'
-        mun_abbr = 'A'
-        mun_code = ord('A')
         mun = models.Municipality.objects.get(name=mun_name)
 
         mun_new_name = 'Grove'
@@ -991,3 +989,196 @@ class RightsTests(test.LiveServerTestCase):
         self.assertEqual(mun.state, new_mun.state)
         self.assertEqual(mun.sumiffiik, new_mun.sumiffiik)
         self.assertEqual(new_mun.name, mun_new_name)
+
+    def test_remove_municipality(self):
+        # Information has been provided
+        mun_name = 'City A'
+        mun = models.Municipality.objects.get(name=mun_name)
+
+        self.login('root')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/municipality/' + str(mun.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(mun.active, True)
+        self.fill_in_form(active=False)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        mun.refresh_from_db()
+        self.assertEqual(mun.active, False)
+
+    def test_transfer_locality(self):
+        # Information has been provided
+        from_mun_name = 'City A'
+        from_mun = models.Municipality.objects.get(name=from_mun_name)
+        to_mun_name = 'City B'
+        to_mun = models.Municipality.objects.get(name=to_mun_name)
+
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        self.login('root')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/locality/' + str(locality.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(locality.municipality, from_mun)
+        self.fill_in_form(municipality=to_mun_name)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        locality.refresh_from_db()
+        self.assertEqual(locality.municipality, to_mun)
+
+    def test_transfer_road(self):
+        # Setup test environment
+        from_mun_name = 'City A'
+        from_mun = models.Municipality.objects.get(name=from_mun_name)
+
+        to_mun_name = 'City B'
+        to_mun = models.Municipality.objects.get(name=to_mun_name)
+
+        from_locality_name = 'LocationA0'
+        from_locality = models.Locality.objects.get(name=from_locality_name)
+
+        to_locality_name = 'LocationB0'
+        to_locality = models.Locality.objects.get(name=to_locality_name)
+
+        road = models.Road(
+            municipality=from_mun,
+            location=from_locality,
+            state=self.state,
+            code=1337,
+            name='Hans Hartvig Seedorffs Stræde',
+            shortname='H H Seedorffs Stræde',
+            # this translation is quite likely horribly wrong
+            alternate_name='H. H. Seedorffs aqqusineq amitsoq',
+            cpr_name='Hans Hartvig Seedorff\'s Street',
+            sumiffiik_domain=DUMMY_DOMAIN,
+        )
+        road.save()
+
+        user = self.user_model.objects.get(username='UserA')
+        rights = models.MunicipalityRights.objects.get(municipality=to_mun)
+        rights.users.add(user)
+        rights.save()
+
+        self.login('UserA')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/road/' + str(road.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(road.municipality, from_mun)
+        self.fill_in_form(municipality=to_mun_name, location=to_locality_name)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        road.refresh_from_db()
+        self.assertEqual(road.municipality, to_mun)
+
+    def test_remove_locality(self):
+        # Information has been provided
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        self.login('root')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/locality/' + str(locality.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(locality.active, True)
+        self.assertEqual(locality.locality_state,
+                         models.LocalityState.PROJECTED)
+        self.fill_in_form(active=False, locality_state='Abandoned')
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        locality.refresh_from_db()
+        self.assertEqual(locality.active, False)
+        self.assertEqual(locality.locality_state,
+                         models.LocalityState.ABANDONED)
+
+    def test_create_postalcode(self):
+        # Information has been provided
+        postal_code = 8000
+        postal_name = 'Aarhus'
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        self.login('root')
+
+        url = self.live_server_url + '/admin/addrreg/postalcode/add/'
+        self.browser.get(url)
+
+        self.fill_in_form(code=postal_code,
+                          name=postal_name,
+                          active=True)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+
+        postcode = models.PostalCode.objects.get(code=postal_code)
+        self.assertEqual(postcode.name, postal_name)
+
+        url = (self.live_server_url +
+               '/admin/addrreg/locality/' + str(locality.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(locality.postal_code, None)
+        self.fill_in_form(postal_code=(str(postal_code) + " " + postal_name))
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        locality.refresh_from_db()
+        self.assertEqual(locality.postal_code, postcode)
+
+    def test_admin_transfer_road(self):
+        # Setup test environment
+        from_mun_name = 'City A'
+        from_mun = models.Municipality.objects.get(name=from_mun_name)
+
+        to_mun_name = 'City B'
+        to_mun = models.Municipality.objects.get(name=to_mun_name)
+
+        from_locality_name = 'LocationA0'
+        from_locality = models.Locality.objects.get(name=from_locality_name)
+
+        to_locality_name = 'LocationB0'
+        to_locality = models.Locality.objects.get(name=to_locality_name)
+
+        road = models.Road(
+            municipality=from_mun,
+            location=from_locality,
+            state=self.state,
+            code=1337,
+            name='Hans Hartvig Seedorffs Stræde',
+            shortname='H H Seedorffs Stræde',
+            # this translation is quite likely horribly wrong
+            alternate_name='H. H. Seedorffs aqqusineq amitsoq',
+            cpr_name='Hans Hartvig Seedorff\'s Street',
+            sumiffiik_domain=DUMMY_DOMAIN,
+        )
+        road.save()
+
+        self.login('root')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/road/' + str(road.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(road.municipality, from_mun)
+        self.fill_in_form(municipality=to_mun_name, location=to_locality_name)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        road.refresh_from_db()
+        self.assertEqual(road.municipality, to_mun)
