@@ -1062,12 +1062,14 @@ class RightsTests(test.LiveServerTestCase):
 
         self.browser.get(url)
 
+        self.assertEqual(road.location, from_locality)
         self.assertEqual(road.municipality, from_mun)
         self.fill_in_form(municipality=to_mun_name, location=to_locality_name)
         self.assertNotEquals(url, self.browser.current_url,
                              'modification failed')
 
         road.refresh_from_db()
+        self.assertEqual(road.location, to_locality)
         self.assertEqual(road.municipality, to_mun)
 
     def test_remove_locality(self):
@@ -1217,3 +1219,100 @@ class RightsTests(test.LiveServerTestCase):
         self.assertEqual(bnum.b_type, bnumber_type)
         self.assertEqual(bnum.location, locality)
         self.assertEqual(bnum.municipality, mun)
+
+    def test_create_address(self):
+        # Information has been provided
+        house_number = 13
+        house_floor = 1
+        house_room = 'mf'
+
+        locality_name = 'LocationA0'
+        locality = models.Locality.objects.get(name=locality_name)
+
+        mun_name = 'City A'
+        mun = models.Municipality.objects.get(name=mun_name)
+
+        bnum = models.BNumber(
+            municipality=mun,
+            location=locality,
+            state=self.state,
+            code='42',
+            b_callname='The Block',
+            b_type='BS221B',
+            sumiffiik_domain=DUMMY_DOMAIN,
+        )
+        bnum.save()
+
+        road_name = 'Hans Hartvig Seedorffs Stræde'
+        road_code = 1337
+        road = models.Road(
+            municipality=mun,
+            location=locality,
+            state=self.state,
+            code=road_code,
+            name=road_name,
+            shortname='H H Seedorffs Stræde',
+            # this translation is quite likely horribly wrong
+            alternate_name='H. H. Seedorffs aqqusineq amitsoq',
+            cpr_name='Hans Hartvig Seedorff\'s Street',
+            sumiffiik_domain=DUMMY_DOMAIN,
+        )
+        road.save()
+
+        self.login('UserA')
+
+        url = self.live_server_url + '/admin/addrreg/address/add/'
+        self.browser.get(url)
+        self.fill_in_form(road=(road_name + " (" + str(road_code) + ")"),
+                          house_number=house_number,
+                          floor=house_floor,
+                          room=house_room,
+                          b_number=str(bnum.pk),
+                          municipality=mun_name)
+        self.assertNotEquals(url, self.browser.current_url, 'addition failed')
+        addr = models.Address.objects.get(b_number=bnum)
+        self.assertEqual(addr.house_number, house_number)
+        self.assertEqual(addr.floor, house_floor)
+        self.assertEqual(addr.room, house_room)
+        self.assertEqual(addr.road, road)
+        self.assertEqual(addr.municipality, mun)
+
+    def test_transfer_road_same_municipality(self):
+        # Setup test environment
+        from_mun_name = 'City A'
+        from_mun = models.Municipality.objects.get(name=from_mun_name)
+
+        from_locality_name = 'LocationA0'
+        from_locality = models.Locality.objects.get(name=from_locality_name)
+
+        to_locality_name = 'LocationA1'
+        to_locality = models.Locality.objects.get(name=to_locality_name)
+
+        road = models.Road(
+            municipality=from_mun,
+            location=from_locality,
+            state=self.state,
+            code=1337,
+            name='Hans Hartvig Seedorffs Stræde',
+            shortname='H H Seedorffs Stræde',
+            # this translation is quite likely horribly wrong
+            alternate_name='H. H. Seedorffs aqqusineq amitsoq',
+            cpr_name='Hans Hartvig Seedorff\'s Street',
+            sumiffiik_domain=DUMMY_DOMAIN,
+        )
+        road.save()
+
+        self.login('UserA')
+
+        url = (self.live_server_url +
+               '/admin/addrreg/road/' + str(road.pk) + '/change/')
+
+        self.browser.get(url)
+
+        self.assertEqual(road.location, from_locality)
+        self.fill_in_form(location=to_locality_name)
+        self.assertNotEquals(url, self.browser.current_url,
+                             'modification failed')
+
+        road.refresh_from_db()
+        self.assertEqual(road.location, to_locality)
