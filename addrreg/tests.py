@@ -4,19 +4,17 @@ from __future__ import absolute_import, unicode_literals, print_function
 
 import contextlib
 import datetime
-import functools
 import io
 import os
 import sys
 import unittest
-import uuid
 
 import freezegun
 import openpyxl
 import pycodestyle
 import pytz
 
-from django import apps, db, test
+from django import apps, test
 from django.conf import settings
 from django.core import exceptions
 from django.utils import translation
@@ -440,6 +438,7 @@ class SeleniumTests(test.LiveServerTestCase):
     def setUpClass(cls):
         from selenium import webdriver
         from selenium.common import exceptions
+
         # If no display is found, try to create one
         if not os.environ.get('DISPLAY') and sys.platform != 'darwin':
             from pyvirtualdisplay import Display
@@ -678,7 +677,7 @@ class SeleniumTests(test.LiveServerTestCase):
         self.browser.get(url)
         username = 'Suppe.Urt@styrelsen.gl'
         password = 'temmelighemmelig'
-        email = 'Suppe.Urt@styrelsen.gl'
+
         self.fill_in_form(username=username,
                           password1=password,
                           password2=password,
@@ -698,10 +697,8 @@ class SeleniumTests(test.LiveServerTestCase):
         url = self.live_server_url + '/admin/auth/user/add/'
         self.browser.get(url)
         username = 'Karl.Toffelsen@kommunen.gl'
-        first_name = 'Karl'
-        last_name = 'Toffelsen'
         password = 'Kartoffel'
-        email = 'Karl.Toffelsen@kommunen.gl'
+
         self.fill_in_form(username=username,
                           password1=password,
                           password2=password,
