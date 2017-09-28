@@ -168,7 +168,7 @@ Are you sure you want to do this?
 
     if (interactive and object_count + registration_count and
             input(message + ' ') != 'yes'):
-        raise CommandError("Import cancelled.")
+        raise base.CommandError("Import cancelled.")
 
     wb = openpyxl.load_workbook(fp, read_only=True, data_only=True)
 
