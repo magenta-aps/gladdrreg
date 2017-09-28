@@ -421,7 +421,7 @@ class VerifyImport(test.SimpleTestCase):
 
 @tag('selenium')
 @unittest.skipIf(not selenium, 'selenium not installed')
-class RightsTests(test.LiveServerTestCase):
+class SeleniumTests(test.LiveServerTestCase):
 
     maxDiff = 1000
 
