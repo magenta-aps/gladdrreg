@@ -7,6 +7,7 @@ import datetime
 import functools
 import io
 import os
+import sys
 import unittest
 import uuid
 
@@ -424,6 +425,17 @@ class RightsTests(test.LiveServerTestCase):
 
     maxDiff = 1000
 
+    DRIVER_PATHS = {
+        'Safari': [
+            '/Applications/Safari Technology Preview.app'
+            '/Contents/MacOS/safaridriver',
+        ],
+
+        'Chrome': [
+            '/usr/lib/chromium-browser/chromedriver',
+        ]
+    }
+
     @classmethod
     def setUpClass(cls):
         from selenium import webdriver
@@ -434,24 +446,20 @@ class RightsTests(test.LiveServerTestCase):
             cls.display = Display(visible=0, size=(800, 600))
             cls.display.start()
 
-        driver_name = os.environ.get('BROWSER', 'Firefox')
+        driver_name = os.environ.get('BROWSER', 'Chrome')
         driver = getattr(webdriver, driver_name)
 
         if not driver:
             raise unittest.SkipTest('$BROWSER unset or invalid')
 
-        if driver_name == 'Safari':
-            preview_app = '/Applications/Safari Technology Preview.app'
-            if os.path.isdir(preview_app):
-                driver = functools.partial(
-                    driver,
-                    executable_path=os.path.join(
-                        preview_app, 'Contents/MacOS/safaridriver',
-                    )
-                )
+        args = {}
+
+        for driver_path in cls.DRIVER_PATHS.get(driver_name, []):
+            if os.path.isfile(driver_path):
+                args.update(executable_path=driver_path)
 
         try:
-            cls.browser = driver()
+            cls.browser = driver(**args)
         except Exception as exc:
             raise unittest.SkipTest(exc.args[0])
 
