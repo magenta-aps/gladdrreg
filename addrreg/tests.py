@@ -441,7 +441,7 @@ class RightsTests(test.LiveServerTestCase):
         from selenium import webdriver
         from selenium.common import exceptions
         # If no display is found, try to create one
-        if not os.environ.get('DISPLAY'):
+        if not os.environ.get('DISPLAY') and sys.platform != 'darwin':
             from pyvirtualdisplay import Display
             cls.display = Display(visible=0, size=(800, 600))
             cls.display.start()
