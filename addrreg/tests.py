@@ -531,6 +531,10 @@ class SeleniumTests(test.LiveServerTestCase):
         self.browser.find_element_by_id("content")
 
     def fill_in_form(self, **kwargs):
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+
         for field, value in kwargs.items():
             e = self.browser.find_element_by_id("id_" + field)
 
@@ -540,24 +544,44 @@ class SeleniumTests(test.LiveServerTestCase):
                 e.send_keys(
                     value,
                 )
+
             elif e.tag_name == 'select':
                 options = e.find_elements_by_tag_name('option')
 
                 for option in options:
                     if option.text.strip() == value:
-                        option.click()
+                        # selenium is horrible; it does have code for
+                        # setting options, but it only works in
+                        # Firefox; instead, we use JavaScript
+
+                        self.browser.execute_script('''
+                        var f = document.getElementById('id_{field}');
+                        var sel = '#id_{field} option[value="{value}"]';
+
+                        document.querySelector(sel).selected = true;
+
+                        '''.format(field=field,
+                                   value=option.get_attribute('value')))
                         break
+
                 else:
                     self.fail('{} not one of {}'.format(
                         value, [o.text for o in options]),
                     )
+
             elif (e.tag_name == 'input' and
                     e.get_attribute('type') in ('checkbox', 'radio')):
                 if value != e.is_selected():
                     e.click()
+
             else:
                 self.fail('unhandled input element (' + e.tag_name + '): ' +
                           e.get_attribute('outerHTML'))
+
+        # clicking on invisible items using Selenium doesn't work in Chrome....
+        self.browser.execute_script('''
+        document.querySelector('input[type="submit"]').scrollIntoView()
+        ''')
 
         submit = self.browser.find_element_by_css_selector(
             "input[type=submit]",
