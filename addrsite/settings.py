@@ -185,4 +185,4 @@ SERIALIZATION_MODULES = {
     "python_with_identity": 'addrreg.addreg_serializer'
 }
 
-TEST_RUNNER = 'addrreg.tests.TestRunner'
+TEST_RUNNER = 'addrreg.tests.util.TestRunner'
