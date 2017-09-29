@@ -423,6 +423,11 @@ class SeleniumTests(test.LiveServerTestCase):
 
     maxDiff = 1000
 
+    # default to the easiest browser to install and configure -- on
+    # macOS, that's Safari, obviously, and on Ubuntu that's Chrome
+    # since they package its driver
+    DEFAULT_DRIVER = 'Chrome' if sys.platform != 'darwin' else 'Safari'
+
     DRIVER_PATHS = {
         'Safari': [
             '/Applications/Safari Technology Preview.app'
@@ -445,7 +450,7 @@ class SeleniumTests(test.LiveServerTestCase):
             cls.display = Display(visible=0, size=(800, 600))
             cls.display.start()
 
-        driver_name = os.environ.get('BROWSER', 'Chrome')
+        driver_name = os.environ.get('BROWSER', cls.DEFAULT_DRIVER)
         driver = getattr(webdriver, driver_name)
 
         if not driver:
