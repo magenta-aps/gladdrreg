@@ -274,16 +274,21 @@ class TemporalModelBase(models.base.ModelBase):
                 fields = self.fields
                 for exclusion in [
                     'registration_from', 'registration_to', 'valid_from',
-                    'valid_to', 'checksum', 'object', 'objectID'
+                    'valid_to', 'checksum', 'object', 'objectID',
+                    'registration_user',
                 ]:
                     fields.pop(exclusion)
+
+                # we need a string rather than the foreign key object
+                if self.registration_user:
+                    fields['registration_user'] = self.registration_user.username
 
                 return {
                     'checksum': self.checksum,
                     'registreringFra': self.registration_from,
                     'registreringTil': self.registration_to,
                     'entity': {
-                        'uuid': self.object.objectID,
+                        'uuid': self.objectID,
                         'domaene': 'https://data.gl/gladdreg/' +
                                    self.type_name() + "/1/rest/"
                     },
