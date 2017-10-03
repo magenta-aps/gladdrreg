@@ -29,6 +29,9 @@ admin.site.index_title = _('Administration Overview')
 # Link to documentation
 admin.site.site_url = apps.AddrRegConfig.documentation
 
+# Deletion is dangerous...
+admin.site.disable_action('delete_selected')
+
 
 class UserAdmin(auth_admin.UserAdmin):
     fieldsets = (
