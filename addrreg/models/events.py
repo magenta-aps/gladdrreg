@@ -14,7 +14,7 @@ class Event(models.Model):
     updated_registration = models.CharField(max_length=64)
     updated_type = models.CharField(max_length=32)
     receipt_obtained = models.DateTimeField(null=True)
-    receipt_errorcode = models.CharField(max_length=32, null=True)
+    receipt_errorcode = models.CharField(max_length=64, null=True)
 
     @transaction.atomic(savepoint=False)
     def save(self, *args, **kwargs):

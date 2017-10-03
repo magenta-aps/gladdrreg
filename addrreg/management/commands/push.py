@@ -34,12 +34,17 @@ class Command(base.BaseCommand):
             help=u"amount of requests to perform in parallel"
         )
         parser.add_argument(
-            '--only', nargs='+',
+            '-I', '--include', action='append',
             choices=sorted(cls.type_name() for cls in self.OBJECT_CLASSES),
-            help=u"only send the given types"
+            help=u"include only the given types"
+        )
+        parser.add_argument(
+            '-X', '--exclude', action='append',
+            choices=sorted(cls.type_name() for cls in self.OBJECT_CLASSES),
+            help=u"exclude the given types"
         )
 
-    def handle(self, host, path, full, parallel, only, **kwargs):
+    def handle(self, host, path, full, parallel, include, exclude, **kwargs):
         if '://' not in host:
             host = 'https://' + host
             print('Protocol not detected, prepending "https://"')
@@ -51,17 +56,22 @@ class Command(base.BaseCommand):
         type_map = {
             cls.type_name(): cls
             for cls in self.OBJECT_CLASSES
-            if not only or cls.type_name() in only
+            if (not include or cls.type_name() in include)
+            and (not exclude or cls.type_name() not in exclude)
         }
+
         session = grequests.Session()
 
-        def post_event(event):
+        def get_post_data(event):
             cls = type_map[event.updated_type]
             item = cls.Registrations.objects.get(
                 checksum=event.updated_registration
             )
 
-            message_body = {
+            if kwargs.get('verbosity', 0) > 1:
+                print(dump_json(item.format()))
+
+            return {
                 "beskedVersion": "1.0",
                 "eventID": event.eventID,
                 "beskedData": {
@@ -74,12 +84,12 @@ class Command(base.BaseCommand):
                 }
             }
 
+        def post_message(message):
             return grequests.post(
                 endpoint,
-                data=dump_json(message_body),
+                data=dump_json(message),
                 session=session,
                 headers={'Content-Type': 'application/json'},
-                verify=False
             )
 
         def fail(r, exc):
@@ -103,7 +113,7 @@ class Command(base.BaseCommand):
                               '%(elapsed_td)s / %(eta_td)s') as bar:
 
             for r in grequests.imap(
-                    map(post_event, qs),
+                    map(post_message, map(get_post_data, qs)),
                     size=parallel,
                     exception_handler=fail,
             ):
