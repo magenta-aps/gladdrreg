@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from django.test import runner
+from django.test import override_settings, runner
 
 DUMMY_DOMAIN = 'http://localhost'
 
@@ -32,3 +32,7 @@ class TestRunner(runner.DiscoverRunner):
     def teardown_test_environment(self, **kwargs):
         super().setup_test_environment(**kwargs)
         logging.getLogger('django').removeHandler(self.log_stream_handler)
+
+    @override_settings(TESTING=True)
+    def run_tests(self, *args, **kwargs):
+        return super().run_tests(*args, **kwargs)

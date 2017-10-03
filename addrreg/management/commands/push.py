@@ -1,3 +1,5 @@
+import operator
+
 from ...models import *
 from ...models.events import *
 
@@ -18,7 +20,7 @@ class Command(base.BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--host', default='https://localhost',
+            '--host', default='http://localhost:8445',
             help=u"Destination server to push to (e.g. https://data.gl)"
         )
         parser.add_argument(
@@ -62,28 +64,6 @@ class Command(base.BaseCommand):
 
         session = grequests.Session()
 
-        def get_post_data(event):
-            cls = type_map[event.updated_type]
-            item = cls.Registrations.objects.get(
-                checksum=event.updated_registration
-            )
-
-            if kwargs.get('verbosity', 0) > 1:
-                print(dump_json(item.format()))
-
-            return {
-                "beskedVersion": "1.0",
-                "eventID": event.eventID,
-                "beskedData": {
-                    "Objektdata": {
-                        "dataskema": cls.__name__,
-                        # Using a better serializer, able to serialize
-                        # datetimes and uuids
-                        "objektdata": dump_json(item.format())
-                    },
-                }
-            }
-
         def post_message(message):
             return grequests.post(
                 endpoint,
@@ -95,25 +75,25 @@ class Command(base.BaseCommand):
         def fail(r, exc):
             raise exc
 
-        qs = Event.objects.filter(
+        events = Event.objects.filter(
             updated_type__in=type_map.keys()
         )
 
         if not full:
-            qs = qs.filter(
+            events = events.filter(
                 receipt_obtained__isnull=True,
             )
 
-        if not qs:
+        if not events:
             print('Nothing new.')
             return
 
-        with progress.bar.Bar(max=qs.count(),
+        with progress.bar.Bar(max=events.count(),
                               suffix='%(index).0f of %(max).0f - '
                               '%(elapsed_td)s / %(eta_td)s') as bar:
 
             for r in grequests.imap(
-                    map(post_message, map(get_post_data, qs)),
+                    map(post_message, map(operator.methodcaller('format'), events)),
                     size=parallel,
                     exception_handler=fail,
             ):

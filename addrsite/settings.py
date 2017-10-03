@@ -21,7 +21,6 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -36,12 +35,23 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
+SERIALIZATION_MODULES = {
+    "python_with_identity": 'addrreg.addreg_serializer'
+}
+
+TEST_RUNNER = 'addrreg.tests.util.TestRunner'
+
+PUSH_URL = None
+TESTING = False
+
 # Application definition
 
 INSTALLED_APPS = [
     'addrreg.apps.AddrRegConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admindocs',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -180,9 +190,3 @@ if os.path.exists(os.path.join(os.path.dirname(__file__),
     from .local_settings import *  # noqa
 else:
     print('No local settings!')
-
-SERIALIZATION_MODULES = {
-    "python_with_identity": 'addrreg.addreg_serializer'
-}
-
-TEST_RUNNER = 'addrreg.tests.util.TestRunner'

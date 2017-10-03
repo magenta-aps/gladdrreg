@@ -10,6 +10,10 @@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Where to push events
+# PUSH_URL = 'http://localhost:8445/command/dump'
+
+
 # Example PostgreSQL setup
 DATABASES = {
     'default': {
