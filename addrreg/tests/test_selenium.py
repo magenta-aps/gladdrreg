@@ -819,6 +819,7 @@ class SeleniumTests(test.LiveServerTestCase):
                              'modification failed')
 
         road.refresh_from_db()
+        self.assertEqual(road.location, to_locality)
         self.assertEqual(road.municipality, to_mun)
 
     def test_create_road(self):
