@@ -82,6 +82,11 @@ class SeleniumTests(test.LiveServerTestCase):
     def setUp(self):
         super().setUp()
 
+        self.inject()
+
+        self.browser.delete_all_cookies()
+
+    def inject(self):
         self.user_model = apps.apps.get_model(settings.AUTH_USER_MODEL)
 
         self.superuser = self.user_model.objects.create_superuser(
@@ -124,8 +129,6 @@ class SeleniumTests(test.LiveServerTestCase):
                 rights.save()
 
             self.users[user.username] = user
-
-        self.browser.delete_all_cookies()
 
     def await_staleness(self, element):
         from selenium.webdriver.support.ui import WebDriverWait
