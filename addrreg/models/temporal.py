@@ -281,7 +281,8 @@ class TemporalModelBase(models.base.ModelBase):
 
                 # we need a string rather than the foreign key object
                 if self.registration_user:
-                    fields['registration_user'] = self.registration_user.username
+                    fields['registration_user'] = \
+                        self.registration_user.username
 
                 return {
                     'checksum': self.checksum,

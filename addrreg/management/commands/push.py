@@ -93,7 +93,8 @@ class Command(base.BaseCommand):
                               '%(elapsed_td)s / %(eta_td)s') as bar:
 
             for r in grequests.imap(
-                    map(post_message, map(operator.methodcaller('format'), events)),
+                    map(post_message,
+                        map(operator.methodcaller('format'), events)),
                     size=parallel,
                     exception_handler=fail,
             ):
