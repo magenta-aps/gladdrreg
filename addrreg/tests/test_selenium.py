@@ -832,7 +832,6 @@ class SeleniumTests(test.LiveServerTestCase):
         self.assertEqual(road.name, road_name)
         self.assertEqual(road.location, locality)
 
-    @unittest.expectedFailure
     def test_create_b_number(self):
         # Information has been provided
         bnumber_callname = 'The rabbithole'
@@ -852,8 +851,7 @@ class SeleniumTests(test.LiveServerTestCase):
         self.fill_in_form(b_callname=bnumber_callname,
                           code=bnumber_code,
                           b_type=bnumber_type,
-                          location=locality_name,
-                          municipality=mun_name)
+                          location=locality_name)
         self.assertNotEquals(url, self.browser.current_url, 'addition failed')
         bnum = models.BNumber.objects.get(code=bnumber_code)
         self.assertEqual(bnum.b_callname, bnumber_callname)
@@ -861,11 +859,10 @@ class SeleniumTests(test.LiveServerTestCase):
         self.assertEqual(bnum.location, locality)
         self.assertEqual(bnum.municipality, mun)
 
-    @unittest.expectedFailure
     def test_create_address(self):
         # Information has been provided
-        house_number = 13
-        house_floor = 1
+        house_number = '13'
+        house_floor = '1'
         house_room = 'mf'
 
         locality_name = 'LocationA0'
@@ -909,8 +906,7 @@ class SeleniumTests(test.LiveServerTestCase):
                           house_number=house_number,
                           floor=house_floor,
                           room=house_room,
-                          b_number=str(bnum.pk),
-                          municipality=mun_name)
+                          b_number=str(bnum.pk))
         self.assertNotEquals(url, self.browser.current_url, 'addition failed')
         addr = models.Address.objects.get(b_number=bnum)
         self.assertEqual(addr.house_number, house_number)
