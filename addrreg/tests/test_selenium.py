@@ -667,7 +667,6 @@ class SeleniumTests(test.LiveServerTestCase):
         locality.refresh_from_db()
         self.assertEqual(locality.municipality, to_mun)
 
-    @unittest.expectedFailure
     def test_transfer_road(self):
         # Setup test environment
         from_mun_name = 'City A'

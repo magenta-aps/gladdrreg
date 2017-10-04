@@ -168,7 +168,10 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
         fields = super().get_readonly_fields(request, obj)
         user = request.user
 
-        if not user.is_superuser and hasattr(self.model, 'municipality'):
+        if (
+                not (user.is_superuser or user.rights.count() > 1) and
+                hasattr(self.model, 'municipality')
+        ):
             fields += ('municipality',)
 
         return fields
