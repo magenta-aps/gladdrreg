@@ -12,6 +12,7 @@ from django.test import tag
 
 from .. import models
 from .util import DUMMY_DOMAIN
+from ..models import events
 
 try:
     import selenium
@@ -711,6 +712,14 @@ class SeleniumTests(test.LiveServerTestCase):
         road.refresh_from_db()
         self.assertEqual(road.location, to_locality)
         self.assertEqual(road.municipality, to_mun)
+
+        with self.subTest('events'):
+            self.assertEquals(13, events.Event.objects.count())
+
+            for event in events.Event.objects.all():
+                # this can fail, but the output relies on time and UUIDs too
+                # much to be testable
+                event.format()
 
     def test_remove_locality(self):
         # Information has been provided
