@@ -130,6 +130,17 @@ class SeleniumTests(test.LiveServerTestCase):
 
             self.users[user.username] = user
 
+        user = self.user_model.objects.create_user(
+            'UserAB', 'user{}@example.com'.format(l), 'password',
+            is_staff=True,
+        )
+
+        for right in models.MunicipalityRights.objects.filter(
+            municipality__abbrev__in=['A', 'B'],
+        ):
+            right.users.add(user)
+            right.save()
+
     def await_staleness(self, element):
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
@@ -685,12 +696,7 @@ class SeleniumTests(test.LiveServerTestCase):
         )
         road.save()
 
-        user = self.user_model.objects.get(username='UserA')
-        rights = models.MunicipalityRights.objects.get(municipality=to_mun)
-        rights.users.add(user)
-        rights.save()
-
-        self.login('UserA')
+        self.login('UserAB')
 
         url = (self.live_server_url +
                '/admin/addrreg/road/' + str(road.pk) + '/change/')
