@@ -23,7 +23,7 @@ requires = [
     "babel~=2.4.0",
     "requests~=2.17.3",
     "grequests~=0.3.0",
-    "progress>=1.3",
+    "progress",
     "python-dateutil~=2.6.0",
     # Testing requirements
     "freezegun==0.3.9",
@@ -84,4 +84,7 @@ setuptools.setup(
             'pytz>=2016.10',
         ],
     },
+    dependancy_links=[
+        'https://github.com/danchr/progress/tarball/master#egg=progress'
+    ]
 )
