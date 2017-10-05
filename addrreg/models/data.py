@@ -12,6 +12,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from . import base, temporal
+from .. import util
 
 
 class MunicipalityValidatingForm(base.FormBase):
@@ -397,6 +398,7 @@ class BNumberAdmin(base.AdminBase):
 
     readonly_fields = (
         'id',
+        'related_addresses'
     )
 
     search_fields = (
@@ -424,7 +426,18 @@ class BNumberAdmin(base.AdminBase):
             ),
             'classes': ('wide',),
         }),
+        (_('Related'), {
+            'fields': (
+                'related_addresses',
+            ),
+            'classes': ('wide',),
+        }),
     ) + base.AdminBase._fieldsets
+
+    def related_addresses(self, instance):
+        return util.render_list(instance.address_set.all())
+
+    related_addresses.short_description = _('Addresses')
 
 
 class Road(base.AbstractModel,
@@ -481,6 +494,10 @@ class RoadAdmin(base.AdminBase):
         'municipality__name',
     )
 
+    readonly_fields = (
+        'related_b_numbers',
+    )
+
     fieldsets = (
         (_('Info'), {
             'fields': (
@@ -496,7 +513,21 @@ class RoadAdmin(base.AdminBase):
             ),
             'classes': ('wide',),
         }),
+        (_('Related'), {
+            'fields': (
+                'related_b_numbers',
+            ),
+            'classes': ('wide',),
+        }),
     ) + base.AdminBase._fieldsets
+
+    def related_b_numbers(self, instance):
+        return util.render_list(
+            addr.b_number
+            for addr in instance.address_set.all(),
+        )
+
+    related_b_numbers.short_description = _('B-Numbers')
 
 
 class Address(base.AbstractModel,
