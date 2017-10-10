@@ -77,8 +77,10 @@ class Event(models.Model):
     def push(self, url):
         return requests.post(
             url,
+            proxies=settings.PROXIES,
             data=util.dump_json(self.format()),
             headers={'Content-Type': 'application/json'},
+            timeout=10,
             verify=False
         )
 

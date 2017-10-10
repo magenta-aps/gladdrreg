@@ -1,12 +1,14 @@
 import operator
+import traceback
 
 from ...models import *
 from ...models.events import *
 
 from jsonview.decorators import _dump_json as dump_json
-import grequests
+import requests
 import progress.bar
 
+from django.conf import settings
 from django.core.management import base
 
 
@@ -27,6 +29,8 @@ class Command(base.BaseCommand):
             '--path', default='/odata/gapi/Events',
             help=u"Destination server path to push to"
         )
+        parser.add_argument('--failfast', action='store_true',
+                            help='stop on first error')
         parser.add_argument(
             '--full', action='store_true',
             help=u"Do a full synchronisation"
@@ -46,7 +50,8 @@ class Command(base.BaseCommand):
             help=u"exclude the given types"
         )
 
-    def handle(self, host, path, full, parallel, include, exclude, **kwargs):
+    def handle(self, host, path, full, parallel, include, exclude, failfast,
+               verbosity, **kwargs):
         if '://' not in host:
             host = 'https://' + host
             print('Protocol not detected, prepending "https://"')
@@ -62,15 +67,29 @@ class Command(base.BaseCommand):
             and (not exclude or cls.type_name() not in exclude)
         }
 
-        session = grequests.Session()
+        session = requests.Session()
 
-        def post_message(message):
-            return grequests.post(
-                endpoint,
-                data=dump_json(message),
-                session=session,
-                headers={'Content-Type': 'application/json'},
-            )
+        if parallel > 1:
+            import grequests
+
+            def post_message(message):
+                return grequests.post(
+                    endpoint,
+                    proxies=settings.PROXIES,
+                    data=dump_json(message),
+                    session=session,
+                    verify=False,
+                    headers={'Content-Type': 'application/json'},
+                    timeout=10,
+                )
+        else:
+            def post_message(message):
+                return session.post(
+                    endpoint,
+                    proxies=settings.PROXIES,
+                    data=dump_json(message),
+                    headers={'Content-Type': 'application/json'},
+                )
 
         def fail(r, exc):
             raise exc
@@ -91,12 +110,19 @@ class Command(base.BaseCommand):
         with progress.bar.Bar(max=events.count(),
                               suffix='%(index).0f of %(max).0f - '
                               '%(elapsed_td)s / %(eta_td)s') as bar:
-
-            for r in grequests.imap(
+            if parallel > 1:
+                request_iter = grequests.imap(
                     map(post_message,
                         map(operator.methodcaller('format'), events)),
                     size=parallel,
                     exception_handler=fail,
-            ):
+                )
+            else:
+                request_iter = map(post_message,
+                                   map(operator.methodcaller('format'),
+                                       events))
+
+            for r in request_iter:
                 bar.next()
-                r.raise_for_status()
+                if failfast:
+                    r.raise_for_status()

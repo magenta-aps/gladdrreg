@@ -42,6 +42,7 @@ SERIALIZATION_MODULES = {
 
 TEST_RUNNER = 'addrreg.tests.util.TestRunner'
 
+PROXIES = None
 PUSH_URL = None
 TESTING = False
 
