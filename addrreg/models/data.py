@@ -46,7 +46,7 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
         ordering = ('code',)
         default_permissions = ()
 
-    state = models.ForeignKey('addrreg.State', models.DO_NOTHING,
+    state = models.ForeignKey('addrreg.State', models.PROTECT,
                               verbose_name=_('State'), db_index=True,
                               related_name='+')
 
