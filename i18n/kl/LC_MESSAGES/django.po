@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-03 11:15-0200\n"
+"POT-Creation-Date: 2017-10-12 13:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,12 +31,12 @@ msgstr ""
 msgid "Greenlandic Address Reference Register"
 msgstr "Najugaq"
 
-#: addrreg/models/base.py:47 addrreg/models/base.py:150
-#: addrreg/models/data.py:42 addrreg/models/data.py:49
-msgid "State"
+#: addrreg/models/base.py:47 addrreg/models/data.py:43
+#: addrreg/models/data.py:50
+msgid "Condition"
 msgstr ""
 
-#: addrreg/models/base.py:50 addrreg/models/data.py:114
+#: addrreg/models/base.py:50 addrreg/models/data.py:120
 msgid "Active"
 msgstr "Noqangasoq"
 
@@ -57,228 +57,236 @@ msgstr ""
 msgid "Enter a valid Sumiffiik, such as {%s}"
 msgstr ""
 
-#: addrreg/models/data.py:31
+#: addrreg/models/base.py:150
+msgid "State"
+msgstr ""
+
+#: addrreg/models/data.py:32
 #, python-format
 msgid "Fields cannot be in different municipalities; this one is in “%s”!"
 msgstr ""
 
-#: addrreg/models/data.py:43
-msgid "States"
+#: addrreg/models/data.py:44
+msgid "Conditions"
 msgstr ""
 
-#: addrreg/models/data.py:52 addrreg/models/data.py:133
-#: addrreg/models/data.py:179 addrreg/models/data.py:273
-#: addrreg/models/data.py:445
+#: addrreg/models/data.py:53 addrreg/models/data.py:139
+#: addrreg/models/data.py:185 addrreg/models/data.py:279
+#: addrreg/models/data.py:465
 msgid "Code"
 msgstr ""
 
-#: addrreg/models/data.py:54 addrreg/models/data.py:136
-#: addrreg/models/data.py:183 addrreg/models/data.py:278
-#: addrreg/models/data.py:446
+#: addrreg/models/data.py:55 addrreg/models/data.py:142
+#: addrreg/models/data.py:189 addrreg/models/data.py:284
+#: addrreg/models/data.py:466
 msgid "Name"
 msgstr ""
 
-#: addrreg/models/data.py:55
+#: addrreg/models/data.py:56
 msgid "Description"
 msgstr ""
 
-#: addrreg/models/data.py:89
+#: addrreg/models/data.py:95
 msgid "Unknown"
 msgstr "Allanneqarsimanngitsut"
 
-#: addrreg/models/data.py:90
+#: addrreg/models/data.py:96
 msgid "Town"
 msgstr "Illoqarfiit"
 
-#: addrreg/models/data.py:91
+#: addrreg/models/data.py:97
 msgid "Settlement"
 msgstr "Nunaqarfiit"
 
-#: addrreg/models/data.py:92
+#: addrreg/models/data.py:98
 msgid "Mine"
 msgstr "Piiaaffik"
 
-#: addrreg/models/data.py:93
+#: addrreg/models/data.py:99
 msgid "Station"
 msgstr "Stationit"
 
-#: addrreg/models/data.py:94
+#: addrreg/models/data.py:100
 msgid "Airport"
 msgstr "Mittarfik"
 
-#: addrreg/models/data.py:95
+#: addrreg/models/data.py:101
 msgid "Farm"
 msgstr "Savaateqarfiit"
 
-#: addrreg/models/data.py:96
+#: addrreg/models/data.py:102
 msgid "Development"
 msgstr "Ineriartortinniagaq"
 
-#: addrreg/models/data.py:113
+#: addrreg/models/data.py:119
 msgid "Projected"
 msgstr "Pilersaarusiorneq"
 
-#: addrreg/models/data.py:115
+#: addrreg/models/data.py:121
 msgid "Abandoned"
 msgstr "Inuerunneq"
 
-#: addrreg/models/data.py:122 addrreg/models/data.py:288
-#: addrreg/models/data.py:368 addrreg/models/data.py:458
-#: addrreg/models/data.py:529 addrreg/models/data.py:618
+#: addrreg/models/data.py:128 addrreg/models/data.py:294
+#: addrreg/models/data.py:376 addrreg/models/data.py:478
+#: addrreg/models/data.py:567 addrreg/models/data.py:656
 msgid "Municipality"
 msgstr ""
 
-#: addrreg/models/data.py:123
+#: addrreg/models/data.py:129
 msgid "Municipalities"
 msgstr ""
 
-#: addrreg/models/data.py:135 addrreg/models/data.py:182
-#: addrreg/models/data.py:276
+#: addrreg/models/data.py:141 addrreg/models/data.py:188
+#: addrreg/models/data.py:282
 msgid "Abbreviation"
 msgstr ""
 
-#: addrreg/models/data.py:153 addrreg/models/data.py:201
-#: addrreg/models/data.py:247 addrreg/models/data.py:327
-#: addrreg/models/data.py:416 addrreg/models/data.py:485
-#: addrreg/models/data.py:585
+#: addrreg/models/data.py:159 addrreg/models/data.py:207
+#: addrreg/models/data.py:253 addrreg/models/data.py:333
+#: addrreg/models/data.py:425 addrreg/models/data.py:509
+#: addrreg/models/data.py:623
 msgid "Info"
 msgstr ""
 
-#: addrreg/models/data.py:157 addrreg/models/data.py:205
-#: addrreg/models/data.py:251 addrreg/models/data.py:331
-#: addrreg/models/data.py:420 addrreg/models/data.py:492
-#: addrreg/models/data.py:591
+#: addrreg/models/data.py:163 addrreg/models/data.py:211
+#: addrreg/models/data.py:257 addrreg/models/data.py:337
+#: addrreg/models/data.py:429 addrreg/models/data.py:516
+#: addrreg/models/data.py:629
 msgid "Geography"
 msgstr ""
 
-#: addrreg/models/data.py:168 addrreg/models/data.py:290
+#: addrreg/models/data.py:174 addrreg/models/data.py:296
 msgid "District"
 msgstr ""
 
-#: addrreg/models/data.py:169
+#: addrreg/models/data.py:175
 msgid "Districts"
 msgstr ""
 
-#: addrreg/models/data.py:216 addrreg/models/data.py:292
+#: addrreg/models/data.py:222 addrreg/models/data.py:298
 msgid "Postal Code"
 msgstr ""
 
-#: addrreg/models/data.py:217
+#: addrreg/models/data.py:223
 msgid "Postal Codes"
 msgstr ""
 
-#: addrreg/models/data.py:228
+#: addrreg/models/data.py:234
 msgid "Number"
 msgstr ""
 
-#: addrreg/models/data.py:231
+#: addrreg/models/data.py:237
 msgid "City"
 msgstr ""
 
 #. Translators: Human-readable description of a PostalCode
-#: addrreg/models/data.py:235
+#: addrreg/models/data.py:241
 #, python-brace-format
 msgid "{0.code} {0.name}"
 msgstr ""
 
-#: addrreg/models/data.py:262 addrreg/models/data.py:365
-#: addrreg/models/data.py:457 addrreg/models/data.py:534
+#: addrreg/models/data.py:268 addrreg/models/data.py:373
+#: addrreg/models/data.py:477 addrreg/models/data.py:572
 msgid "Locality"
 msgstr ""
 
-#: addrreg/models/data.py:263
+#: addrreg/models/data.py:269
 msgid "Localities"
 msgstr ""
 
-#: addrreg/models/data.py:281
+#: addrreg/models/data.py:287
 msgid "Type"
 msgstr ""
 
-#: addrreg/models/data.py:285
+#: addrreg/models/data.py:291
 msgid "Locality State"
 msgstr ""
 
-#: addrreg/models/data.py:345 addrreg/models/data.py:355
-#: addrreg/models/data.py:527
+#: addrreg/models/data.py:351 addrreg/models/data.py:363
+#: addrreg/models/data.py:565
 msgid "B-Number"
 msgstr ""
 
-#: addrreg/models/data.py:346
+#: addrreg/models/data.py:352 addrreg/models/data.py:537
 msgid "B-Numbers"
 msgstr ""
 
-#: addrreg/models/data.py:359
+#: addrreg/models/data.py:367
 msgid "B-Type"
 msgstr ""
 
-#: addrreg/models/data.py:362
+#: addrreg/models/data.py:370
 msgid "B-Nickname"
 msgstr ""
 
-#: addrreg/models/data.py:434 addrreg/models/data.py:528
-msgid "Road"
+#: addrreg/models/data.py:436 addrreg/models/data.py:523
+msgid "Related"
 msgstr ""
 
-#: addrreg/models/data.py:435
-msgid "Roads"
-msgstr ""
-
-#: addrreg/models/data.py:448
-msgid "Abbreviated Name"
-msgstr ""
-
-#: addrreg/models/data.py:449
-msgid "20 character maximum"
-msgstr ""
-
-#: addrreg/models/data.py:452
-msgid "Alternate Name"
-msgstr ""
-
-#: addrreg/models/data.py:454
-msgid "CPR Name"
-msgstr ""
-
-#: addrreg/models/data.py:506
-msgid "Address"
-msgstr ""
-
-#: addrreg/models/data.py:507
+#: addrreg/models/data.py:447 addrreg/models/data.py:545
 msgid "Addresses"
 msgstr ""
 
-#: addrreg/models/data.py:518
+#: addrreg/models/data.py:454 addrreg/models/data.py:566
+msgid "Road"
+msgstr ""
+
+#: addrreg/models/data.py:455
+msgid "Roads"
+msgstr ""
+
+#: addrreg/models/data.py:468
+msgid "Abbreviated Name"
+msgstr ""
+
+#: addrreg/models/data.py:469
+msgid "20 character maximum"
+msgstr ""
+
+#: addrreg/models/data.py:472
+msgid "Alternate Name"
+msgstr ""
+
+#: addrreg/models/data.py:474
+msgid "CPR Name"
+msgstr ""
+
+#: addrreg/models/data.py:544
+msgid "Address"
+msgstr ""
+
+#: addrreg/models/data.py:556
 msgid "House Number"
 msgstr ""
 
-#: addrreg/models/data.py:521
+#: addrreg/models/data.py:559
 msgid "Floor"
 msgstr ""
 
-#: addrreg/models/data.py:524
+#: addrreg/models/data.py:562
 msgid "Room"
 msgstr ""
 
-#: addrreg/models/data.py:547
+#: addrreg/models/data.py:585
 #, python-brace-format
 msgid "{0.house_number} {0.road}"
 msgstr ""
 
-#: addrreg/models/data.py:549
+#: addrreg/models/data.py:587
 #, python-brace-format
 msgid "{0.road}"
 msgstr ""
 
-#: addrreg/models/data.py:602
+#: addrreg/models/data.py:640
 msgid ""
 "Either enter a B-Number to search for to the left, or an ID to the right"
 msgstr ""
 
-#: addrreg/models/data.py:611 addrreg/models/data.py:612
+#: addrreg/models/data.py:649 addrreg/models/data.py:650
 msgid "Municipality Rights"
 msgstr ""
 
-#: addrreg/models/data.py:623
+#: addrreg/models/data.py:661
 msgid "Users"
 msgstr ""
 
@@ -314,11 +322,11 @@ msgstr ""
 msgid "Checksum"
 msgstr ""
 
-#: addrreg/models/temporal.py:311
+#: addrreg/models/temporal.py:314
 msgid "{} Registration"
 msgstr ""
 
-#: addrreg/models/temporal.py:314
+#: addrreg/models/temporal.py:317
 msgid "{} Registrations"
 msgstr ""
 
@@ -334,4 +342,8 @@ msgid ""
 "  We're sorry, but you don't have access to <code>%(path)s</code>.\n"
 "  You'll be redirected to the main page in %(delay)s seconds.\n"
 "  "
+msgstr ""
+
+#: addrreg/util.py:39
+msgid "Error"
 msgstr ""

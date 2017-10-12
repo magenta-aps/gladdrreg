@@ -40,14 +40,14 @@ class MunicipalityValidatingForm(base.FormBase):
 class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 
     class Meta(object):
-        verbose_name = _('State')
-        verbose_name_plural = _('States')
+        verbose_name = _('Condition')
+        verbose_name_plural = _('Conditions')
 
         ordering = ('code',)
         default_permissions = ()
 
     state = models.ForeignKey('addrreg.State', models.PROTECT,
-                              verbose_name=_('State'), db_index=True,
+                              verbose_name=_('Condition'), db_index=True,
                               related_name='+')
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True,
@@ -62,11 +62,16 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 
 @admin.register(State)
 class StateAdmin(base.AdminBase):
-    list_display = ('name', 'description', 'state', 'active')
+    list_display = ('name', 'description', 'active')
+    readonly_fields = ('state',)
+
+    list_filter = (
+        'active',
+    )
 
     fieldsets = (
         (None, {
-            'fields': ('code', 'name', 'active'),
+            'fields': ('code', 'name', 'description'),
             'classes': ('wide', 'extra_pretty'),
         }),
     ) + base.AdminBase._fieldsets
@@ -347,6 +352,8 @@ class BNumber(base.AbstractModel,
         verbose_name_plural = _('B-Numbers')
 
         default_permissions = ()
+
+        ordering = ('code', 'b_type')
 
     sumiffiik = base.SumiffiikIDField()
     sumiffiik_domain = base.SumiffiikDomainField(

@@ -278,7 +278,7 @@ class SeleniumTests(test.LiveServerTestCase):
                     'localities',
                     'municipalities',
                     'postal codes',
-                    'states',
+                    'conditions',
                 ],
                 'authentication and authorization': [
                     'users',

@@ -44,7 +44,7 @@ class AbstractModel(models.Model):
         abstract = True
 
     state = models.ForeignKey('addrreg.State', models.PROTECT,
-                              verbose_name=_('State'), db_index=True,
+                              verbose_name=_('Condition'), db_index=True,
                               related_name='+',
                               default=_default_state)
     active = models.BooleanField(_('Active'), default=True)
