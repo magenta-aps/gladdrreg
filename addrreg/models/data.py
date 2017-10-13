@@ -660,6 +660,7 @@ class MunicipalityRights(models.Model):
         settings.AUTH_USER_MODEL,
         verbose_name=_('Users'),
         related_name='rights',
+        limit_choices_to={'is_staff': True, 'is_active': True},
     )
 
     def __str__(self):
