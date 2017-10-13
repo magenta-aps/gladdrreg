@@ -191,3 +191,33 @@ if os.path.exists(os.path.join(os.path.dirname(__file__),
     from .local_settings import *  # noqa
 else:
     print('No local settings!')
+
+
+if sys.platform == 'win32':
+    # this horrible hack injects the use of SSPI authentication into
+    # django-sqlserver, fixing our authentication in Greenland
+    import functools, sys
+
+    from sqlserver import base
+    from pytds import login
+
+    orig_gcp = base.DatabaseWrapper.get_connection_params_pytds
+
+    @functools.wraps(orig_gcp)
+    def get_connection_params_pytds(self):
+        """Returns a dict of parameters suitable for get_new_connection."""
+        conn_params = orig_gcp(self)
+
+        conn_params['auth'] = login.SspiAuth(
+            user_name=conn_params['user'],
+            password=conn_params['password'],
+            server_name=conn_params['server'],
+            port=conn_params['port'],
+        )
+   
+        return conn_params
+
+    base.DatabaseWrapper.get_connection_params_pytds = \
+        get_connection_params_pytds
+   
+
