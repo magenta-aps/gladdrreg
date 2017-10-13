@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-12 13:40+0000\n"
+"POT-Creation-Date: 2017-10-12 11:41-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dan Villiom Podlaski Christiansen <dan@magenta.dk>\n"
 "Language: da\n"
@@ -289,45 +289,45 @@ msgstr "Kommunerettigheder"
 msgid "Users"
 msgstr "Brugere"
 
-#: addrreg/models/temporal.py:34 addrreg/models/temporal.py:189
+#: addrreg/models/temporal.py:35 addrreg/models/temporal.py:210
 msgid "Object ID"
 msgstr "Objekt-ID"
 
-#: addrreg/models/temporal.py:36 addrreg/models/temporal.py:192
+#: addrreg/models/temporal.py:37 addrreg/models/temporal.py:213
 msgid "Valid From"
 msgstr "Virkningstidsbegyndelse"
 
-#: addrreg/models/temporal.py:38 addrreg/models/temporal.py:194
+#: addrreg/models/temporal.py:39 addrreg/models/temporal.py:215
 msgid "Valid To"
 msgstr "Virkningstidsafslutning"
 
-#: addrreg/models/temporal.py:43
+#: addrreg/models/temporal.py:44
 msgid "Registration Time"
 msgstr "Registreringstidspunkt"
 
-#: addrreg/models/temporal.py:186
+#: addrreg/models/temporal.py:207
 msgid "Object"
 msgstr "Objekt"
 
-#: addrreg/models/temporal.py:200
+#: addrreg/models/temporal.py:221
 msgid "Actor"
 msgstr "Aktør"
 
-#: addrreg/models/temporal.py:205 addrreg/models/temporal.py:211
+#: addrreg/models/temporal.py:226 addrreg/models/temporal.py:232
 msgid "Registration From"
 msgstr "Registreringstidsbegyndelse"
 
-#: addrreg/models/temporal.py:216
+#: addrreg/models/temporal.py:237
 msgid "Checksum"
 msgstr "Checksum"
 
-#: addrreg/models/temporal.py:314
-msgid "{} Registration"
-msgstr "Registrering for {}"
+#: addrreg/models/temporal.py:336
+msgid "Past registration for "
+msgstr "Hidtidig registrering for "
 
-#: addrreg/models/temporal.py:317
-msgid "{} Registrations"
-msgstr "Registreringer for {}"
+#: addrreg/models/temporal.py:341
+msgid "Past registrations for "
+msgstr "Hidtidige registreringer for "
 
 #: addrreg/templates/access_denied.html:4
 #: addrreg/templates/access_denied.html:12
@@ -351,14 +351,14 @@ msgstr ""
 msgid "Error"
 msgstr "Fejl"
 
-#~ msgid "Past registration for "
-#~ msgstr "Hidtidig registrering for "
-
-#~ msgid "Past registrations for "
-#~ msgstr "Hidtidige registreringer for "
-
 #~ msgid "States"
 #~ msgstr "Tilstande"
+
+#~ msgid "{} Registration"
+#~ msgstr "Registrering for {}"
+
+#~ msgid "{} Registrations"
+#~ msgstr "Registreringer for {}"
 
 #~ msgid "{0.name} ({0.type.label})"
 #~ msgstr "{0.name} ({0.type.label})"

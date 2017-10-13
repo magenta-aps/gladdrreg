@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core import exceptions, serializers
 from django.db import models, transaction
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import string_concat, ugettext_lazy as _
 
 from .events import Event
 from ..util import json_serialize_object
@@ -156,6 +156,8 @@ class TemporalModelBase(models.base.ModelBase):
         # entry, so we have to drop all unique constraints
         # TODO: does this handle many-to-many relations somehow?
         for field in modelcls._meta.fields:
+            process = False
+
             # inspired by Field.clone() in Django, but changed by
             # reassigning to unique, and supressing swappable so we
             # retain self-references as strings
@@ -163,19 +165,37 @@ class TemporalModelBase(models.base.ModelBase):
 
             if _swappable:
                 field.swappable = False
+                process = True
 
             fieldargs, field_kwargs = field.deconstruct()[2:]
 
             if _swappable is not None:
                 field.swappable = _swappable
+                process = True
 
-            if not field.unique and not field_kwargs.get('unique'):
-                continue
+            if field.unique or field_kwargs.get('unique'):
+                field_kwargs['unique'] = False
+                field_kwargs['db_index'] = True
+                process = True
 
-            field_kwargs['unique'] = False
-            field_kwargs['db_index'] = True
+            if isinstance(field, models.ForeignKey):
+                assert ((field.to_fields in [[None], ['id']]) and
+                        getattr(field.remote_field.model, 'objectID')), (
+                            'model has a foreign key {} which points to '
+                            'something weird'
+                        ).format(field)
 
-            regattrs[field.name] = type(field)(*fieldargs, **field_kwargs)
+                field_kwargs.update(
+                    on_delete=models.DO_NOTHING,
+                    db_constraint=False,
+                    related_name='+',
+                    to_field='objectID',
+                )
+
+                process = True
+
+            if process:
+                regattrs[field.name] = type(field)(*fieldargs, **field_kwargs)
 
         class RegistrationModel(*bases):
             class Meta(object):
@@ -311,11 +331,14 @@ class TemporalModelBase(models.base.ModelBase):
 
             db_table = modelcls._meta.db_table + str('_registrations')
 
-            verbose_name = _('{} Registration').format(
-                modelcls._meta.verbose_name
+            verbose_name = string_concat(
+                _('Past registration for '),
+                modelcls._meta.verbose_name,
             )
-            verbose_name_plural = _('{} Registrations').format(
-                modelcls._meta.verbose_name
+
+            verbose_name_plural = string_concat(
+                _('Past registrations for '),
+                modelcls._meta.verbose_name_plural,
             )
 
         regattrs['__qualname__'] += 'Registrations'

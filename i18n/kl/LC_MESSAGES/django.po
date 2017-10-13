@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-12 13:40+0000\n"
+"POT-Creation-Date: 2017-10-12 11:41-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -290,44 +290,44 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: addrreg/models/temporal.py:34 addrreg/models/temporal.py:189
+#: addrreg/models/temporal.py:35 addrreg/models/temporal.py:210
 msgid "Object ID"
 msgstr ""
 
-#: addrreg/models/temporal.py:36 addrreg/models/temporal.py:192
+#: addrreg/models/temporal.py:37 addrreg/models/temporal.py:213
 msgid "Valid From"
 msgstr ""
 
-#: addrreg/models/temporal.py:38 addrreg/models/temporal.py:194
+#: addrreg/models/temporal.py:39 addrreg/models/temporal.py:215
 msgid "Valid To"
 msgstr ""
 
-#: addrreg/models/temporal.py:43
+#: addrreg/models/temporal.py:44
 msgid "Registration Time"
 msgstr ""
 
-#: addrreg/models/temporal.py:186
+#: addrreg/models/temporal.py:207
 msgid "Object"
 msgstr ""
 
-#: addrreg/models/temporal.py:200
+#: addrreg/models/temporal.py:221
 msgid "Actor"
 msgstr ""
 
-#: addrreg/models/temporal.py:205 addrreg/models/temporal.py:211
+#: addrreg/models/temporal.py:226 addrreg/models/temporal.py:232
 msgid "Registration From"
 msgstr ""
 
-#: addrreg/models/temporal.py:216
+#: addrreg/models/temporal.py:237
 msgid "Checksum"
 msgstr ""
 
-#: addrreg/models/temporal.py:314
-msgid "{} Registration"
+#: addrreg/models/temporal.py:336
+msgid "Past registration for "
 msgstr ""
 
-#: addrreg/models/temporal.py:317
-msgid "{} Registrations"
+#: addrreg/models/temporal.py:341
+msgid "Past registrations for "
 msgstr ""
 
 #: addrreg/templates/access_denied.html:4
