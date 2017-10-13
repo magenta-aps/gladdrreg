@@ -1,5 +1,11 @@
-{% for item, link in items.items %}
-    <span>
-        <a href="{{ link }}">{{ item }}</a>
-    </span>
-{% endfor %}
+<div>
+  <br>
+  <br>
+  <ul>
+    {% for item, link in items.items %}
+    <li>
+      <a href="{{ link }}">{{ item }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
