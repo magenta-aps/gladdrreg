@@ -11,16 +11,14 @@ class TestRunner(runner.DiscoverRunner):
     A Django test runner that enables output buffering.
     '''
 
-    def run_suite(self, suite, **kwargs):
-        resultclass = self.get_resultclass()
+    def get_test_runner_kwargs(self):
+        kwargs = super().get_test_runner_kwargs()
 
-        # TODO: we can simplify this code when we switch to Django 1.11
-        return self.test_runner(
-            verbosity=self.verbosity,
-            failfast=self.failfast,
-            resultclass=resultclass,
+        kwargs.update(
             buffer=True,
-        ).run(suite)
+        )
+
+        return kwargs
 
     def setup_test_environment(self, **kwargs):
         super().setup_test_environment(**kwargs)
