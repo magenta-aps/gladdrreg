@@ -413,7 +413,7 @@ class BNumberAdmin(base.AdminBase):
         'b_type',
         'municipality__name',
         'location__name',
-        'addressregistrations__road__name',
+        'address__road__name',
     )
 
     list_filter = (
