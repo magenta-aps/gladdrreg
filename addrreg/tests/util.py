@@ -30,7 +30,7 @@ class TestRunner(runner.DiscoverRunner):
         logging.getLogger('django').addHandler(self.log_stream_handler)
 
     def teardown_test_environment(self, **kwargs):
-        super().setup_test_environment(**kwargs)
+        super().teardown_test_environment(**kwargs)
         logging.getLogger('django').removeHandler(self.log_stream_handler)
 
     @override_settings(TESTING=True)
