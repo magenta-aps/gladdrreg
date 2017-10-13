@@ -394,9 +394,9 @@ class BNumberAdmin(base.AdminBase):
     form = MunicipalityValidatingForm
 
     list_display = (
+        'id',
         'code',
         'b_type',
-        'id',
         'municipality',
         'location',
         'state',
