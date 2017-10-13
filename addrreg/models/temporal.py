@@ -10,7 +10,8 @@ from django.conf import settings
 from django.core import exceptions, serializers
 from django.db import models, transaction
 from django.utils import timezone
-from django.utils.translation import string_concat, ugettext_lazy as _
+from django.utils.text import format_lazy
+from django.utils.translation import ugettext_lazy as _
 
 from .events import Event
 from ..util import json_serialize_object
@@ -331,13 +332,13 @@ class TemporalModelBase(models.base.ModelBase):
 
             db_table = modelcls._meta.db_table + str('_registrations')
 
-            verbose_name = string_concat(
-                _('Past registration for '),
+            verbose_name = format_lazy(
+                _('Past registration for {}'),
                 modelcls._meta.verbose_name,
             )
 
-            verbose_name_plural = string_concat(
-                _('Past registrations for '),
+            verbose_name_plural = format_lazy(
+                _('Past registrations for {}'),
                 modelcls._meta.verbose_name_plural,
             )
 
