@@ -1,11 +1,7 @@
-<div>
-  <br>
-  <br>
-  <ul>
-    {% for item, link in items.items %}
-    <li>
-      <a href="{{ link }}">{{ item }}</a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+<ul style="column-width: 20ex; margin-left: 0">
+  {% for item, link in items.items %}
+  <li>
+    <a href="{{ link }}">{{ item }}</a>
+  </li>
+  {% endfor %}
+</ul>
