@@ -52,7 +52,8 @@ class State(base.AbstractModel, metaclass=temporal.TemporalModelBase):
 
     code = models.PositiveSmallIntegerField(_('Code'), db_index=True,
                                             unique=True)
-    name = models.CharField(_('Name'), max_length=20, null=True)
+    name = models.CharField(_('Name'), max_length=20, blank=True, null=True,
+                            unique=True)
     description = models.CharField(_('Description'), max_length=60,
                                    blank=True)
 
