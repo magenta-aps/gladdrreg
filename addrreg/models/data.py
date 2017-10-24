@@ -196,6 +196,7 @@ class District(base.AbstractModel,
 @admin.register(District)
 class DistrictAdmin(base.AdminBase):
     list_display = ('abbrev', 'name', 'state', 'active')
+    readonly_fields = ('related_localities',)
 
     search_fields = (
         '=code',
@@ -213,8 +214,18 @@ class DistrictAdmin(base.AdminBase):
             'fields': ('sumiffiik', 'sumiffiik_domain'),
             'classes': ('wide',),
         }),
+        (_('Related'), {
+            'fields': (
+                'related_localities',
+            ),
+            'classes': ('wide',),
+        }),
     ) + base.AdminBase._fieldsets
 
+    def related_localities(self, instance):
+        return util.render_list(instance.locality_set.all())
+
+    related_localities.short_description = _('Localities')
 
 class PostalCode(base.AbstractModel,
                  metaclass=temporal.TemporalModelBase):
