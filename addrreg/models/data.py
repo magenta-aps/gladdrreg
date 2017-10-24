@@ -201,7 +201,7 @@ class DistrictAdmin(base.AdminBase):
         '=code',
         'name',
         '=abbrev',
-        'municipality__name',
+        'locality__name',
     )
 
     fieldsets = (
