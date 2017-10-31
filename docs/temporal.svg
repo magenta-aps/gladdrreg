@@ -14,112 +14,112 @@
 <title>addrreg_models_data_Address</title>
 <polygon fill="#eee8aa" stroke="transparent" points="8,-102 8,-334 166,-334 166,-102 8,-102"/>
 <polygon fill="#698b22" stroke="transparent" points="8,-310 8,-334 166,-334 166,-310 8,-310"/>
-<text text-anchor="start" x="68" y="-324.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="75" y="-324.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff"> &#160;&#160;&#160;Adresse</text>
-<text text-anchor="start" x="58.5" y="-316.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff">&lt;</text>
-<text text-anchor="start" x="62.5" y="-316.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#ffffff">TemporalModel</text>
-<text text-anchor="start" x="104.5" y="-316.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff">&gt; &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-302.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ID</text>
-<text text-anchor="start" x="24" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-302.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">AutoField</text>
-<text text-anchor="start" x="128" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-289.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">B&#45;nummer</text>
-<text text-anchor="start" x="48" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-289.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="145" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-276.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">Kommune</text>
-<text text-anchor="start" x="47" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-276.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="145" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-263.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Status</text>
-<text text-anchor="start" x="35" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-263.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="142" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-250.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">Vej</text>
-<text text-anchor="start" x="27" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-250.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="145" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-237.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">Aktiv</text>
-<text text-anchor="start" x="31" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-237.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">BooleanField</text>
-<text text-anchor="start" x="136" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-224.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Dør</text>
-<text text-anchor="start" x="27" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-224.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="127" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-211.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Etage</text>
-<text text-anchor="start" x="33" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-211.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="127" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-198.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Husnummer</text>
-<text text-anchor="start" x="50" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-198.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="127" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-185.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">Noter</text>
-<text text-anchor="start" x="32" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-185.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="127" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-172.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Objekt&#45;ID</text>
-<text text-anchor="start" x="43" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-172.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">UUIDField</text>
-<text text-anchor="start" x="128" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-159.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Registreringstidspunkt</text>
-<text text-anchor="start" x="77" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-159.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="140" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-146.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">Sumiffiik&#45;ID</text>
-<text text-anchor="start" x="48" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-146.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">SumiffiikIDField</text>
-<text text-anchor="start" x="142" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-133.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">Sumiffiikdomæne</text>
-<text text-anchor="start" x="64" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-133.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">SumiffiikDomainField</text>
-<text text-anchor="start" x="157" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-120.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsafslutning</text>
-<text text-anchor="start" x="77" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-120.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="140" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="10" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="17" y="-107.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsbegyndelse</text>
-<text text-anchor="start" x="82" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="93" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="100" y="-107.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="140" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="68" y="-324.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="75" y="-324.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff"> &#160;&#160;&#160;Adresse</text>
+<text text-anchor="start" x="58.5" y="-316.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff">&lt;</text>
+<text text-anchor="start" x="62.5" y="-316.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#ffffff">TemporalModel</text>
+<text text-anchor="start" x="104.5" y="-316.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff">&gt; &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-302.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ID</text>
+<text text-anchor="start" x="24" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-302.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">AutoField</text>
+<text text-anchor="start" x="128" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-289.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">B&#45;nummer</text>
+<text text-anchor="start" x="48" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-289.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="145" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-276.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">Kommune</text>
+<text text-anchor="start" x="47" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-276.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="145" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-263.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Status</text>
+<text text-anchor="start" x="35" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-263.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="142" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-250.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">Vej</text>
+<text text-anchor="start" x="27" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-250.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="145" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-237.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">Aktiv</text>
+<text text-anchor="start" x="31" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-237.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">BooleanField</text>
+<text text-anchor="start" x="136" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-224.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Dør</text>
+<text text-anchor="start" x="27" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-224.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="127" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-211.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Etage</text>
+<text text-anchor="start" x="33" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-211.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="127" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-198.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Husnummer</text>
+<text text-anchor="start" x="50" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-198.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="127" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-185.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">Noter</text>
+<text text-anchor="start" x="32" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-185.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="127" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-172.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Objekt&#45;ID</text>
+<text text-anchor="start" x="43" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-172.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">UUIDField</text>
+<text text-anchor="start" x="128" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-159.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Registreringstidspunkt</text>
+<text text-anchor="start" x="77" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-159.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="140" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-146.6" font-family="sans-serif " font-size="8.00" fill="#000000">Sumiffiik&#45;ID</text>
+<text text-anchor="start" x="48" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-146.6" font-family="sans-serif " font-size="8.00" fill="#000000">SumiffiikIDField</text>
+<text text-anchor="start" x="142" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-133.6" font-family="sans-serif " font-size="8.00" fill="#000000">Sumiffiikdomæne</text>
+<text text-anchor="start" x="64" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-133.6" font-family="sans-serif " font-size="8.00" fill="#000000">SumiffiikDomainField</text>
+<text text-anchor="start" x="157" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-120.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsafslutning</text>
+<text text-anchor="start" x="77" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-120.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="140" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="10" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="17" y="-107.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsbegyndelse</text>
+<text text-anchor="start" x="82" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="93" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="100" y="-107.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="140" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
 </g>
 <!-- _ -->
 <g id="node3" class="node">
 <title>_</title>
-<text text-anchor="middle" x="288" y="-16.1" font-family="Liberation Sans" font-size="8.00" fill="#000000">_</text>
+<text text-anchor="middle" x="288" y="-16.1" font-family="sans-serif" font-size="8.00" fill="#000000">_</text>
 </g>
 <!-- addrreg_models_data_Address&#45;&gt;_ -->
 <g id="edge1" class="edge">
@@ -144,131 +144,131 @@
 <title>addrreg_models_data_AddressRegistrations</title>
 <polygon fill="#eee8aa" stroke="transparent" points="200.5,-76 200.5,-360 375.5,-360 375.5,-76 200.5,-76"/>
 <polygon fill="#698b22" stroke="transparent" points="201,-336 201,-360 376,-360 376,-336 201,-336"/>
-<text text-anchor="start" x="235" y="-350.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="242" y="-350.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff"> &#160;&#160;&#160;Hidtidig registrering for Adresse</text>
-<text text-anchor="start" x="256.5" y="-342.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff">&lt;</text>
-<text text-anchor="start" x="260.5" y="-342.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#ffffff">RegistrationModel</text>
-<text text-anchor="start" x="309.5" y="-342.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#ffffff">&gt; &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-328.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-328.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ID</text>
-<text text-anchor="start" x="217" y="-328.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-328.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-328.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">AutoField</text>
-<text text-anchor="start" x="332" y="-328.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-315.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-315.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Aktør</text>
-<text text-anchor="start" x="225" y="-315.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-315.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-315.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="346" y="-315.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-302.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">B&#45;nummer</text>
-<text text-anchor="start" x="241" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-302.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
-<text text-anchor="start" x="367" y="-302.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-289.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">Kommune</text>
-<text text-anchor="start" x="240" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-289.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
-<text text-anchor="start" x="367" y="-289.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-276.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Objekt</text>
-<text text-anchor="start" x="228" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-276.6" font-family="Liberation Sans" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
-<text text-anchor="start" x="346" y="-276.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-263.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">Status</text>
-<text text-anchor="start" x="229" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-263.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
-<text text-anchor="start" x="367" y="-263.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-250.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">Vej</text>
-<text text-anchor="start" x="220" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-250.6" font-family="Liberation Sans" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
-<text text-anchor="start" x="367" y="-250.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-237.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">Aktiv</text>
-<text text-anchor="start" x="224" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-237.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">BooleanField</text>
-<text text-anchor="start" x="340" y="-237.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-224.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Checksum</text>
-<text text-anchor="start" x="239" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-224.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">CharField</text>
-<text text-anchor="start" x="331" y="-224.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-211.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Dør</text>
-<text text-anchor="start" x="220" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-211.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="331" y="-211.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-198.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Etage</text>
-<text text-anchor="start" x="226" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-198.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="331" y="-198.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-185.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">Husnummer</text>
-<text text-anchor="start" x="243" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-185.6" font-family="Liberation Sans " font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="331" y="-185.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-172.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">Noter</text>
-<text text-anchor="start" x="225" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-172.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#7b7b7b">CharField</text>
-<text text-anchor="start" x="331" y="-172.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-159.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">Objekt&#45;ID</text>
-<text text-anchor="start" x="236" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-159.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">UUIDField</text>
-<text text-anchor="start" x="332" y="-159.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-146.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Registreringstidsbegyndelse</text>
-<text text-anchor="start" x="286" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-146.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="344" y="-146.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-133.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Registreringstidsbegyndelse</text>
-<text text-anchor="start" x="286" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-133.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="344" y="-133.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-120.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">Sumiffiik&#45;ID</text>
-<text text-anchor="start" x="241" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-120.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">SumiffiikIDField</text>
-<text text-anchor="start" x="346" y="-120.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-107.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">Sumiffiikdomæne</text>
-<text text-anchor="start" x="257" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-107.6" font-family="Liberation Sans " font-size="8.00" fill="#000000">SumiffiikDomainField</text>
-<text text-anchor="start" x="361" y="-107.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-94.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-94.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsafslutning</text>
-<text text-anchor="start" x="270" y="-94.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-94.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-94.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="344" y="-94.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="203" y="-81.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="210" y="-81.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsbegyndelse</text>
-<text text-anchor="start" x="275" y="-81.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="297" y="-81.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
-<text text-anchor="start" x="304" y="-81.6" font-family="Liberation Sans" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
-<text text-anchor="start" x="344" y="-81.6" font-family="Liberation Sans" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="235" y="-350.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="242" y="-350.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff"> &#160;&#160;&#160;Hidtidig registrering for Adresse</text>
+<text text-anchor="start" x="256.5" y="-342.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff">&lt;</text>
+<text text-anchor="start" x="260.5" y="-342.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#ffffff">RegistrationModel</text>
+<text text-anchor="start" x="309.5" y="-342.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#ffffff">&gt; &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-328.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-328.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ID</text>
+<text text-anchor="start" x="217" y="-328.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-328.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-328.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">AutoField</text>
+<text text-anchor="start" x="332" y="-328.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-315.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-315.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Aktør</text>
+<text text-anchor="start" x="225" y="-315.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-315.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-315.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="346" y="-315.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-302.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">B&#45;nummer</text>
+<text text-anchor="start" x="241" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-302.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
+<text text-anchor="start" x="367" y="-302.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-289.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">Kommune</text>
+<text text-anchor="start" x="240" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-289.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
+<text text-anchor="start" x="367" y="-289.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-276.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">Objekt</text>
+<text text-anchor="start" x="228" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-276.6" font-family="sans-serif" font-style="italic" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (id)</text>
+<text text-anchor="start" x="346" y="-276.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-263.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">Status</text>
+<text text-anchor="start" x="229" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-263.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
+<text text-anchor="start" x="367" y="-263.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-250.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">Vej</text>
+<text text-anchor="start" x="220" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-250.6" font-family="sans-serif" font-weight="bold" font-size="8.00" fill="#000000">ForeignKey (objectID)</text>
+<text text-anchor="start" x="367" y="-250.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-237.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">Aktiv</text>
+<text text-anchor="start" x="224" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-237.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">BooleanField</text>
+<text text-anchor="start" x="340" y="-237.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-224.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Checksum</text>
+<text text-anchor="start" x="239" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-224.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">CharField</text>
+<text text-anchor="start" x="331" y="-224.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-211.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Dør</text>
+<text text-anchor="start" x="220" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-211.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="331" y="-211.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-198.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Etage</text>
+<text text-anchor="start" x="226" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-198.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="331" y="-198.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-185.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">Husnummer</text>
+<text text-anchor="start" x="243" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-185.6" font-family="sans-serif " font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="331" y="-185.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-172.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">Noter</text>
+<text text-anchor="start" x="225" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-172.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#7b7b7b">CharField</text>
+<text text-anchor="start" x="331" y="-172.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-159.6" font-family="sans-serif " font-size="8.00" fill="#000000">Objekt&#45;ID</text>
+<text text-anchor="start" x="236" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-159.6" font-family="sans-serif " font-size="8.00" fill="#000000">UUIDField</text>
+<text text-anchor="start" x="332" y="-159.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-146.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Registreringstidsbegyndelse</text>
+<text text-anchor="start" x="286" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-146.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="344" y="-146.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-133.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Registreringstidsbegyndelse</text>
+<text text-anchor="start" x="286" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-133.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="344" y="-133.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-120.6" font-family="sans-serif " font-size="8.00" fill="#000000">Sumiffiik&#45;ID</text>
+<text text-anchor="start" x="241" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-120.6" font-family="sans-serif " font-size="8.00" fill="#000000">SumiffiikIDField</text>
+<text text-anchor="start" x="346" y="-120.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-107.6" font-family="sans-serif " font-size="8.00" fill="#000000">Sumiffiikdomæne</text>
+<text text-anchor="start" x="257" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-107.6" font-family="sans-serif " font-size="8.00" fill="#000000">SumiffiikDomainField</text>
+<text text-anchor="start" x="361" y="-107.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-94.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-94.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsafslutning</text>
+<text text-anchor="start" x="270" y="-94.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-94.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-94.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="344" y="-94.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="203" y="-81.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="210" y="-81.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">Virkningstidsbegyndelse</text>
+<text text-anchor="start" x="275" y="-81.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="297" y="-81.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
+<text text-anchor="start" x="304" y="-81.6" font-family="sans-serif" font-style="italic" font-size="8.00" fill="#000000">DateTimeField</text>
+<text text-anchor="start" x="344" y="-81.6" font-family="sans-serif" font-size="8.00" fill="#000000"> &#160;&#160;&#160;</text>
 </g>
 <!-- addrreg_models_data_AddressRegistrations&#45;&gt;_ -->
 <g id="edge4" class="edge">
