@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 import functools
 import operator
 import uuid
+import logging
 
 from django import forms
 from django.contrib import admin
@@ -244,6 +245,16 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
         obj._registration_user = request.user
 
         super().save_model(request, obj, form, change)
+        
+        diff = []
+        for key in form.changed_data:
+            if key not in ['registrations']:
+                value = getattr(obj, key)
+                diff.append("%s: %s" % (key, value))
+        logging.getLogger('django.server').info(
+            "%s was updated by %s\nChanges:\n%s" %
+            (str(obj), request.user, '\n'.join(diff))
+        )
 
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
