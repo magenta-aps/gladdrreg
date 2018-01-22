@@ -245,15 +245,19 @@ class AdminBase(admin_extensions.ForeignKeyAutocompleteAdmin):
         obj._registration_user = request.user
 
         super().save_model(request, obj, form, change)
-        
+
         diff = []
         for key in form.changed_data:
             if key not in ['registrations']:
                 value = getattr(obj, key)
                 diff.append("%s: %s" % (key, value))
         logging.getLogger('django.server').info(
-            "%s was updated by %s\nChanges:\n%s" %
-            (str(obj), request.user, '\n'.join(diff))
+            "%s (%s id=%s) was updated by %s\nChanges:\n%s" %
+            (
+                str(obj), obj.__class__.__name__, obj.id,
+                request.user,
+                '\n'.join(diff)
+            )
         )
 
     def has_delete_permission(self, request, obj=None):
