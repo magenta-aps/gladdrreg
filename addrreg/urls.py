@@ -37,4 +37,8 @@ urlpatterns = [
     url(r'^listChecksums/?$', views.ListChecksumView.as_view()),
     url(r'^get/(?P<type>[a-z]+)/(?P<checksums>[0-9a-f;]+)$',
         views.GetRegistrationsView.as_view(), name='getRegistrations'),
+
+    # MONITORING HANDLES
+    url(r'^monitor/database/?$', views.DatabaseCheckView.as_view()),
+
 ]

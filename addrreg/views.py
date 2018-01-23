@@ -154,3 +154,9 @@ def access_denied_handler(request):
     response.status_code = 403
 
     return response
+
+
+class DatabaseCheckView(View):
+    def get(self, request, *args, **kwargs):
+        count = State.objects.count()
+        return HttpResponse()
