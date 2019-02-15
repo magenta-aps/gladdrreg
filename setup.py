@@ -21,7 +21,7 @@ requires = [
     "openpyxl>=2.4.8",
     "eventlet~=0.21.0",
     "babel~=2.4.0",
-    "requests~=2.17.3",
+    "requests~=2.21.0",
     "grequests~=0.3.0",
     "progress",
     "python-dateutil~=2.6.0",
